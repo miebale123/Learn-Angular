@@ -18,13 +18,13 @@ import { NavigationService } from '../../core/other/navigation.service';
       <main
         class="flex-1 flex flex-col justify-start items-center text-center gap-6 px-4 pt-24 md:pt-32 lg:pt-40"
       >
-        <span class="text-lg sm:text-xl md:text-2xl text-red-400">welcome to</span>
+        <span class="text-lg sm:text-xl md:text-2xl text-g-400">welcome to</span>
 
         <!-- LOGO + CANDLE -->
         <div
           class="flex items-end justify-center gap-[0.15em] font-semibold tracking-wide leading-none"
         >
-          <span class="text-[clamp(2.5rem,8vw,6rem)] select-none">B</span>
+          <span class="text-[clamp(2.5rem,8vw,20rem)] select-none">B</span>
 
           <!-- Candle replaces "i" -->
           <div
@@ -43,7 +43,7 @@ import { NavigationService } from '../../core/other/navigation.service';
             </div>
           </div>
 
-          <span class="text-[clamp(2.5rem,8vw,6rem)] select-none">rhan</span>
+          <span class="text-[clamp(2.5rem,8vw,20rem)] select-none">rhan</span>
         </div>
 
         <div
