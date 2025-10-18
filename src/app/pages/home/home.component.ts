@@ -1,3 +1,6 @@
+import { LottieComponent } from 'ngx-lottie';
+import { LottieAnimationViewModule } from 'ng-lottie';
+import animationData from '../../../assets/programmer.json';
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../lay-out/header/header.component';
@@ -6,31 +9,23 @@ import { NavigationService } from '../../core/other/navigation.service';
 @Component({
   selector: 'home',
   standalone: true,
-  imports: [CommonModule, HeaderComponent],
+  imports: [CommonModule, HeaderComponent, LottieComponent],
   template: `
     <div class="min-h-screen flex flex-col bg-black text-white">
       <app-header></app-header>
 
-      <main
-        class="flex-1 flex flex-col justify-center items-center gap-6 text-center"
-      >
-        <!-- 🔥 Candle + Logo -->
-        <div
-          class="flex items-end justify-center gap-[0.15em] font-semibold tracking-wide"
-        >
-          <span
-            class="text-[clamp(2.5rem,8vw,6rem)] leading-none select-none"
-            >B</span
-          >
+      <main class="flex-1 flex flex-col justify-center items-center gap-6 text-center">
+        <!--  Candle + Logo -->
+          <span class="text-2xl text-gray-400">welcome to</span>
+        <div class="flex items-end justify-center gap-[0.15em] font-semibold tracking-wide">
+          <span class="text-[clamp(2.5rem,8vw,6rem)] leading-none select-none">B</span>
 
           <!-- Candle replaces the "i" -->
           <div
             class="relative flex flex-col items-center justify-end -mb-[0.15em]"
             [style.height]="'clamp(2.5rem,8vw,6rem)'"
           >
-            <div
-              class="holder scale-[0.55] sm:scale-[0.7] md:scale-[0.9] lg:scale-[1]"
-            >
+            <div class="holder scale-[0.55] sm:scale-[0.7] md:scale-[0.9] lg:scale-[1]">
               <div class="candle">
                 <div class="blinking-glow"></div>
                 <div class="thread"></div>
@@ -40,27 +35,60 @@ import { NavigationService } from '../../core/other/navigation.service';
             </div>
           </div>
 
-          <span
-            class="text-[clamp(2.5rem,8vw,6rem)] leading-none select-none"
-            >rhan</span
-          >
+          <span class="text-[clamp(2.5rem,8vw,6rem)] leading-none select-none">rhan</span>
         </div>
 
-        <div
-          class="mt-4 text-gray-400 tracking-widest text-[clamp(1rem,2vw,1.6rem)]"
-        >
-          Academy
-        </div>
+        <div class="mt-4 text-gray-400 tracking-widest text-[clamp(1rem,2vw,1.6rem)]">Academy</div>
+
+        <p class="!text-2xl">our education quality matters! let's learn together!</p>
 
         <!-- Button -->
         <button
           (click)="navigation.navigate('auth/sign-up')"
-          class="!py-2 px-6 mt-6 bg-yellow-500 hover:bg-yellow-600 text-black rounded-md font-semibold transition"
+          class="!py-3 px-6 mt-6 bg-yellow-500 hover:bg-yellow-600 text-black rounded-md font-semibold transition"
         >
           ለመጀመር ይመዝገቡ
         </button>
       </main>
     </div>
+
+    <!-- Vue3-style section -->
+    <section
+      class="bg-gradient-to-r from-indigo-100 to-blue-400 text-gray-600 font-bold text-2xl mt-12 w-full"
+    >
+      <svg viewBox="0 0 1440 200" class="fill-black">
+        <path d="M0,132C180,0,1360,160,1440,0L140,0L0,0Z"></path>
+      </svg>
+
+      <div
+        class="flex flex-col md:flex-row justify-center items-center md:h-[400px] gap-10 md:gap-20 p-4"
+      >
+        <div class="flex flex-row items-center justify-center gap-16">
+          <p>ተምሃሮ ናይ ኮምፒዩተር ፍልጠት ንክቀስሙ ዝለዓለ ፃዕሪ ንገብር</p>
+          <div class="mt-8 w-[350px] md:w-[450px]">
+            <ng-lottie
+              [options]="options"
+              (animationCreated)="animationCreated($event)"
+            ></ng-lottie>
+          </div>
+        </div>
+      </div>
+
+      <svg viewBox="0 0 1440 200" class="fill-gray-500">
+        <path
+          d="M0,160C80,120,160,80,320,80C480,80,560,160,720,160C880,160,960,80,1120,50C1280,16,1360,80,1440,0L1440,320L0,320Z"
+        ></path>
+      </svg>
+    </section>
+
+    <section
+      class="bg-gray-500 flex flex-col md:flex-row items-center justify-center md:h-[400px] gap-10 md:gap-20 text-red-200 font-bold text-xl md:text-3xl p-4"
+    >
+      <div class="flex flex-col md:flex-row items-center justify-center gap-16">
+        <img src="../../assets/family.jpg" class="w-100 rounded-lg shadow-lg" />
+        <p class="flex-1 text-center">ወለዲ ብናይ ደቆም ጉብዝና ይሕጎሱ</p>
+      </div>
+    </section>
   `,
   styles: [
     `
@@ -132,8 +160,7 @@ import { NavigationService } from '../../core/other/navigation.service';
         width: 100%;
         height: 100%;
         border-radius: 50% 50% 20% 20%;
-        box-shadow: 0 0 15px rgba(247, 93, 0, 0.4),
-          0 -6px 4px rgba(247, 128, 0, 0.7);
+        box-shadow: 0 0 15px rgba(247, 93, 0, 0.4), 0 -6px 4px rgba(247, 128, 0, 0.7);
       }
 
       .glow {
@@ -146,8 +173,7 @@ import { NavigationService } from '../../core/other/navigation.service';
         border-radius: 50% 50% 35% 35%;
         background: rgba(0, 133, 255, 0.7);
         box-shadow: 0 -40px 30px 0 #dc8a0c, 0 40px 50px 0 #dc8a0c,
-          inset 3px 0 2px rgba(0, 133, 255, 0.6),
-          inset -3px 0 2px rgba(0, 133, 255, 0.6);
+          inset 3px 0 2px rgba(0, 133, 255, 0.6), inset -3px 0 2px rgba(0, 133, 255, 0.6);
       }
 
       .blinking-glow {
@@ -201,4 +227,13 @@ import { NavigationService } from '../../core/other/navigation.service';
 })
 export class HomeComponent {
   navigation = inject(NavigationService);
+  options = {
+    animationData,
+    loop: true,
+    autoplay: true,
+  };
+
+  animationCreated(animation: any) {
+    animation.setSpeed(1.5);
+  }
 }

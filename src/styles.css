@@ -21,10 +21,12 @@ body {
 }
 
 .auth {
+  background: indigo;
   font: bolder;
   display: flex;
   align-items: center;
   justify-content: center;
+
 }
 
 .auth button:hover {
@@ -36,7 +38,7 @@ button {
   border-radius: 3px;
   cursor: pointer;
 }
-/* 
+/*
 span {
   color: red;
   font-size: 0.875rem;
