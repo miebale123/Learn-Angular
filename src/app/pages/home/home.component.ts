@@ -18,7 +18,7 @@ import { NavigationService } from '../../core/other/navigation.service';
       <main
         class="flex-1 flex flex-col justify-start items-center text-center gap-6 px-4 pt-24 md:pt-32 lg:pt-40"
       >
-        <span class="text-lg sm:text-xl md:text-2xl text-gray-400">welcome to</span>
+        <span class="text-lg sm:text-xl md:text-2xl text-red-400">welcome to</span>
 
         <!-- LOGO + CANDLE -->
         <div
