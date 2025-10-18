@@ -10,11 +10,14 @@ import { NavigationService } from '../../core/other/navigation.service';
   standalone: true,
   imports: [CommonModule, HeaderComponent, LottieComponent],
   template: `
+    <!-- MAIN CONTAINER -->
     <div class="min-h-screen flex flex-col bg-black text-white">
       <app-header></app-header>
 
       <!-- HERO SECTION -->
-      <main class="flex-1 flex flex-col justify-center items-center gap-6 text-center px-4">
+      <main
+        class="flex-1 flex flex-col justify-start items-center text-center gap-6 px-4 pt-24 md:pt-32 lg:pt-40"
+      >
         <span class="text-lg sm:text-xl md:text-2xl text-gray-400">welcome to</span>
 
         <!-- LOGO + CANDLE -->
@@ -23,6 +26,7 @@ import { NavigationService } from '../../core/other/navigation.service';
         >
           <span class="text-[clamp(2.5rem,8vw,6rem)] select-none">B</span>
 
+          <!-- Candle replaces "i" -->
           <div
             class="relative flex flex-col items-center justify-end -mb-[0.15em]"
             [style.height]="'clamp(2.5rem,8vw,6rem)'"
@@ -42,11 +46,15 @@ import { NavigationService } from '../../core/other/navigation.service';
           <span class="text-[clamp(2.5rem,8vw,6rem)] select-none">rhan</span>
         </div>
 
-        <div class="mt-4 text-gray-400 tracking-widest text-[clamp(1rem,2vw,1.6rem)]">
+        <div
+          class="mt-3 text-gray-400 tracking-widest text-[clamp(1rem,2vw,1.6rem)]"
+        >
           Academy
         </div>
 
-        <p class="text-lg sm:text-xl md:text-2xl max-w-lg px-2">
+        <p
+          class="text-lg sm:text-xl md:text-2xl max-w-md sm:max-w-lg px-3 text-gray-200 leading-relaxed"
+        >
           our education quality matters! let's learn together!
         </p>
 
@@ -71,7 +79,9 @@ import { NavigationService } from '../../core/other/navigation.service';
       <div
         class="flex flex-col md:flex-row justify-center items-center md:h-[400px] gap-10 md:gap-20 p-6"
       >
-        <p class="max-w-[320px] sm:max-w-[400px] md:max-w-[500px] text-center md:text-left leading-relaxed">
+        <p
+          class="max-w-[320px] sm:max-w-[400px] md:max-w-[500px] text-center md:text-left leading-relaxed"
+        >
           ተምሃሮ ናይ ኮምፒዩተር ፍልጠት ንክቀስሙ ዝለዓለ ፃዕሪ ንገብር
         </p>
 
@@ -97,13 +107,16 @@ import { NavigationService } from '../../core/other/navigation.service';
       <img
         src="../../assets/family.jpg"
         alt="Family"
-        class="w-[80%] sm:w-[60%] md:w-[40%] lg:w-[30%] rounded-lg shadow-lg object-cover"
+        class="w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] rounded-lg shadow-lg object-cover"
       />
-      <p class="max-w-[400px] leading-relaxed">ወለዲ ብናይ ደቆም ጉብዝና ይሕጎሱ</p>
+      <p class="max-w-[400px] leading-relaxed">
+        ወለዲ ብናይ ደቆም ጉብዝና ይሕጎሱ
+      </p>
     </section>
   `,
   styles: [
     `
+      /* Candle Styling */
       .holder {
         position: relative;
         width: clamp(35px, 6vw, 55px);
@@ -183,6 +196,7 @@ import { NavigationService } from '../../core/other/navigation.service';
         animation: blinkIt 0.12s infinite;
       }
 
+      /* Animations */
       @keyframes moveFlame {
         0% {
           transform: translateX(-50%) rotate(-6deg);
