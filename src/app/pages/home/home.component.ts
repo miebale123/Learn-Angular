@@ -14,11 +14,15 @@ import { NavigationService } from '../../core/other/navigation.service';
       <app-header></app-header>
 
       <!-- HERO SECTION -->
-      <main class="flex-1 flex flex-col justify-start items-center text-center gap-6 px-4 pt-24 md:pt-32 lg:pt-40">
+      <main
+        class="flex-1 flex flex-col justify-start items-center text-center gap-6 px-4 pt-8 md:pt-20 lg:pt-40"
+      >
         <span class="text-xl sm:text-2xl md:text-3xl text-gray-400">welcome to</span>
 
         <!-- LOGO + CANDLE -->
-        <div class="flex items-baseline justify-center font-semibold tracking-wide leading-none gap-1.5">
+        <div
+          class="flex items-baseline justify-center font-semibold tracking-wide leading-none gap-1.5"
+        >
           <span class="text-[clamp(3rem,9vw,7rem)] select-none">B</span>
 
           <!-- Candle replaces "i" -->
@@ -40,7 +44,9 @@ import { NavigationService } from '../../core/other/navigation.service';
           Academy
         </div>
 
-        <p class="text-lg sm:text-2xl md:text-3xl max-w-md sm:max-w-lg px-3 text-gray-200 leading-relaxed">
+        <p
+          class="text-lg sm:text-2xl md:text-3xl max-w-md sm:max-w-lg px-3 text-gray-200 leading-relaxed"
+        >
           our education quality matters! let's learn together!
         </p>
 
@@ -49,41 +55,131 @@ import { NavigationService } from '../../core/other/navigation.service';
           (click)="navigation.navigate('auth/sign-up')"
           class="py-3 px-6 mt-6 bg-yellow-500 hover:bg-yellow-600 text-black rounded-md font-semibold transition-all duration-300 shadow-md hover:shadow-lg"
         >
-          ለመጀመር ይመዝገቡ
+          Register here &rarr;
         </button>
       </main>
 
       <!-- ANIMATION SECTION -->
-      <section class="bg-gradient-to-r from-indigo-100 to-blue-400 text-gray-600 font-bold text-lg sm:text-xl md:text-2xl mt-12 w-full overflow-hidden">
+      <section
+        class="bg-gradient-to-r from-indigo-500 to-blue-400 text-gray-600 font-bold text-lg sm:text-xl md:text-2xl mt-12 w-full overflow-hidden"
+      >
         <svg viewBox="0 0 1440 200" class="fill-black w-full">
           <path d="M0,132C180,0,1360,160,1440,0L140,0L0,0Z"></path>
         </svg>
 
-        <div class="flex flex-col md:flex-row justify-center items-center md:h-[400px] gap-10 md:gap-20 p-6">
-          <p class="max-w-[320px] sm:max-w-[400px] md:max-w-[500px] text-center md:text-left leading-relaxed">
-            ተምሃሮ ናይ ኮምፒዩተር ፍልጠት ንክቀስሙ ዝለዓለ ፃዕሪ ንገብር
+        <div
+          class="flex flex-col md:flex-row justify-center items-center md:h-[400px] gap-10 md:gap-20 p-6"
+        >
+          <p
+            class="max-w-[320px] sm:max-w-[400px] md:max-w-[500px] text-center md:text-left leading-relaxed"
+          >
+            <!-- WHAT WE OFFER SECTION -->
           </p>
 
+          <section class=" text-white  text-center">
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-12">What We Offer</h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
+              <!-- Item 1 -->
+              <div
+                class="flex flex-col items-center gap-4 p-6 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
+              >
+                <div class="bg-yellow-500 text-black p-4 rounded-full">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-8 h-8"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 8v4l3 3m6 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold">Latest Resources</h3>
+                <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+                  Access the latest and most important computer knowledge resources and tools.
+                </p>
+              </div>
+
+              <!-- Item 2 -->
+              <div
+                class="flex flex-col items-center gap-4 p-6  rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
+              >
+                <div class="bg-green-500 text-black p-4 rounded-full">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-8 h-8"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 7v4a1 1 0 001 1h3m10 0h3a1 1 0 001-1V7M4 17h16M4 17v2a1 1 0 001 1h14a1 1 0 001-1v-2M4 17l2-2m14 2l-2-2"
+                    />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold">Software Tools</h3>
+                <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+                  Discover engineering, health, and general knowledge information software tools.
+                </p>
+              </div>
+
+              <!-- Item 3 -->
+              <div
+                class="flex flex-col items-center gap-4 p-6  rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
+              >
+                <div class="bg-blue-500 text-black p-4 rounded-full">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-8 h-8"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 10h.01M12 10h.01M16 10h.01M9 16h6m2 4H7a2 2 0 01-2-2V6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v12a2 2 0 01-2 2z"
+                    />
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold">Guided Understanding</h3>
+                <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+                  Gain clear understanding of tools, resources, and their context for practical use.
+                </p>
+              </div>
+            </div>
+          </section>
+
           <div class="w-[250px] sm:w-[350px] md:w-[450px]">
-            <ng-lottie [options]="options" (animationCreated)="animationCreated($event)"></ng-lottie>
+            <ng-lottie
+              [options]="options"
+              (animationCreated)="animationCreated($event)"
+            ></ng-lottie>
           </div>
         </div>
 
         <svg viewBox="0 0 1440 200" class="fill-gray-500 w-full">
-          <path d="M0,160C80,120,160,80,320,80C480,80,560,160,720,160C880,160,960,80,1120,50C1280,16,1360,80,1440,0L1440,320L0,320Z"></path>
+          <path
+            d="M0,160C80,120,160,80,320,80C480,80,560,160,720,160C880,160,960,80,1120,50C1280,16,1360,80,1440,0L1440,320L0,320Z"
+          ></path>
         </svg>
       </section>
 
       <!-- FAMILY SECTION -->
-      <section class="bg-gray-500 flex flex-col md:flex-row items-center justify-center md:h-[400px] gap-10 md:gap-20 text-red-200 font-bold text-xl md:text-3xl p-6 text-center">
-        <img
-          src="../../assets/family.jpg"
-          alt="Family"
-          class="w-[90%] sm:w-[65%] md:w-[45%] lg:w-[35%] rounded-lg shadow-lg object-cover"
-        />
-        <p class="max-w-[450px] leading-relaxed">
-          ወለዲ ብናይ ደቆም ጉብዝና ይሕጎሱ
-        </p>
+      <section
+        class="bg-gray-500 flex flex-col md:flex-row items-center justify-center md:h-[400px] gap-10 md:gap-20 text-red-200 font-bold text-xl md:text-3xl p-6 text-center"
+      >
+        <p class="max-w-[450px] leading-relaxed">Family happy</p>
       </section>
     </div>
   `,
@@ -94,7 +190,7 @@ import { NavigationService } from '../../core/other/navigation.service';
         display: inline-flex;
         vertical-align: baseline;
         width: clamp(0.5rem, 4vw, 0.7em); /* slightly wider */
-        height: clamp(2.2rem, 6vw, 5rem);  /* slightly taller wax */
+        height: clamp(2.2rem, 6vw, 5rem); /* slightly taller wax */
         justify-content: center;
         align-items: flex-end;
       }
@@ -152,8 +248,7 @@ import { NavigationService } from '../../core/other/navigation.service';
         border-radius: 50% 50% 35% 35%;
         background: rgba(0, 133, 255, 0.7);
         box-shadow: 0 -35px 25px 0 #dc8a0c, 0 35px 45px 0 #dc8a0c,
-          inset 2px 0 2px rgba(0, 133, 255, 0.5),
-          inset -2px 0 2px rgba(0, 133, 255, 0.5);
+          inset 2px 0 2px rgba(0, 133, 255, 0.5), inset -2px 0 2px rgba(0, 133, 255, 0.5);
       }
 
       .blinking-glow {
@@ -170,19 +265,38 @@ import { NavigationService } from '../../core/other/navigation.service';
       }
 
       @keyframes moveFlame {
-        0% { transform: translateX(-50%) rotate(-6deg); }
-        25% { transform: translateX(-50%) rotate(8deg); }
-        50% { transform: translateX(-50%) rotate(-10deg); }
-        75% { transform: translateX(-50%) rotate(6deg); }
-        100% { transform: translateX(-50%) rotate(-6deg); }
+        0% {
+          transform: translateX(-50%) rotate(-6deg);
+        }
+        25% {
+          transform: translateX(-50%) rotate(8deg);
+        }
+        50% {
+          transform: translateX(-50%) rotate(-10deg);
+        }
+        75% {
+          transform: translateX(-50%) rotate(6deg);
+        }
+        100% {
+          transform: translateX(-50%) rotate(-6deg);
+        }
       }
 
       @keyframes enlargeFlame {
-        0%,100% { height: clamp(35%, 4vw, 42%); }
-        50% { height: clamp(38%, 4.2vw, 45%); }
+        0%,
+        100% {
+          height: clamp(35%, 4vw, 42%);
+        }
+        50% {
+          height: clamp(38%, 4.2vw, 45%);
+        }
       }
 
-      @keyframes blinkIt { 50% { opacity: 0.7; } }
+      @keyframes blinkIt {
+        50% {
+          opacity: 0.7;
+        }
+      }
     `,
   ],
 })

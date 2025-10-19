@@ -32,10 +32,11 @@ body {
 .auth button:hover {
   background: black;
   color: white;
+  border: solid 1px;
 }
 
 button {
-  border-radius: 3px;
+  border-radius: 5px;
   cursor: pointer;
 }
 /*
@@ -82,3 +83,5 @@ input {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
+
+

@@ -10,9 +10,11 @@ import { HomeComponent } from './pages/home/home.component';
 import { AppLayoutComponent } from './app-layout.component';
 import { NotesComponent } from './tasks/notes.component';
 import { NoteComponent } from './tasks/note.component';
+import { CoursesComponent } from './courses.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
+  { path: 'courses', component: CoursesComponent },
   {
     path: 'auth',
     children: [
@@ -35,7 +37,7 @@ export const routes: Routes = [
       { path: 'update-password', component: UpdatePasswordComponent },
       // { path: 'dashboard', component: DashboardComponent},
       { path: 'app-notes', component: NotesComponent },
-      {path: 'app-notes/:id', component: NoteComponent}
+      { path: 'app-notes/:id', component: NoteComponent },
     ],
   },
 ];
