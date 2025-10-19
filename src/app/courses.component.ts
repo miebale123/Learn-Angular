@@ -121,7 +121,7 @@ import { RouterLink } from '@angular/router';
 export class CoursesComponent {
   courses = ['Food Science', 'Geography', 'Math', 'Biology', 'Sport'];
   images = [
-    'assets/watermelon.jpg',
+    '../../assets/watermelon.jpg',
     'assets/geography.jpg',
     'assets/math.jpg',
     'assets/biology.avif',
