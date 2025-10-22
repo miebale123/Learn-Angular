@@ -10,10 +10,10 @@ import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'sign-up',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, MatIconModule, ],
+  imports: [ReactiveFormsModule, RouterLink, MatIconModule],
   templateUrl: `./sign-up.component.html`,
 })
-export class SignupComponent {
+export class Signup {
   private auth = inject(AuthFormService);
   private fb = inject(FormBuilder);
   private authState = inject(AuthStateService);

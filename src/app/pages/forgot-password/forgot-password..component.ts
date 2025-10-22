@@ -10,7 +10,7 @@ import { SignupDto, SignupSchema, zodFieldValidator } from '../../core/auth/auth
   imports: [ReactiveFormsModule],
   templateUrl: `./forgot-password.component.html`,
 })
-export class ForgotPasswordComponent {
+export class ForgotPassword {
   apiUrl = 'forgot-password';
   message = signal<string | null>(null);
   isSuccess = signal<boolean | null>(null);

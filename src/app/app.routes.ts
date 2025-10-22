@@ -1,43 +1,59 @@
 import { Routes } from '@angular/router';
-import { SigninComponent } from './pages/sign-in/sign-in.component';
-import { SignupComponent } from './pages/sign-up/sign-up.component';
-import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password..component';
-import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
-import { UpdatePasswordComponent } from './pages/update-password/update-password.component';
 import { AuthGuard } from './core/auth/auth.guard';
-import { ProfileComponent } from './pages/profile/profile.component';
-import { HomeComponent } from './pages/home/home.component';
-import { AppLayoutComponent } from './app-layout.component';
-import { NotesComponent } from './tasks/notes.component';
-import { NoteComponent } from './tasks/note.component';
-import { CoursesComponent } from './courses.component';
+import { Home } from './pages/home/home.component';
+import { Signin } from './pages/sign-in/sign-in.component';
+import { Signup } from './pages/sign-up/sign-up.component';
+import { ForgotPassword } from './pages/forgot-password/forgot-password..component';
+import { ResetPassword } from './pages/reset-password/reset-password.component';
+import { Profile } from './pages/profile/profile.component';
+import { UpdatePassword } from './pages/update-password/update-password.component';
+import { Notes } from './notes/notes.component';
+import { Note } from './notes/note.component';
+import { AppLayout } from './app-layout.component';
+import { Courses } from './courses.component';
+import { DashBoard } from './pages/dashboard/dashboard.component';
+import { Article } from './articles/article.component';
+import { Created } from './pages/dashboard/created.component';
+import { Saved } from './pages/dashboard/saved.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent, pathMatch: 'full' },
-  { path: 'courses', component: CoursesComponent },
+  { path: '', component: Home, pathMatch: 'full' },
+  { path: 'app-courses', component: Courses },
   {
     path: 'auth',
     children: [
       { path: '', redirectTo: 'sign-in', pathMatch: 'full' },
-      { path: 'sign-in', component: SigninComponent },
-      { path: 'sign-up', component: SignupComponent },
+      { path: 'sign-in', component: Signin },
+      { path: 'sign-up', component: Signup },
       { path: 'google', redirectTo: 'google/callback' },
-      { path: 'update-password', component: UpdatePasswordComponent },
-      { path: 'forgot-password', component: ForgotPasswordComponent },
-      { path: 'reset-password/:resetToken', component: ResetPasswordComponent },
+      { path: 'forgot-password', component: ForgotPassword },
+      { path: 'reset-password/:resetToken', component: ResetPassword },
     ],
   },
 
   {
     path: '',
     canActivate: [AuthGuard], // protect routes after login
-    component: AppLayoutComponent,
+    component: AppLayout,
     children: [
-      { path: 'profile', component: ProfileComponent },
-      { path: 'update-password', component: UpdatePasswordComponent },
-      // { path: 'dashboard', component: DashboardComponent},
-      { path: 'app-notes', component: NotesComponent },
-      { path: 'app-notes/:id', component: NoteComponent },
+      {
+        path: 'dashboard',
+        component: DashBoard,
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'created', // <-- default route
+          },
+          { path: 'created', component: Created },
+          { path: 'saved', component: Saved },
+        ],
+      },
+      { path: 'article', component: Article },
+      { path: 'profile', component: Profile },
+      { path: 'update-password', component: UpdatePassword },
+      { path: 'notes', component: Notes },
+      { path: 'notes/:id', component: Note },
     ],
   },
 ];

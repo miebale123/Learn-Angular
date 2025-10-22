@@ -14,7 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [ReactiveFormsModule, RouterLink, MatIconModule],
   templateUrl: `./sign-in.component.html`,
 })
-export class SigninComponent {
+export class Signin {
   auth = inject(AuthFormService);
   private fb = inject(FormBuilder);
   private authState = inject(AuthStateService);
@@ -64,7 +64,7 @@ export class SigninComponent {
     if (this.isSuccess()) {
       localStorage.setItem('access-token', this.accessToken());
       this.authState.setLoggedIn(true);
-      this.router.navigateByUrl('/tasks');
+      this.router.navigateByUrl('/notes');
     }
   }
 
@@ -88,7 +88,7 @@ export class SigninComponent {
     if (this.isSuccess()) {
       localStorage.setItem('access-token', this.accessToken());
       this.authState.setLoggedIn(true);
-      this.router.navigateByUrl('/tasks');
+      this.router.navigateByUrl('/notes');
     }
   }
 }

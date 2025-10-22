@@ -5,16 +5,16 @@ import { firstValueFrom } from 'rxjs';
 import { number } from 'zod';
 
 @Component({
-  selector: 'app-notes/:id',
+  selector: 'notes/:id',
   imports: [ReactiveFormsModule],
   template: `
     <form [formGroup]="form" (ngSubmit)="createNote()">
       <input type="text" />
-      <button>create note</button>
+      <button type="submit">create note</button>
     </form>
   `,
 })
-export class NoteComponent {
+export class Note {
   http = inject(HttpClient);
   id = signal<number>(0);
   title = signal<string>('');
@@ -26,7 +26,13 @@ export class NoteComponent {
   });
 
   createNote() {
+    console.log('hello');
     const dto = this.form.value;
     const res: any = firstValueFrom(this.http.post(`http://localhost:4442/`, dto));
+    console.log(res);
+  }
+
+  ngOnInit() {
+    console.log('hello');
   }
 }

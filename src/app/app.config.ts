@@ -1,9 +1,4 @@
-import {
-  HTTP_INTERCEPTORS,
-  provideHttpClient,
-  withFetch,
-  withInterceptors,
-} from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import {
   ApplicationConfig,
   provideBrowserGlobalErrorListeners,
@@ -15,7 +10,6 @@ import { routes } from './app.routes';
 import { AuthInterceptor } from './core/auth/auth.interceptor';
 import { playerFactory } from './lottie-factory';
 import { provideLottieOptions } from 'ngx-lottie';
-import { LottieAnimationViewModule } from 'ng-lottie';
 
 export const appConfig: ApplicationConfig = {
   providers: [

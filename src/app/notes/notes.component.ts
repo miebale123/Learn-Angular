@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { firstValueFrom } from 'rxjs';
+import { first, firstValueFrom } from 'rxjs';
 
 function randomNo() {
   return Math.floor(Math.random() * 100000);
@@ -13,13 +13,13 @@ interface Note {
 }
 
 @Component({
-  selector: 'app-notes',
+  selector: 'notes',
   imports: [ReactiveFormsModule],
   template: ` <div>
     <div class="flex gap-20">
       <button (click)="createNewNote()">new note</button>
 
-      <ul class="border-r w-1/4">
+      <ul class="border-r w-1/4 flex flex-col">
         @for (n of notes(); track $index) {
         <button (click)="selectedNote(n.id)">{{ n.title || 'new page' }}</button>
         }
@@ -31,15 +31,13 @@ interface Note {
     </div>
   </div>`,
 })
-
-
-export class NotesComponent {
+export class Notes {
   id = signal<number>(randomNo());
   title = signal<string>('new page');
   note = signal<Note>({ id: this.id(), title: this.title() });
   notes = signal<Note[]>([this.note()]);
-  // allowNewNote = signal<boolean>(true);
 
+  private http = inject(HttpClient);
   private fb = inject(FormBuilder);
 
   form: FormGroup = this.fb.group({
@@ -47,9 +45,11 @@ export class NotesComponent {
     title: [this.title()],
   });
 
-  createNewNote() {
+  async createNewNote() {
     this.id.set(randomNo());
-    console.log(this.id());
+    const title = this.form.value;
+    localStorage.setItem('id', JSON.stringify(this.id()));
+    localStorage.setItem('title', this.title());
     this.title.set('new page');
     this.note.set({ id: this.id(), title: this.title() });
     this.notes.update((prev) => [...prev, this.note()]);
@@ -77,53 +77,57 @@ export class NotesComponent {
       });
     });
   }
+
+  async getAllNotes() {
+    const res: any = await firstValueFrom(this.http.get('http://localhost:4442/notes'));
+    console.log(res);
+  }
 }
 
 // @Component({
-//   selector: 'app-notes',
+//   selector: 'notes',
 //   imports: [ReactiveFormsModule],
 //   template: `
-//     <form [formGroup]="form" (ngSubmit)="createNote()">
-//       <input type="text" formControlName="title" />
-//       <button type="submit">create-note</button>
-//     </form>
+//     <div>
+//       @for (Note of notes; track $index) {
+//       <button>{{ note.title || 'untitled' }}</button>
 
-//     <button (click)="getNoteById()" class="bg-white text-black">find</button>
+//       }
 
-//     <button (click)="changeTitle()">changeTitle</button>
+//       <form [formGroup]="form" (ngSubmit)="createNote()">
+//         <input type="text" formControlName="title" />
+//         <button type="submit">create note</button>
+//       </form>
+
+//       <button (click)="getAllNotes()">get notes</button>
+//     </div>
 //   `,
 // })
-// export class NotesComponent {
-//   private http = inject(HttpClient);
-
+// export class Notes{
 //   id = signal<number>(0);
 //   title = signal<string>('');
+//   note = <Note>{ id: this.id(), title: this.title() };
+//   notes = <Note[]>[];
 
+//   http = inject(HttpClient);
 //   fb = inject(FormBuilder);
 //   form: FormGroup = this.fb.group({
+//     id: [this.id()],
 //     title: [this.title()],
 //   });
 
 //   async createNote() {
 //     const dto = this.form.value;
 //     const res: any = await firstValueFrom(
-//       this.http.post('http://localhost:4442/notes/create-note', dto)
+//       this.http.article(`http://localhost:4442/notes/create-note`, dto)
 //     );
+
 //     console.log(res);
-
-//     this.title.set(dto);
-//     this.id.set(res?.id);
 //   }
 
-//   async getNoteById() {
-//     const id = this.id();
-//     const res = await firstValueFrom(this.http.get(`http://localhost:4442/notes/${id}`));
-//     console.log(res)
+//   async getNotes() {
+//     const res: any = await firstValueFrom(this.http.get('http://localhost:4442/notes/getNotes'));
+//     console.log(res);
 //   }
 
-//   changeTitle() {
-//     this.title.set('change title');
-//     this.form.setValue({ title: this.title() });
-//   }
 // }
-

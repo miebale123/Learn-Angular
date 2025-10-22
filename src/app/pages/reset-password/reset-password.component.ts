@@ -14,7 +14,7 @@ import {
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: `reset-password.component.html`,
 })
-export class ResetPasswordComponent {
+export class ResetPassword {
   private auth = inject(AuthFormService);
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);

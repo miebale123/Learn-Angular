@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'courses',
+  selector: 'app-courses',
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
@@ -19,9 +19,7 @@ import { RouterLink } from '@angular/router';
           [style.animation-delay]="$index * 0.3 + 's'"
         >
           <!-- top roll -->
-          <div
-            class="roll-top animate-roll-shrink"
-          ></div>
+          <div class="roll-top animate-roll-shrink"></div>
 
           <!-- scroll body -->
           <div class="scroll-body animate-unroll" [style.animation-delay]="$index * 0.3 + 's'">
@@ -118,13 +116,13 @@ import { RouterLink } from '@angular/router';
     `,
   ],
 })
-export class CoursesComponent {
-  courses = ['Food Science', 'Geography', 'Math', 'Biology', 'Sport'];
+export class Courses {
+  courses = ['Food Science', 'Geography', 'Family', 'Biology', 'Sport'];
   images = [
     '../../assets/watermelon.jpg',
-    'assets/geography.jpg',
-    'assets/math.jpg',
-    'assets/biology.avif',
-    'assets/soccer.jpg',
+    '../../assets/geography.jpg',
+    '../../assets/family.jpg',
+    '../../assets/biology.avif',
+    '../../assets/soccer.jpg',
   ];
 }

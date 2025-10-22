@@ -17,7 +17,7 @@ import { AuthStateService } from '../../core/auth/auth-state.service';
   imports: [CommonModule, LucideAngularModule],
   templateUrl: './header.component.html',
 })
-export class HeaderComponent {
+export class Header {
   private router = inject(Router);
   auth = inject(AuthStateService);
 

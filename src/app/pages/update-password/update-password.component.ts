@@ -14,7 +14,7 @@ import {
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: `./update-password.component.html`,
 })
-export class UpdatePasswordComponent {
+export class UpdatePassword {
   private auth = inject(AuthFormService);
   private fb = inject(FormBuilder);
 

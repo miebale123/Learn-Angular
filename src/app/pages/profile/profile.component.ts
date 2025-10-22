@@ -14,7 +14,7 @@ export interface User {
   imports: [CommonModule, LucideAngularModule],
   templateUrl: './profile.component.html',
 })
-export class ProfileComponent {
+export class Profile {
   private auth = inject(AuthStateService);
 
   user = signal<User>({
