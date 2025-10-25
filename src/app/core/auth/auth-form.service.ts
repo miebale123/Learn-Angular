@@ -1,10 +1,10 @@
-import { firstValueFrom } from "rxjs";
-import { AuthFormState } from "./auth-form.state";
-import { HttpClient } from "@angular/common/http";
-import { inject, Injectable } from "@angular/core";
-import { AuthStateService } from "./auth-state.service";
-import { environment } from "../../../environments/environments.prod";
-import { mapAuthError } from "./auth-err.util";
+import { firstValueFrom } from 'rxjs';
+import { AuthFormState } from './auth-form.state';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { environment } from '../../../environments/environments.dev';
+import { mapAuthError } from './auth-err.util';
+import { AuthStateService } from './auth-state.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthFormService {
@@ -17,6 +17,7 @@ export class AuthFormService {
       component;
 
     if (form.invalid) return;
+
     loading.set(true);
     fieldErrors.set({});
     message.set(null);
@@ -25,22 +26,25 @@ export class AuthFormService {
 
     try {
       const dto = form.value;
-
       const res: any = await firstValueFrom(this.http.post(`${this.baseUrl}/${apiUrl}`, dto));
+      console.log(res);
 
       message.set(res?.message);
       userEmail.set(res?.userEmail);
       isSuccess.set(true);
       form.reset();
 
-      if (accessToken && res?.accessToken) {
-        accessToken.set(res.accessToken);
-        localStorage.setItem('access-token', res.accessToken);
+      const token = res?.access_token || res?.accessToken;
+      if (token) {
+        accessToken.set(token);
+        localStorage.setItem('access-token', token);
+
+        this.authState.setAccessToken(token);
+        this.authState.setLoggedIn(true);
       }
 
       if (res?.userEmail) {
         this.authState.setUserEmail(res.userEmail);
-        this.authState.setLoggedIn(true);
       }
     } catch (err: any) {
       const mapped = mapAuthError(err?.error);
@@ -52,9 +56,7 @@ export class AuthFormService {
     }
   }
 
-  /** --- Google OAuth --- */
   loginWithGoogle() {
-    // Redirect user to backend Google OAuth endpoint
     window.location.href = `${this.baseUrl}/google`;
   }
 
@@ -70,14 +72,17 @@ export class AuthFormService {
       userEmail.set(res?.userEmail);
       isSuccess.set(true);
 
-      if (accessToken && res?.accessToken) {
-        accessToken.set(res.accessToken);
-        localStorage.setItem('access-token', res.accessToken);
+      const token = res?.access_token || res?.accessToken;
+      if (token) {
+        accessToken.set(token);
+        localStorage.setItem('access-token', token);
+
+        this.authState.setAccessToken(token);
+        this.authState.setLoggedIn(true);
       }
 
       if (res?.userEmail) {
         this.authState.setUserEmail(res.userEmail);
-        this.authState.setLoggedIn(true);
       }
     } catch (err: any) {
       const mapped = mapAuthError(err?.error);

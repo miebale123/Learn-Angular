@@ -1,63 +1,157 @@
-// header.component.ts
-import { Component, signal, inject, HostListener } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  inject,
+  signal,
+} from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import {
   LucideAngularModule,
-  User as UserIcon,
+  Plus,
+  Shield,
+  House,
+  Bookmark,
   LogOut,
-  Settings,
-  LayoutDashboard,
 } from 'lucide-angular';
-import { AuthStateService } from '../../core/auth/auth-state.service';
+import { AuthStateService, UserRole } from '../../core/auth/auth-state.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule],
-  templateUrl: './header.component.html',
+  imports: [CommonModule, LucideAngularModule, RouterLink],
+  template: `
+    <header
+      class="fixed top-0 left-0 right-0 h-16 z-[9999]
+             flex items-center justify-between
+             bg-black text-white px-4 md:px-8 shadow-md"
+    >
+      <!-- Brand -->
+      <div class="flex items-center gap-2">
+        <div
+          class="w-8 h-8 bg-gradient-to-br from-gray-600 to-black
+                 flex items-center justify-center font-bold text-white rounded-full"
+        >
+          L
+        </div>
+        <span class="hidden md:inline text-lg font-bold">Lumiere</span>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="flex items-center gap-4 sm:gap-6 overflow-x-auto whitespace-nowrap">
+        <a routerLink="/get-articles" routerLinkActive="active-link" class="flex items-center gap-1">
+          <lucide-icon [name]="house" class="w-6 h-6"></lucide-icon>
+          <span class="hidden md:inline">Home</span>
+        </a>
+
+        <a routerLink="/bookmarks" routerLinkActive="active-link" class="flex items-center gap-1">
+          <lucide-icon [name]="bookmark" class="w-6 h-6"></lucide-icon>
+          <span class="hidden md:inline">Saved</span>
+        </a>
+
+        <button (click)="onNewPostClick()" class="flex items-center gap-1">
+          <lucide-icon [name]="plus" class="w-6 h-6"></lucide-icon>
+          <span class="hidden md:inline">Post</span>
+        </button>
+
+        @if (auth.isAdmin()) {
+          <a routerLink="/admin" class="flex items-center gap-1">
+            <lucide-icon [name]="shield" class="w-6 h-6"></lucide-icon>
+            <span class="hidden md:inline font-semibold">Admin</span>
+          </a>
+        }
+      </nav>
+
+      <!-- User Dropdown -->
+      <div class="relative">
+        <button
+          (click)="toggleDropdown()"
+          class="flex items-center gap-2 border-l border-gray-700 pl-3 focus:outline-none"
+        >
+          <div
+            class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center
+                   text-white font-bold uppercase"
+          >
+            {{ getInitial() }}
+          </div>
+          <p class="hidden md:block text-sm font-semibold truncate max-w-[120px]">
+            {{ auth.userEmail() }}
+          </p>
+        </button>
+
+        @if (dropdownOpen()) {
+          <div
+            class="absolute right-0 mt-2 w-40 bg-gray-800 rounded-lg shadow-lg
+                   border border-gray-700 flex flex-col text-sm py-2 z-[10000]"
+          >
+            <button
+              (click)="logout()"
+              class="flex items-center gap-2 px-4 py-2 text-red-500 hover:text-red-400 transition-all"
+            >
+              <lucide-icon [name]="logOut" class="w-5 h-5"></lucide-icon>
+              Log out
+            </button>
+          </div>
+        }
+      </div>
+
+      @if (warningMessage) {
+        <p
+          class="absolute top-16 right-4 bg-yellow-500 text-black px-4 py-1 rounded-md text-sm"
+        >
+          {{ warningMessage }}
+        </p>
+      }
+    </header>
+  `,
 })
 export class Header {
   private router = inject(Router);
+  private el = inject(ElementRef);
   auth = inject(AuthStateService);
 
-  UserIcon = UserIcon;
-  LogOut = LogOut;
-  Settings = Settings;
-  DashBoard = LayoutDashboard;
+  plus = Plus;
+  shield = Shield;
+  house = House;
+  bookmark = Bookmark;
+  logOut = LogOut;
 
   dropdownOpen = signal(false);
+  warningMessage = '';
 
   toggleDropdown() {
     this.dropdownOpen.update((v) => !v);
   }
 
-  closeDropdown() {
-    this.dropdownOpen.set(false);
+  // ✅ Close dropdown when clicking outside
+  @HostListener('document:click', ['$event'])
+  clickOutside(event: Event) {
+    if (!this.el.nativeElement.contains(event.target)) {
+      this.dropdownOpen.set(false);
+    }
   }
 
-  go(path: string) {
-    this.router.navigateByUrl(path);
-    this.closeDropdown();
+  onNewPostClick() {
+    const role = this.auth.userRole();
+    if (role === UserRole.Expert) {
+      this.warningMessage = '';
+      this.router.navigate(['/create-article']);
+    } else {
+      this.warningMessage = 'Only Experts can create new posts.';
+      setTimeout(() => (this.warningMessage = ''), 3000);
+    }
   }
 
   logout() {
-    localStorage.removeItem('access-token');
-    this.auth.setLoggedIn(false);
-    this.closeDropdown();
-    this.router.navigateByUrl('/auth/sign-in');
+    this.auth.logout();
+    this.dropdownOpen.set(false);
+    this.router.navigate(['/']);
   }
 
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-
-    // if clicked inside dropdown or on the  → do nothing
-    const insideDropdown = target.closest('.dropdown');
-    const inside = target.closest('.profile-btn');
-
-    if (!insideDropdown && !inside) {
-      this.dropdownOpen.set(false);
-    }
+  getInitial(): string {
+    const email = this.auth.userEmail();
+    if (!email) return '?';
+    return email.charAt(0).toUpperCase();
   }
 }

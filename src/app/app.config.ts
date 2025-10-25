@@ -8,8 +8,6 @@ import {
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { AuthInterceptor } from './core/auth/auth.interceptor';
-import { playerFactory } from './lottie-factory';
-import { provideLottieOptions } from 'ngx-lottie';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,6 +15,5 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideHttpClient(withFetch(), withInterceptors([AuthInterceptor])),
     provideRouter(routes),
-    provideLottieOptions({ player: playerFactory }),
   ],
 };

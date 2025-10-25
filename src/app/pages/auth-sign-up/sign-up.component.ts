@@ -2,8 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthFormService } from '../../core/auth/auth-form.service';
-import { SignupDto, SignupSchema, zodFieldValidator } from '../../core/auth/auth-credentials.dto';
 import { AuthStateService } from '../../core/auth/auth-state.service';
+import { SignupDto, SignupSchema, zodFieldValidator } from '../../core/auth/auth-credentials.dto';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 

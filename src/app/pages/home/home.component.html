@@ -1,0 +1,51 @@
+<div class="min-h-screen flex flex-col">
+  <header
+    class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-3 bg-gray-900 text-white"
+  >
+    <div class="flex items-center gap-4">
+      <button (click)="go('auth/sign-in')" class="text-sm hover:underline">Sign in</button>
+      <button
+        (click)="go('auth/sign-up')"
+        class="text-sm border! border-white! px-2 py-1 !hover:bg-black !hover:text-black"
+      >
+        Sign up
+      </button>
+    </div>
+  </header>
+
+  <main
+    class="flex-1 flex flex-col justify-start items-center text-center gap-6 px-4 pt-8 md:pt-20 lg:pt-40"
+  >
+    <span class="text-xl sm:text-2xl md:text-3xl text-gray-400">welcome to</span>
+
+    <div
+      class="flex items-baseline justify-center font-semibold tracking-wide leading-none gap-1.5"
+    >
+      <span class="text-[clamp(3rem,9vw,7rem)] select-none">Lum</span>
+      <app-candle></app-candle>
+      <span class="text-[clamp(3rem,9vw,7rem)] select-none">ere</span>
+    </div>
+
+    <p
+      class="text-lg sm:text-2xl md:text-3xl max-w-md sm:max-w-lg px-3 text-gray-200 leading-relaxed"
+    >
+      Expert research news.
+    </p>
+
+    <button
+      (click)="navigation.navigate('auth/sign-up')"
+      class="py-3 px-6 mt-6 bg-yellow-500 hover:bg-yellow-600 text-black rounded-md font-semibold transition-all duration-300 shadow-md hover:shadow-lg"
+    >
+      Register here &rarr;
+    </button>
+  </main>
+
+  <section
+    class="bg-linear-to-r from-[#a87b56] via-[#c6a97b] to-[#8c6b4f] text-gray-600 font-bold text-lg sm:text-xl md:text-2xl mt-12 w-full overflow-hidden"
+  >
+    <svg viewBox="0 0 1440 200" class="fill-black w-full">
+      <path d="M0,132C180,0,1360,160,1440,0L140,0L0,0Z"></path>
+    </svg>
+
+  </section>
+</div>

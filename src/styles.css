@@ -4,6 +4,7 @@
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/preflight.css' layer(base);
 @import 'tailwindcss/utilities.css' layer(utilities);
+@import 'quill/dist/quill.snow.css';
 
 body {
   background: black;
@@ -20,13 +21,16 @@ body {
   width: 100%;
 }
 
+lucide-icon:hover {
+  cursor: pointer;
+}
+
 .auth {
-  background: indigo;
+  background: black;
   font: bolder;
   display: flex;
   align-items: center;
   justify-content: center;
-
 }
 
 .auth button:hover {
@@ -38,18 +42,6 @@ body {
 button {
   border-radius: 5px;
   cursor: pointer;
-}
-/*
-span {
-  color: red;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-} */
-
-p {
-  text-align: center;
-  font-size: 0.875rem;
-  font-weight: 600;
 }
 
 label {
@@ -65,15 +57,6 @@ h2 {
   color: white;
 }
 
-a {
-  font-size: 0.875rem;
-  color: rgb(96, 165, 250);
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
 input {
   border-width: 1px;
   border-color: rgb(96, 165, 250);
@@ -85,3 +68,11 @@ input {
 }
 
 
+.ql-editor a {
+  color: #60a5fa;          /* text-blue-400 */
+  text-decoration: underline;
+}
+
+.ql-editor a:hover {
+  color: #93c5fd;          /* hover:text-blue-300 */
+}

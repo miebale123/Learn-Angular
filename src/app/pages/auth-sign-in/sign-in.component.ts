@@ -2,8 +2,8 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { AuthFormService } from '../../core/auth/auth-form.service';
-import { SigninDto, SigninSchema, zodFieldValidator } from '../../core/auth/auth-credentials.dto';
 import { AuthStateService } from '../../core/auth/auth-state.service';
+import { SigninDto, SigninSchema, zodFieldValidator } from '../../core/auth/auth-credentials.dto';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MatIconModule } from '@angular/material/icon';
@@ -64,7 +64,7 @@ export class Signin {
     if (this.isSuccess()) {
       localStorage.setItem('access-token', this.accessToken());
       this.authState.setLoggedIn(true);
-      this.router.navigateByUrl('/notes');
+      this.router.navigateByUrl('/upload');
     }
   }
 
@@ -88,7 +88,7 @@ export class Signin {
     if (this.isSuccess()) {
       localStorage.setItem('access-token', this.accessToken());
       this.authState.setLoggedIn(true);
-      this.router.navigateByUrl('/notes');
+      this.router.navigateByUrl('/get-articles');
     }
   }
 }

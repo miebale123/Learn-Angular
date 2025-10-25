@@ -8,7 +8,7 @@ export class AuthGuard implements CanActivate {
   canActivate(): boolean {
     const token = localStorage.getItem('access-token');
     if (!token) {
-      this.router.navigate(['auth/sign-in']);
+      this.router.navigateByUrl('auth/sign-in');
       return false;
     }
     return true;
