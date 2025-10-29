@@ -52,7 +52,7 @@ export const HousesStore = signalStore(
         const alreadyBookmarked = store.bookmarks().some((b) => b.id === id);
         if (!alreadyBookmarked) {
           const res: any = await firstValueFrom(
-            http.post(`${environment.apiBaseUrl}bookmarks/create-bookmark`, house)
+            http.post(`${environment.apiBaseUrl}/bookmarks/create-bookmark`, house)
           );
           patchState(store, { bookmarks: [...store.bookmarks(), res] });
         }
