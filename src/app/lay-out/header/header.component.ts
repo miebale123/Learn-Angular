@@ -3,6 +3,8 @@ import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Plus, Shield, House, Bookmark, LogOut } from 'lucide-angular';
 import { AuthStateService, UserRole } from '../../core/auth/auth-state.service';
+import { firstValueFrom } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-header',
@@ -31,6 +33,8 @@ import { AuthStateService, UserRole } from '../../core/auth/auth-state.service';
           <lucide-icon [name]="house" class="w-5 h-5"></lucide-icon>
           <span class="hidden md:inline">Home</span>
         </a>
+
+        <button (click)="goToRender()">goToFind</button>
 
         <a routerLink="/bookmarks" routerLinkActive="active-link" class="flex items-center gap-1">
           <lucide-icon [name]="bookmark" class="w-5 h-5"></lucide-icon>
@@ -93,6 +97,7 @@ import { AuthStateService, UserRole } from '../../core/auth/auth-state.service';
 })
 export class Header {
   private router = inject(Router);
+  private http = inject(HttpClient);
   private el = inject(ElementRef);
   auth = inject(AuthStateService);
 
@@ -137,5 +142,10 @@ export class Header {
     const email = this.auth.userEmail();
     if (!email) return '?';
     return email.charAt(0).toUpperCase();
+  }
+
+  async goToRender() {
+    const res: any = await firstValueFrom(this.http.get(`https://learn-nest-kwvq.onrender.com/`));
+    console.log(res.message);
   }
 }
