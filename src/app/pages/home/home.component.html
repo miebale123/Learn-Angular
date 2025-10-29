@@ -1,12 +1,12 @@
 <div class="min-h-screen flex flex-col">
   <header class="flex justify-between items-center px-6 py-3">
-    <div class="flex gap-2">
+    <div class="flex gap-2 items-center justify-center">
       <div
-        class="w-8 h-8 bg-linear-to-br from-black via-gray-400 to-black flex items-center justify-center font-bold text-white rounded-full"
+        class="w-6 h-6 bg-linear-to-br from-black via-red-400 to-black flex items-center justify-center font-bold text-white rounded-full"
       >
         L
       </div>
-      <span class="hidden md:inline text-lg font-bold">Lumiere</span>
+      <span class="hidden md:inline text-lg font-bold">Light</span>
     </div>
     <div class="flex items-center gap-4">
       <button (click)="go('auth/sign-in')" class="text-sm hover:underline">Sign in</button>
@@ -22,21 +22,23 @@
   <main
     class="flex-1 flex flex-col justify-start items-center text-center gap-6 px-4 pt-8 md:pt-20 lg:pt-40"
   >
-    <span class="text-xl sm:text-2xl md:text-3xl text-gray-400">welcome to</span>
+    <span class="text-xl sm:text-2xl md:text-3xl text-gray-400">welcome to your</span>
 
     <div
       class="flex items-baseline justify-center font-semibold tracking-wide leading-none gap-1.5"
     >
-      <span class="text-[clamp(3rem,9vw,7rem)] select-none">Lum</span>
+      <span class="text-[clamp(3rem,9vw,7rem)] select-none">L</span>
       <app-candle></app-candle>
-      <span class="text-[clamp(3rem,9vw,7rem)] select-none">ere</span>
+      <span class="text-[clamp(3rem,9vw,7rem)] select-none">ght</span>
     </div>
 
     <p
       class="text-lg sm:text-2xl md:text-3xl max-w-md sm:max-w-lg px-3 text-gray-200 leading-relaxed"
     >
-      Expert research news.
+      House
     </p>
+
+    <p>where you enlighten yourself!</p>
 
     <button
       (click)="navigation.navigate('auth/sign-up')"
@@ -45,10 +47,10 @@
       Register here &rarr;
     </button>
   </main>
+  <section class="bg-linear-to-r from-[#a87b56] via-[#c6a97b] to-[#8c6b4f] w-full overflow-hidden">
+    <svg viewBox="0 0 1440 200" class="fill-black w-full">
+      <path d="M0,132C180,0,1360,160,1440,0L140,0L0,0Z"></path>
+    </svg>
+  </section>
 </div>
 
-<section class="bg-linear-to-r from-[#a87b56] via-[#c6a97b] to-[#8c6b4f] w-full overflow-hidden">
-  <svg viewBox="0 0 1440 200" class="fill-black w-full">
-    <path d="M0,132C180,0,1360,160,1440,0L140,0L0,0Z"></path>
-  </svg>
-</section>

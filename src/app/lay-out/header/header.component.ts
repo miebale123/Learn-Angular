@@ -16,15 +16,14 @@ import { HttpClient } from '@angular/common/http';
              flex items-center justify-between
              bg-black text-white px-4 md:px-8 shadow-md"
     >
-      <!-- Brand -->
       <div class="flex items-center gap-2">
         <div
-          class="w-8 h-8 bg-linear-to-br from-gray-600 to-black
+          class="w-6 h-6 bg-linear-to-br from-black via-red-400 to-black
                  flex items-center justify-center font-bold text-white rounded-full"
         >
-          B
+          L
         </div>
-        <span class="hidden md:inline text-lg font-bold ">Birhan</span>
+        <span class="hidden md:inline text-lg font-bold ">Light</span>
       </div>
 
       <!-- Navigation -->

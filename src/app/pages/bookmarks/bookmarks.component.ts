@@ -9,10 +9,10 @@ import { HousesStore } from '../../house/house.store';
   imports: [CommonModule, LucideAngularModule],
   template: `
     <div class="p-6 max-w-3xl mx-auto mt-24">
-      <h2 class="text-xl font-bold mb-4 text-white">Your Bookmarks</h2>
+      <h2 class="text-xl font-bold mb-4 text-white">Saved</h2>
 
       @if (bookmarks().length === 0) {
-      <p class="text-gray-400">You don’t have any bookmarks yet.</p>
+      <p class="text-gray-400">You don’t have any saved yet.</p>
       } @else {
       <ul class="flex flex-wrap gap-6">
         @for (item of bookmarks(); track $index) {
