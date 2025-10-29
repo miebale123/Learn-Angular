@@ -8,8 +8,9 @@ import { ResetPassword } from './pages/auth-password-reset/reset-password.compon
 import { UpdatePassword } from './pages/auth-password-update/update-password.component';
 import { AppLayout } from './lay-out/app-layout.component';
 import { Admin } from './admin/admin.component';
-import { Upload } from './pages/upload/upload.component';
-// import { Bookmarks } from './pages/bookmarks/bookmarks.component';
+import { Upload } from './house/create-house.component';
+import { GetHouses } from './house/get-houses.component';
+import { Bookmarks } from './pages/bookmarks/bookmarks.component';
 
 export const routes: Routes = [
   { path: '', component: Home, pathMatch: 'full' },
@@ -31,8 +32,10 @@ export const routes: Routes = [
     component: AppLayout,
     children: [
       { path: 'admin', component: Admin },
-      { path: 'upload', component: Upload },
-      // { path: 'bookmarks', component: Bookmarks },
+
+      { path: 'upload-house', component: Upload },
+      { path: 'get-houses', component: GetHouses },
+      { path: 'bookmarks', component: Bookmarks },
       { path: 'update-password', component: UpdatePassword },
     ],
   },

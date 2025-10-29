@@ -15,7 +15,7 @@
         <label>Email</label>
         <input type="email" formControlName="email" />
         @if (form.get('email')?.value && form.get('email')?.invalid) {
-        <span>
+        <span >
           {{ form.get('email')?.errors?.['zodError'] }}
         </span>
         } @if (fieldErrors()['email']) {

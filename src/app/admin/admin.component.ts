@@ -16,7 +16,6 @@ export class AdminService {
 
   constructor(private readonly http: HttpClient) {}
 
-  // Fetch all users from backend
   getAllUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl);
   }
@@ -52,7 +51,7 @@ import { FormsModule } from '@angular/forms';
             <thead class="bg-gray-800/60">
               <tr>
                 <th class="p-4 text-left font-semibold text-gray-300">Email</th>
-                <th class="p-4 text-center font-semibold text-gray-300">Expert</th>
+                <th class="p-4 text-center font-semibold text-gray-300">can post?</th>
                 <th class="p-4 text-center font-semibold text-gray-300">Actions</th>
               </tr>
             </thead>

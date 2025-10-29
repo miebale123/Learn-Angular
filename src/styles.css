@@ -76,3 +76,8 @@ input {
 .ql-editor a:hover {
   color: #93c5fd;          /* hover:text-blue-300 */
 }
+
+
+.auth span{
+  color: red;
+}

@@ -30,17 +30,14 @@ const PasswordSchema = z
 
 export const SignupSchema = z
   .object({
-    // email: z.string().trim().toLowerCase().email('Enter a valid email'),
-    email: z.string(),
-    password: z.string(),
+    email: z.string().trim().toLowerCase().email('Enter a valid email'),
+    password: PasswordSchema,
   })
   .strict();
 
 export const SigninSchema = z
   .object({
-    // email: z.string().trim().toLowerCase().email('Enter a valid email'),
-    // password: z.string(),
-    email: z.string(),
+    email: z.string().trim().toLowerCase().email('Enter a valid email'),
     password: z.string(),
   })
   .strict();

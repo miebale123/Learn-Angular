@@ -1,7 +1,13 @@
 <div class="min-h-screen flex flex-col">
-  <header
-    class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-3 bg-gray-900 text-white"
-  >
+  <header class="flex justify-between items-center px-6 py-3">
+    <div class="flex gap-2">
+      <div
+        class="w-8 h-8 bg-linear-to-br from-black via-gray-400 to-black flex items-center justify-center font-bold text-white rounded-full"
+      >
+        L
+      </div>
+      <span class="hidden md:inline text-lg font-bold">Lumiere</span>
+    </div>
     <div class="flex items-center gap-4">
       <button (click)="go('auth/sign-in')" class="text-sm hover:underline">Sign in</button>
       <button
@@ -39,13 +45,10 @@
       Register here &rarr;
     </button>
   </main>
-
-  <section
-    class="bg-linear-to-r from-[#a87b56] via-[#c6a97b] to-[#8c6b4f] text-gray-600 font-bold text-lg sm:text-xl md:text-2xl mt-12 w-full overflow-hidden"
-  >
-    <svg viewBox="0 0 1440 200" class="fill-black w-full">
-      <path d="M0,132C180,0,1360,160,1440,0L140,0L0,0Z"></path>
-    </svg>
-
-  </section>
 </div>
+
+<section class="bg-linear-to-r from-[#a87b56] via-[#c6a97b] to-[#8c6b4f] w-full overflow-hidden">
+  <svg viewBox="0 0 1440 200" class="fill-black w-full">
+    <path d="M0,132C180,0,1360,160,1440,0L140,0L0,0Z"></path>
+  </svg>
+</section>
