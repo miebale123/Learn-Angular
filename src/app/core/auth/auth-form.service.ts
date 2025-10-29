@@ -2,7 +2,7 @@ import { firstValueFrom } from 'rxjs';
 import { AuthFormState } from './auth-form.state';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environments.dev';
+import { environment } from '../../../environments/environments';
 import { mapAuthError } from './auth-err.util';
 import { AuthStateService } from './auth-state.service';
 

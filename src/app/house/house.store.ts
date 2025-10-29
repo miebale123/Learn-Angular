@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { AuthStateService } from '../core/auth/auth-state.service';
+import { environment } from '../../environments/environments';
 
 export interface HouseDto {
   id: number;
@@ -25,13 +26,13 @@ export const HousesStore = signalStore(
 
     return {
       async loadAll() {
-        const res: any = await firstValueFrom(http.get('http://localhost:4442/houses'));
+        const res: any = await firstValueFrom(http.get(`${environment.apiBaseUrl}/houses`));
         console.log('houses are: ', res);
         patchState(store, { houses: res });
       },
 
       async loadBookmarks() {
-        const res: any = await firstValueFrom(http.get('http://localhost:4442/bookmarks'));
+        const res: any = await firstValueFrom(http.get(`${environment.apiBaseUrl}/bookmarks `));
         console.log(res);
         patchState(store, { bookmarks: res });
       },
@@ -51,7 +52,7 @@ export const HousesStore = signalStore(
         const alreadyBookmarked = store.bookmarks().some((b) => b.id === id);
         if (!alreadyBookmarked) {
           const res: any = await firstValueFrom(
-            http.post('http://localhost:4442/bookmarks/create-bookmark', house)
+            http.post(`${environment.apiBaseUrl}bookmarks/create-bookmark`, house)
           );
           patchState(store, { bookmarks: [...store.bookmarks(), res] });
         }

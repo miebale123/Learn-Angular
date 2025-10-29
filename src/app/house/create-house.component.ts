@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../environments/environments';
 
 @Component({
   selector: 'upload-house',
@@ -48,7 +49,7 @@ export class Upload {
 
     try {
       const res: any = await firstValueFrom(
-        this.http.post('http://localhost:4442/houses/create-house', formData)
+        this.http.post(`${environment.apiBaseUrl}/houses/create-house`, formData)
       );
       console.log('Uploaded:', res);
     } catch (err) {

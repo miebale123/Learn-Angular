@@ -12,7 +12,7 @@ export interface User {
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
-  private apiUrl = 'http://localhost:4442/admin-page';
+  private apiUrl = `${environment.apiBaseUrl}/admin-page`;
 
   constructor(private readonly http: HttpClient) {}
 
@@ -29,6 +29,7 @@ export class AdminService {
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../environments/environments';
 
 @Component({
   selector: 'admin',

@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { AuthStateService } from './auth-state.service';
 import { HttpClient } from '@angular/common/http';
 import { catchError, switchMap, throwError } from 'rxjs';
+import { environment } from '../../../environments/environments';
 
 export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthStateService);
@@ -21,7 +22,7 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
       if (error.status === 401) {
         return http
           .post<{ accessToken: string }>(
-            'http://localhost:4442/auth/refresh',
+            `${environment.apiBaseUrl}/auth/refresh`,
             {},
             { withCredentials: true }
           )

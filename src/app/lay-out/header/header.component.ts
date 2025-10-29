@@ -22,9 +22,9 @@ import { HttpClient } from '@angular/common/http';
           class="w-8 h-8 bg-linear-to-br from-gray-600 to-black
                  flex items-center justify-center font-bold text-white rounded-full"
         >
-          L
+          B
         </div>
-        <span class="hidden md:inline text-lg font-bold ">Lumiere</span>
+        <span class="hidden md:inline text-lg font-bold ">Birhan</span>
       </div>
 
       <!-- Navigation -->
@@ -33,8 +33,6 @@ import { HttpClient } from '@angular/common/http';
           <lucide-icon [name]="house" class="w-5 h-5"></lucide-icon>
           <span class="hidden md:inline">Home</span>
         </a>
-
-        <button (click)="goToRender()">goToFind</button>
 
         <a routerLink="/bookmarks" routerLinkActive="active-link" class="flex items-center gap-1">
           <lucide-icon [name]="bookmark" class="w-5 h-5"></lucide-icon>
