@@ -37,7 +37,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'houses',
-        loadChildren: () => import('./house/houses.route').then((m) => m.HOUSES_ROUTES),
+        loadChildren: () => import('./houses/houses.route').then((m) => m.HOUSES_ROUTES),
         canActivate: [AuthGuard],
       },
       { path: 'admin', component: Admin },

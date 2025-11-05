@@ -12,7 +12,7 @@ export interface User {
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
-  private apiUrl = `${environment.apiBaseUrl}/admin-page`;
+  private apiUrl = `${environment.apiBaseUrl}/admin-page/users`;
 
   constructor(private readonly http: HttpClient) {}
 
@@ -21,7 +21,7 @@ export class AdminService {
   }
 
   updateUserRole(user: User): Observable<User> {
-    return this.http.patch<User>(`${this.apiUrl}/users/${user.id}/role`, {
+    return this.http.patch<User>(`${this.apiUrl}/${user.id}/role`, {
       role: user.role,
     });
   }

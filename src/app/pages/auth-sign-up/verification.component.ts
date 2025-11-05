@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ViewChildren, QueryList, ElementRef, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { AuthStateService } from '../../core/auth/auth-state.service';
 
 @Component({
   selector: 'app-verification',
@@ -45,6 +47,8 @@ import { firstValueFrom } from 'rxjs';
 })
 export class VerificationComponent {
   http = inject(HttpClient);
+  private router = inject(Router);
+  authState = inject(AuthStateService);
 
   @ViewChildren('otpInput') otpInputs!: QueryList<ElementRef<HTMLInputElement>>;
 
@@ -92,8 +96,14 @@ export class VerificationComponent {
 
       console.log('Verification response:', res);
 
-      
-      // 👉 here you can call your API: authService.verifyOtp(this.otp)
+      localStorage.setItem('access-token', res.accessToken);
+      this.authState.setLoggedIn(true);
+      this.authState.setAccessToken(res.accessToken)
+      this.authState.setLoggedIn(true);
+      this.router.navigateByUrl('/houses');
+      // You might want to redirect the user or update the UI here
+
+      // here you can call your API: authService.verifyOtp(this.otp)
     } else {
       console.warn('Please enter all 6 digits');
     }

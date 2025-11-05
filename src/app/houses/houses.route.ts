@@ -4,7 +4,7 @@ import { UploadHouse } from './components/upload-house.component';
 
 export const HOUSES_ROUTES: Routes = [
   { path: '', component: Houses },
-  { path: 'upload', component: UploadHouse },
+  { path: 'upload-house', component: UploadHouse },
   // { path: 'update/:id', component: UpdateHouseComponent },
   // { path: ':id', component: HouseDetailsComponent },
 ];

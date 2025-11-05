@@ -119,10 +119,16 @@ export class Header {
   }
 
   onNewPostClick() {
-    const role = this.auth.userRole();
+    const role = this.auth
+      .userRoles()
+      .map((r) => r)
+      .includes(UserRole.Expert)
+      ? UserRole.Expert
+      : null;
+
     if (role === UserRole.Expert) {
       this.warningMessage = '';
-      this.router.navigate(['/upload-house']);
+      this.router.navigate(['/houses/upload-house']);
     } else {
       this.warningMessage = 'Only Experts can create new posts.';
       setTimeout(() => (this.warningMessage = ''), 3000);

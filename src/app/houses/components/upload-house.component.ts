@@ -49,7 +49,7 @@ export class UploadHouse {
 
     try {
       const res: any = await firstValueFrom(
-        this.http.post(`${environment.apiBaseUrl}/houses/create-house`, formData)
+        this.http.post(`${environment.apiBaseUrl}/houses/upload-house`, formData)
       );
       console.log('Uploaded:', res);
     } catch (err) {

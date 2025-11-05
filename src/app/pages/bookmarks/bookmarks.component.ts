@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LucideAngularModule, MapPin } from 'lucide-angular';
-import { HousesStore } from '../../house/house.store';
+import { HousesStore } from '../../houses/house.store';
 
 @Component({
   selector: 'bookmarks',

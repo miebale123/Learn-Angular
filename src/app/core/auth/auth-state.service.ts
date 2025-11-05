@@ -4,8 +4,9 @@ import { jwtDecode } from 'jwt-decode';
 export interface JwtPayload {
   sub: number; // user ID
   email: string;
-  role: UserRole; // 👈 custom field
+  roles: UserRole[]; // now an array
 }
+
 export enum UserRole {
   User = 'user',
   Admin = 'admin',
@@ -18,11 +19,11 @@ export class AuthStateService {
 
   private _userEmail = signal<string | null>(null);
   private _accessToken = signal<string | null>(null);
-  private _userRole = signal<UserRole | null>(null);
+  private _userRoles = signal<UserRole[]>([]); // multiple roles
 
   userEmail = this._userEmail.asReadonly();
   accessToken = this._accessToken.asReadonly();
-  userRole = this._userRole.asReadonly();
+  userRoles = this._userRoles.asReadonly();
 
   constructor() {
     const token = localStorage.getItem('access-token');
@@ -39,29 +40,37 @@ export class AuthStateService {
 
   setAccessToken(token: string | null) {
     this._accessToken.set(token);
+    console.log('Setting access token:', token);
+
     if (token) {
       const decoded = jwtDecode<JwtPayload>(token);
-      this._userRole.set(decoded.role);
+      console.log('Decoded JWT:', decoded);
+      this._userRoles.set(decoded.roles ?? []);
       this._userEmail.set(decoded.email);
+      console.log('User roles set to:', decoded.roles);
+      console.log('User email set to:', decoded.email);
     } else {
-      this._userRole.set(null);
+      this._userRoles.set([]);
       this._userEmail.set(null);
     }
   }
-
   logout() {
     this.isLoggedIn.set(false);
     this._userEmail.set(null);
     this._accessToken.set(null);
-    this._userRole.set(null);
+    this._userRoles.set([]);
     localStorage.removeItem('access-token');
   }
 
   isAdmin(): boolean {
-    return this._userRole() === UserRole.Admin;
+    return this._userRoles().includes(UserRole.Admin);
   }
 
   isExpert(): boolean {
-    return this._userRole() === UserRole.Expert;
+    return this._userRoles().includes(UserRole.Expert);
+  }
+
+  hasRole(role: UserRole): boolean {
+    return this._userRoles().includes(role);
   }
 }

@@ -46,24 +46,29 @@ export const HousesStore = signalStore(
         }
 
         const house = houses.find((h) => h.id === id);
-        console.log(house);
+
+        console.log('the house to be bookmarked is: ', house);
         if (!house) return;
 
         const alreadyBookmarked = store.bookmarks().some((b) => b.id === id);
-        if (!alreadyBookmarked) {
-          const res: any = await firstValueFrom(
-            http.post(`${environment.apiBaseUrl}/bookmarks/create-bookmark`, house)
-          );
-          patchState(store, { bookmarks: [...store.bookmarks(), res] });
-        }
+        if (alreadyBookmarked) return;
+
+        const res: any = await firstValueFrom(
+          http.post(`${environment.apiBaseUrl}/bookmarks/create-bookmark`, house)
+        );
+
+        console.log('Adds to bookmarks:', res);
+        patchState(store, { bookmarks: [...store.bookmarks(), res] });
+
+        console.log('Current bookmarks:', store.bookmarks());
       },
     };
   })
 );
 
-export const TestStore = signalStore(
-  withState({}),
-  withMethods(() => {
-    return {};
-  })
-);
+// export const TestStore = signalStore(
+//   withState({}),
+//   withMethods(() => {
+//     return {};
+//   })
+// );
