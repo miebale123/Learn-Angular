@@ -64,7 +64,7 @@ export class Signin {
     if (this.isSuccess()) {
       localStorage.setItem('access-token', this.accessToken());
       this.authState.setLoggedIn(true);
-      this.router.navigateByUrl('/get-houses');
+      this.router.navigateByUrl('/houses');
     }
   }
 
@@ -88,7 +88,7 @@ export class Signin {
     if (this.isSuccess()) {
       localStorage.setItem('access-token', this.accessToken());
       this.authState.setLoggedIn(true);
-      this.router.navigateByUrl('/get-houses');
+      this.router.navigateByUrl('/houses');
     }
   }
 }

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { firstValueFrom } from 'rxjs';
-import { environment } from '../../environments/environments';
+import { environment } from '../../../environments/environments';
 
 @Component({
   selector: 'upload-house',
@@ -26,7 +26,7 @@ import { environment } from '../../environments/environments';
     </div>
   `,
 })
-export class Upload {
+export class UploadHouse {
   private http = inject(HttpClient);
 
   file: File | null = null;

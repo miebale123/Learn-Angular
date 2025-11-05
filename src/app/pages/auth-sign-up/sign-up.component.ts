@@ -48,13 +48,10 @@ export class Signup {
       fieldErrors: this.fieldErrors,
       userEmail: this.userEmail,
       loading: this.loading,
-      accessToken: this.accessToken,
     });
 
     if (this.isSuccess()) {
-      localStorage.setItem('access-token', this.accessToken());
-      this.authState.setLoggedIn(true);
-      this.router.navigateByUrl('/get-houses');
+      this.router.navigateByUrl('/auth/app-verification');
     }
   }
 
@@ -78,7 +75,7 @@ export class Signup {
     if (this.isSuccess()) {
       localStorage.setItem('access-token', this.accessToken());
       this.authState.setLoggedIn(true);
-      this.router.navigateByUrl('/get-houses');
+      this.router.navigateByUrl('/houses');
     }
   }
 }

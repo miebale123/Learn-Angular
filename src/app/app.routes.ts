@@ -8,9 +8,9 @@ import { ResetPassword } from './pages/auth-password-reset/reset-password.compon
 import { UpdatePassword } from './pages/auth-password-update/update-password.component';
 import { AppLayout } from './lay-out/app-layout.component';
 import { Admin } from './admin/admin.component';
-import { Upload } from './house/create-house.component';
-import { GetHouses } from './house/get-houses.component';
 import { Bookmarks } from './pages/bookmarks/bookmarks.component';
+import { Settings } from './settings/settings.component';
+import { VerificationComponent } from './pages/auth-sign-up/verification.component';
 
 export const routes: Routes = [
   { path: '', component: Home, pathMatch: 'full' },
@@ -20,6 +20,10 @@ export const routes: Routes = [
       { path: '', redirectTo: 'sign-in', pathMatch: 'full' },
       { path: 'sign-in', component: Signin },
       { path: 'sign-up', component: Signup },
+      {
+        path: 'app-verification',
+        component: VerificationComponent,
+      },
       { path: 'google', redirectTo: 'google/callback' },
       { path: 'forgot-password', component: ForgotPassword },
       { path: 'reset-password/:resetToken', component: ResetPassword },
@@ -31,12 +35,18 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     component: AppLayout,
     children: [
+      {
+        path: 'houses',
+        loadChildren: () => import('./house/houses.route').then((m) => m.HOUSES_ROUTES),
+        canActivate: [AuthGuard],
+      },
       { path: 'admin', component: Admin },
-
-      { path: 'upload-house', component: Upload },
-      { path: 'get-houses', component: GetHouses },
       { path: 'bookmarks', component: Bookmarks },
-      { path: 'update-password', component: UpdatePassword },
+      {
+        path: 'settings',
+        component: Settings,
+        children: [{ path: 'update-password', component: UpdatePassword }],
+      },
     ],
   },
 ];

@@ -28,7 +28,7 @@ import { HttpClient } from '@angular/common/http';
 
       <!-- Navigation -->
       <nav class="flex items-center gap-4 sm:gap-6 overflow-x-auto whitespace-nowrap">
-        <a routerLink="/get-houses" routerLinkActive="active-link" class="flex items-center gap-1">
+        <a routerLink="/houses" routerLinkActive="active-link" class="flex items-center gap-1">
           <lucide-icon [name]="house" class="w-5 h-5"></lucide-icon>
           <span class="hidden md:inline">Home</span>
         </a>
@@ -71,7 +71,7 @@ import { HttpClient } from '@angular/common/http';
         @if (dropdownOpen()) {
         <div
           class="absolute right-0 mt-2 w-40 bg-gray-800 rounded-lg shadow-lg
-                   border border-gray-700 flex flex-col text-sm py-2 z-[10000]"
+                   border border-gray-700 flex flex-col text-sm py-2 z-10000"
         >
           <button
             (click)="logout()"
@@ -139,10 +139,5 @@ export class Header {
     const email = this.auth.userEmail();
     if (!email) return '?';
     return email.charAt(0).toUpperCase();
-  }
-
-  async goToRender() {
-    const res: any = await firstValueFrom(this.http.get(`https://learn-nest-kwvq.onrender.com/`));
-    console.log(res.message);
   }
 }

@@ -1,10 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { HousesStore } from './house.store';
+import { HousesStore } from '../house.store';
 import { LucideAngularModule, Bookmark, MapPin, Phone } from 'lucide-angular';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'get-houses',
+  selector: 'houses',
   standalone: true,
   imports: [CommonModule, LucideAngularModule],
   template: `
@@ -18,7 +18,6 @@ import { CommonModule } from '@angular/common';
         <div
           class="text-gray-200 text-sm flex flex-col md:flex-row md:items-center md:justify-between gap-2"
         >
-          <!-- location -->
           <div class="flex items-center gap-1">
             <lucide-icon [name]="locate" class="w-4 h-4 text-orange-400"></lucide-icon>
             <p>{{ house.location || 'Unknown' }}</p>
@@ -31,23 +30,20 @@ import { CommonModule } from '@angular/common';
           <lucide-icon
             [name]="bookmark"
             class="w-5 h-5 text-blue-400 hover:text-blue-600 cursor-pointer"
-            (click)="addBookmark(house.id)"
+            (click)="addToBookmark(house.id)"
           ></lucide-icon>
 
           <lucide-icon
             [name]="phone"
             class="w-5 h-5 text-blue-400 hover:text-blue-600 cursor-pointer"
-            (click)="addBookmark(house.id)"
           ></lucide-icon>
         </div>
-
-        <!-- bookmark icon -->
       </li>
       }
     </ul>
   `,
 })
-export class GetHouses implements OnInit {
+export class Houses implements OnInit {
   housesStore = inject(HousesStore);
   bookmark = Bookmark;
   locate = MapPin;
@@ -57,7 +53,7 @@ export class GetHouses implements OnInit {
     this.housesStore.loadAll();
   }
 
-  addBookmark(id: number) {
+  addToBookmark(id: number) {
     this.housesStore.findHouse(id);
   }
 }
