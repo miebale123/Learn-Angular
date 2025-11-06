@@ -98,14 +98,11 @@ export class VerificationComponent {
 
       localStorage.setItem('access-token', res.accessToken);
       this.authState.setLoggedIn(true);
-      this.authState.setAccessToken(res.accessToken)
+      this.authState.setAccessToken(res.accessToken);
       this.authState.setLoggedIn(true);
       this.router.navigateByUrl('/houses');
-      // You might want to redirect the user or update the UI here
-
-      // here you can call your API: authService.verifyOtp(this.otp)
     } else {
-      console.warn('Please enter all 6 digits');
+      console.warn('Please enter valid 6-digit OTP code.');
     }
   }
 }

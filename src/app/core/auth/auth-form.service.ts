@@ -68,11 +68,14 @@ export class AuthFormService {
         this.http.get(`${this.baseUrl}/google/callback?code=${code}`)
       );
 
+
+      console.log('Google callback response:', res);
       message.set(res?.message);
       userEmail.set(res?.userEmail);
       isSuccess.set(true);
 
       const token = res?.access_token || res?.accessToken;
+      console.log('Google callback token:', token);
       if (token) {
         accessToken.set(token);
         localStorage.setItem('access-token', token);

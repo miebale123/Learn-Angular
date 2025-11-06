@@ -8,35 +8,38 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, LucideAngularModule],
   template: `
-    <ul class="flex flex-wrap gap-6 mt-8 justify-center">
+    <ul
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-8 justify-items-center bg-amber-600"
+    >
       @for (house of housesStore.houses(); track house.id) {
       <li
-        class="relative bg-[#1a1a1a] rounded-2xl overflow-hidden shadow-lg border border-gray-700 p-4 w-64 hover:scale-[1.02] transition-transform"
+        class="relative bg-[#17173a] overflow-hidden   w-full max-w-28rem hover:scale-[1.02] transition-transform"
       >
-        <img [src]="house.secure_url" class="w-full h-48 object-cover rounded-lg mb-3" />
+        <img [src]="house.secure_url" class="w-full h-52 sm:h-56 md:h-60 object-cover mb-4" />
 
-        <div
-          class="text-gray-200 text-sm flex flex-col md:flex-row md:items-center md:justify-between gap-2"
-        >
-          <div class="flex items-center gap-1">
-            <lucide-icon [name]="locate" class="w-4 h-4 text-orange-400"></lucide-icon>
-            <p>{{ house.location || 'Unknown' }}</p>
+        <div class="text-gray-200 text-sm flex flex-col gap-4">
+          <!-- location -->
+          <div class="flex items-center gap-2 text-gray-300">
+            <lucide-icon [name]="locate" class="w-4 h-4 "></lucide-icon>
+            <p class="truncate">{{ house.location || 'Unknown' }}</p>
           </div>
 
-          <!-- price -->
-          <p class="text-gray-300 font-semibold">
-            {{ house.price ? '$' + house.price : 'N/A' }}
-          </p>
-          <lucide-icon
-            [name]="bookmark"
-            class="w-5 h-5 text-blue-400 hover:text-blue-600 cursor-pointer"
-            (click)="addToBookmark(house.id)"
-          ></lucide-icon>
+          <!-- price & icons -->
+          <div class="flex items-center justify-between flex-wrap gap-4 text-gray-300 font-medium">
+            <p class="text-base md:text-lg">{{ house.price ? '$' + house.price : 'N/A' }}</p>
+            <div class="flex items-center gap-4">
+              <lucide-icon
+                [name]="bookmark"
+                class="w-5 h-5 text-blue-400 hover:text-blue-600 cursor-pointer"
+                (click)="addToBookmark(house.id)"
+              ></lucide-icon>
 
-          <lucide-icon
-            [name]="phone"
-            class="w-5 h-5 text-blue-400 hover:text-blue-600 cursor-pointer"
-          ></lucide-icon>
+              <lucide-icon
+                [name]="phone"
+                class="w-5 h-5 text-blue-400 hover:text-blue-600 cursor-pointer"
+              ></lucide-icon>
+            </div>
+          </div>
         </div>
       </li>
       }

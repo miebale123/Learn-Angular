@@ -1,9 +1,8 @@
 import { Component, ElementRef, HostListener, inject, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, Plus, Shield, House, Bookmark, LogOut } from 'lucide-angular';
+import { LucideAngularModule, Plus, Shield, House, Bookmark, LogOut, Bell } from 'lucide-angular';
 import { AuthStateService, UserRole } from '../../core/auth/auth-state.service';
-import { firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -14,7 +13,7 @@ import { HttpClient } from '@angular/common/http';
     <header
       class="fixed top-0 left-0 right-0 h-16 z-9999
              flex items-center justify-between
-             bg-black text-white px-4 md:px-8 shadow-md"
+             bg-amber-600 text-white px-4 md:px-8 shadow-md"
     >
       <div class="flex items-center gap-2">
         <div
@@ -23,7 +22,7 @@ import { HttpClient } from '@angular/common/http';
         >
           L
         </div>
-        <span class="hidden md:inline text-lg font-bold ">Light</span>
+        <span class="hidden md:inline text-lg font-bold ">Lumina</span>
       </div>
 
       <!-- Navigation -->
@@ -49,6 +48,10 @@ import { HttpClient } from '@angular/common/http';
           <span class="hidden md:inline font-semibold">Admin</span>
         </a>
         }
+
+        <a routerLink="/app-notifications">
+          <lucide-icon [name]="bell" class="w-5 h-5"></lucide-icon>
+        </a>
       </nav>
 
       <!-- User Dropdown -->
@@ -103,6 +106,7 @@ export class Header {
   house = House;
   bookmark = Bookmark;
   logOut = LogOut;
+  bell = Bell;
 
   dropdownOpen = signal(false);
   warningMessage = '';
@@ -130,7 +134,7 @@ export class Header {
       this.warningMessage = '';
       this.router.navigate(['/houses/upload-house']);
     } else {
-      this.warningMessage = 'Only Experts can create new posts.';
+      this.warningMessage = 'Only Brokers can create new posts.';
       setTimeout(() => (this.warningMessage = ''), 3000);
     }
   }
