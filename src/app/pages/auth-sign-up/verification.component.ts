@@ -3,6 +3,7 @@ import { Component, ViewChildren, QueryList, ElementRef, inject } from '@angular
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { AuthStateService } from '../../core/auth/auth-state.service';
+import { environment } from '../../../environments/environments';
 
 @Component({
   selector: 'app-verification',
@@ -91,7 +92,7 @@ export class VerificationComponent {
       console.log('type of otp:', typeof this.otp);
 
       const res: any = await firstValueFrom(
-        this.http.post(`http://localhost:4442/auth/verify`, { otp: this.otp })
+        this.http.post(`${environment.apiBaseUrl}/auth/verify`, { otp: this.otp })
       );
 
       console.log('Verification response:', res);

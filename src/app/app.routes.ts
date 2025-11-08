@@ -11,11 +11,11 @@ import { Admin } from './admin/admin.component';
 import { Bookmarks } from './pages/bookmarks/bookmarks.component';
 import { Settings } from './settings/settings.component';
 import { VerificationComponent } from './pages/auth-sign-up/verification.component';
-import { LoginSuccessComponent } from './pages/log-in.component';
+import { LoginSuccessComponent } from './pages/oauth-log-in.component';
 
 export const routes: Routes = [
   { path: '', component: Home, pathMatch: 'full' },
-  { path: 'OAuth-login', component: LoginSuccessComponent },
+  { path: 'oauth-login', component: LoginSuccessComponent },
   {
     path: 'auth',
     children: [

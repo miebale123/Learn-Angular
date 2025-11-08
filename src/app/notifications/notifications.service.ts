@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
-  private socket = io('http://localhost:4442/notifications');
+  private socket = io(`${environment.apiBaseUrl}/notifications`);
   private _notifications = new BehaviorSubject<any[]>([]);
   notifications$ = this._notifications.asObservable();
 
@@ -17,6 +17,7 @@ export class NotificationService {
 }
 
 import { Component } from '@angular/core';
+import { environment } from '../../environments/environments';
 
 @Component({
   selector: 'app-notifications',

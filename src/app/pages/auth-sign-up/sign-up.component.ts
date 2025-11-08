@@ -1,11 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { AuthFormService } from '../../core/auth/auth-form.service';
 import { AuthStateService } from '../../core/auth/auth-state.service';
-import { SignupDto, SignupSchema, zodFieldValidator } from '../../core/auth/auth-credentials.dto';
-import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { SigninDto, SigninSchema, zodFieldValidator } from '../../core/auth/auth-credentials.dto';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MatIconRegistry } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
+import { environment } from '../../../environments/environments';
 
 @Component({
   selector: 'sign-up',
@@ -14,10 +16,11 @@ import { DomSanitizer } from '@angular/platform-browser';
   templateUrl: `./sign-up.component.html`,
 })
 export class Signup {
-  private auth = inject(AuthFormService);
+  auth = inject(AuthFormService);
   private fb = inject(FormBuilder);
   private authState = inject(AuthStateService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     iconRegistry.addSvgIcon(
@@ -26,19 +29,36 @@ export class Signup {
     );
   }
 
-  apiUrl = 'sign-up';
+  // Local Sign-In Signals
+  apiUrl = 'sign-in';
   message = signal<string | null>(null);
   isSuccess = signal<boolean | null>(null);
   loading = signal(false);
   accessToken = signal<string>('');
-  fieldErrors = signal<Partial<Record<keyof SignupDto, string>>>({});
+  fieldErrors = signal<Partial<Record<keyof SigninDto, string>>>({});
   userEmail = signal<string | null>(null);
 
   form: FormGroup = this.fb.group({
-    email: ['', zodFieldValidator(SignupSchema, 'email')],
-    password: ['', zodFieldValidator(SignupSchema, 'password')],
+    email: ['', zodFieldValidator(SigninSchema, 'email')],
+    password: ['', zodFieldValidator(SigninSchema, 'password')],
   });
 
+  ngOnInit() {
+    const token = this.route.snapshot.queryParamMap.get('token');
+    const email = this.route.snapshot.queryParamMap.get('email');
+
+    if (token) {
+      localStorage.setItem('access-token', token);
+      this.authState.setAccessToken(token);
+      this.authState.setLoggedIn(true);
+    }
+
+    if (email) {
+      this.authState.setUserEmail(email);
+    }
+  }
+
+  // --- Local Sign-In ---
   async onSubmit() {
     await this.auth.submit({
       form: this.form,
@@ -46,36 +66,21 @@ export class Signup {
       message: this.message,
       isSuccess: this.isSuccess,
       fieldErrors: this.fieldErrors,
-      userEmail: this.userEmail,
       loading: this.loading,
+      userEmail: this.userEmail,
+      accessToken: this.accessToken,
     });
-
-    if (this.isSuccess()) {
-      this.router.navigateByUrl('/auth/app-verification');
-    }
-  }
-
-  // --- Google Sign-In ---
-  loginWithGoogle() {
-    this.auth.loginWithGoogle(); // redirects to backend /auth/google
-  }
-
-  async handleGoogleCallback(code: string) {
-    // use your AuthFormService to handle backend callback
-    await this.auth.handleGoogleCallback(
-      {
-        message: this.message,
-        isSuccess: this.isSuccess,
-        userEmail: this.userEmail,
-        accessToken: this.accessToken,
-      } as any,
-      code
-    );
 
     if (this.isSuccess()) {
       localStorage.setItem('access-token', this.accessToken());
       this.authState.setLoggedIn(true);
       this.router.navigateByUrl('/houses');
     }
+  }
+
+  // --- Google Sign-In ---
+  loginWithGoogle() {
+    console.log(environment.apiBaseUrl);
+    this.auth.loginWithGoogle(); // redirects to backend /auth/google
   }
 }

@@ -43,9 +43,18 @@ export class Signin {
   });
 
   ngOnInit() {
-    // handle Google callback if URL has code
-    const code = this.route.snapshot.queryParamMap.get('code');
-    if (code) this.handleGoogleCallback(code);
+    const token = this.route.snapshot.queryParamMap.get('token');
+    const email = this.route.snapshot.queryParamMap.get('email');
+
+    if (token) {
+      localStorage.setItem('access-token', token);
+      this.authState.setAccessToken(token);
+      this.authState.setLoggedIn(true);
+    }
+
+    if (email) {
+      this.authState.setUserEmail(email);
+    }
   }
 
   // --- Local Sign-In ---
@@ -71,24 +80,5 @@ export class Signin {
   // --- Google Sign-In ---
   loginWithGoogle() {
     this.auth.loginWithGoogle(); // redirects to backend /auth/google
-  }
-
-  async handleGoogleCallback(code: string) {
-    // use your AuthFormService to handle backend callback
-    await this.auth.handleGoogleCallback(
-      {
-        message: this.message,
-        isSuccess: this.isSuccess,
-        userEmail: this.userEmail,
-        accessToken: this.accessToken,
-      } as any,
-      code
-    );
-
-    if (this.isSuccess()) {
-      localStorage.setItem('access-token', this.accessToken());
-      this.authState.setLoggedIn(true);
-      this.router.navigateByUrl('/houses');
-    }
   }
 }

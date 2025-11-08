@@ -59,38 +59,4 @@ export class AuthFormService {
   loginWithGoogle() {
     window.location.href = `${this.baseUrl}/google`;
   }
-
-  async handleGoogleCallback(component: AuthFormState, code: string) {
-    const { message, userEmail, accessToken, isSuccess } = component;
-
-    try {
-      const res: any = await firstValueFrom(
-        this.http.get(`${this.baseUrl}/google/callback?code=${code}`)
-      );
-
-
-      console.log('Google callback response:', res);
-      message.set(res?.message);
-      userEmail.set(res?.userEmail);
-      isSuccess.set(true);
-
-      const token = res?.access_token || res?.accessToken;
-      console.log('Google callback token:', token);
-      if (token) {
-        accessToken.set(token);
-        localStorage.setItem('access-token', token);
-
-        this.authState.setAccessToken(token);
-        this.authState.setLoggedIn(true);
-      }
-
-      if (res?.userEmail) {
-        this.authState.setUserEmail(res.userEmail);
-      }
-    } catch (err: any) {
-      const mapped = mapAuthError(err?.error);
-      if (mapped.message) message.set(mapped.message);
-      isSuccess.set(false);
-    }
-  }
 }

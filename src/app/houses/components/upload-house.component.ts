@@ -11,8 +11,8 @@ import { io } from 'socket.io-client';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="max-w-md mx-auto p-6 bg-white rounded-2xl shadow-lg mt-10">
-      <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Upload Your House</h1>
+    <div class="max-w-md mx-auto p-6 bg-black rounded-2xl shadow-lg mt-10">
+      <h1 class="text-2xl font-bold  mb-6 text-center">Upload Your House</h1>
 
       <div class="flex flex-col space-y-4">
         <!-- File Upload -->
@@ -47,6 +47,20 @@ import { io } from 'socket.io-client';
         >
           Upload House
         </button>
+
+        @if (notifications.length) {
+
+        <div class="bg-gray-800 text-black p-3 rounded-xl">
+          <h2 class="text-lg font-semibold mb-2">Notifications</h2>
+          <ul>
+            @for (n of notifications; track $index) {
+            <li class="bg-gray-700 p-2 rounded mb-1">
+              {{ n.message }}
+            </li>
+            }
+          </ul>
+        </div>
+        }
       </div>
     </div>
   `,
