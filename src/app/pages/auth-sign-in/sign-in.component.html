@@ -1,8 +1,6 @@
-<div
-  class="min-h-screen flex items-center justify-center auth"
->
+<div class="min-h-screen flex items-center justify-center auth">
   <div class="w-full max-w-sm p-8 space-y-8">
-    <h2>Sign in to Light House</h2>
+    <h2>Sign in to Lumina House</h2>
 
     @if (message()) {
     <p [style.color]="isSuccess() ? 'green' : 'red'">
@@ -28,7 +26,9 @@
       <div class="flex flex-col">
         <div class="flex justify-between items-center">
           <label>Password</label>
-          <a routerLink="/auth/forgot-password"> Forgot password? </a>
+          <a routerLink="/auth/forgot-password" class="hover:underline text-blue-400!">
+            Forgot password?
+          </a>
         </div>
         <input type="password" formControlName="password" class="" />
         @if (form.get('password')?.value && form.get('password')?.invalid) {
@@ -40,7 +40,11 @@
         }
       </div>
 
-      <button type="submit" [disabled]="form.invalid || loading()" class="w-full">
+      <button
+        type="submit"
+        [disabled]="form.invalid || loading()"
+        class="w-full text-white! bg-green-400!"
+      >
         {{ loading() ? 'Signing in...' : 'Sign in' }}
       </button>
     </form>
@@ -53,7 +57,7 @@
     </button>
 
     <p>
-      new to Light House?
+      new to Lumina?
       <a routerLink="/auth/sign-up" class="hover:underline text-blue-400"> create an account</a>
     </p>
   </div>

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { AuthFormService } from '../../core/auth/auth-form.service';
 import { AuthStateService } from '../../core/auth/auth-state.service';
-import { SigninDto, SigninSchema, zodFieldValidator } from '../../core/auth/auth-credentials.dto';
+import { SigninDto, SignupSchema, zodFieldValidator } from '../../core/auth/auth-credentials.dto';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,7 +30,7 @@ export class Signup {
   }
 
   // Local Sign-In Signals
-  apiUrl = 'sign-in';
+  apiUrl = 'sign-up';
   message = signal<string | null>(null);
   isSuccess = signal<boolean | null>(null);
   loading = signal(false);
@@ -39,8 +39,8 @@ export class Signup {
   userEmail = signal<string | null>(null);
 
   form: FormGroup = this.fb.group({
-    email: ['', zodFieldValidator(SigninSchema, 'email')],
-    password: ['', zodFieldValidator(SigninSchema, 'password')],
+    email: ['', zodFieldValidator(SignupSchema, 'email')],
+    password: ['', zodFieldValidator(SignupSchema, 'password')],
   });
 
   ngOnInit() {
@@ -74,7 +74,7 @@ export class Signup {
     if (this.isSuccess()) {
       localStorage.setItem('access-token', this.accessToken());
       this.authState.setLoggedIn(true);
-      this.router.navigateByUrl('/houses');
+      this.router.navigateByUrl('/auth/app-verification');
     }
   }
 

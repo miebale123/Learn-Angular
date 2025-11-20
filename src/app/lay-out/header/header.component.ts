@@ -13,14 +13,15 @@ import { HttpClient } from '@angular/common/http';
     <header
       class="fixed top-0 left-0 right-0 h-16 z-9999
              flex items-center justify-between
-             bg-amber-600 text-white px-4 md:px-8 shadow-md"
+             bg-blue-500 text-white px-4 md:px-8 shadow-md"
     >
       <div class="flex items-center gap-2">
         <div
-          class="w-6 h-6 bg-linear-to-br from-black via-red-400 to-black
-                 flex items-center justify-center font-bold text-white rounded-full"
+        class="w-6 h-6 bg-linear-to-br from-black via-red-400 to-black
+        flex items-center justify-center font-bold text-white rounded-full"
         >
-          L
+        <img src="/assets/icons/houseIcon(2).jpeg" >
+
         </div>
         <span class="hidden md:inline text-lg font-bold ">Lumina</span>
       </div>
@@ -45,14 +46,34 @@ import { HttpClient } from '@angular/common/http';
         @if (auth.isAdmin()) {
         <a routerLink="/admin" class="flex items-center gap-1">
           <lucide-icon [name]="shield" class="w-5 h-5"></lucide-icon>
-          <span class="hidden md:inline font-semibold">Admin</span>
+          <span class="hidden md:inline ">Admin</span>
+        </a>
+        } @if(auth.isExpert()){
+        <a routerLink="/my-uploads" class="flex items-center gap-1">
+          <lucide-icon [name]="shield" class="w-5 h-5"></lucide-icon>
+          <span class="hidden md:inline ">Agent</span>
         </a>
         }
 
-        <a routerLink="/app-notifications">
+        <a routerLink="/app-notifications" class="flex items-center gap-1">
           <lucide-icon [name]="bell" class="w-5 h-5"></lucide-icon>
+          <span class="hidden md:inline ">Notifications</span>
         </a>
       </nav>
+
+      @if (!auth.isLoggedIn()) {
+      <header class="flex justify-between items-center px-6 py-3">
+        <div class="flex items-center gap-4">
+          <button (click)="go('auth/sign-in')" class="text-sm hover:underline">Sign in</button>
+          <button
+            (click)="go('auth/sign-up')"
+            class="text-sm border! border-white! px-2 py-1 !hover:bg-black !hover:text-black"
+          >
+            Sign up
+          </button>
+        </div>
+      </header>
+      }@else {
 
       <!-- User Dropdown -->
       <div class="relative">
@@ -91,7 +112,7 @@ import { HttpClient } from '@angular/common/http';
       <p class="absolute top-16 right-4 bg-yellow-500 text-black px-4 py-1 rounded-md text-sm">
         {{ warningMessage }}
       </p>
-      }
+      } }
     </header>
   `,
 })
@@ -132,7 +153,7 @@ export class Header {
 
     if (role === UserRole.Expert) {
       this.warningMessage = '';
-      this.router.navigate(['/houses/upload-house']);
+      this.router.navigate(['/upload-house']);
     } else {
       this.warningMessage = 'Only Brokers can create new posts.';
       setTimeout(() => (this.warningMessage = ''), 3000);
@@ -149,5 +170,9 @@ export class Header {
     const email = this.auth.userEmail();
     if (!email) return '?';
     return email.charAt(0).toUpperCase();
+  }
+
+  go(path: string) {
+    this.router.navigateByUrl(path);
   }
 }

@@ -54,6 +54,7 @@ export class AuthStateService {
       this._userEmail.set(null);
     }
   }
+
   logout() {
     this.isLoggedIn.set(false);
     this._userEmail.set(null);

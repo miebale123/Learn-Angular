@@ -1,6 +1,6 @@
-<div class="min-h-screen auth">
+<div class="min-h-screen flex items-center justify-center auth">
   <div class="w-full max-w-sm p-8 space-y-8">
-    <h2>sign up for Light House</h2>
+    <h2>sign up for Lumina House</h2>
 
     @if (message()) {
     <p [style.color]="isSuccess() ? 'green' : 'red'">
@@ -15,7 +15,7 @@
         <label>Email</label>
         <input type="email" formControlName="email" />
         @if (form.get('email')?.value && form.get('email')?.invalid) {
-        <span >
+        <span>
           {{ form.get('email')?.errors?.['zodError'] }}
         </span>
         } @if (fieldErrors()['email']) {
@@ -35,7 +35,11 @@
         }
       </div>
 
-      <button type="submit" [disabled]="form.invalid || loading()" class="w-full">
+      <button
+        type="submit"
+        [disabled]="form.invalid || loading()"
+        class="w-full bg-green-400! text-white!"
+      >
         {{ loading() ? 'signing up...' : 'sign up' }}
       </button>
     </form>
@@ -49,7 +53,7 @@
 
     <p>
       Already have an account?
-      <a routerLink="/auth/sign-in">Sign In</a>
+      <a routerLink="/auth/sign-in" class="hover:underline text-blue-400!">Sign In</a>
     </p>
   </div>
 </div>
