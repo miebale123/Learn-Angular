@@ -17,7 +17,7 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
       <!-- Navigation -->
       <nav class="flex items-center gap-4 sm:gap-6 flex-wrap">
         <!-- Logo -->
-        <a routerLink="/houses" routerLinkActive="active-link">
+        <a routerLink="/" routerLinkActive="active-link">
           <div class="flex items-center gap-2">
             <div class="w-8 h-8 flex items-center justify-center">
               @if(auth.isLoggedIn()){

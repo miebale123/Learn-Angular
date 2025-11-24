@@ -4,6 +4,7 @@ import { CandleComponent } from '../../core/other/candle.component';
 import { Router, RouterLink } from '@angular/router';
 import { Header } from '../../lay-out/header/header.component';
 import { Search } from '../../houses/search.component';
+import { HousesStore } from '../../houses/houses.store';
 
 @Component({
   selector: 'home',
@@ -16,5 +17,12 @@ export class Home {
 
   go(path: string) {
     this.router.navigateByUrl(path);
+  }
+
+  store = inject(HousesStore);
+
+  onSearch(searchValue: string) {
+    this.store.setSearchLocation(searchValue); // store the search term
+    this.router.navigateByUrl('/houses'); // go to houses page
   }
 }

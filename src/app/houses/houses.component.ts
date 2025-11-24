@@ -12,7 +12,7 @@ import { Router, RouterLink } from '@angular/router';
   imports: [CommonModule, FormsModule, LucideAngularModule, Search],
   template: `
     <div class=" p-6">
-      <search-house></search-house>
+      <search-house (search)="onSearch($event)"></search-house>
 
       <!-- Houses Grid -->
       <div>
@@ -101,5 +101,10 @@ export class Houses {
   async showHouse(id: string) {
     await this.store.getHouse(id);
     this.router.navigateByUrl('/house');
+  }
+
+  async onSearch(searchValue: string) {
+    this.store.setSearchLocation(searchValue);
+    await this.store.getHouses(); // filter in-place
   }
 }

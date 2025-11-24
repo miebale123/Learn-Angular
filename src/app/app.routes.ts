@@ -12,6 +12,7 @@ import { House } from './houses/house.component';
 import { Signup } from './pages/auth-sign-up/sign-up.component';
 import { VerificationComponent } from './pages/auth-sign-up/verification.component';
 import { Search } from './houses/search.component';
+import { Notifications } from './notifications/notifications.component';
 
 export const routes: Routes = [
   { path: '', component: Home, pathMatch: 'full' },
@@ -33,7 +34,6 @@ export const routes: Routes = [
     component: AppLayout,
     children: [
       { path: 'houses', component: Houses },
-
       { path: 'house', component: House },
       { path: 'upload-house', component: Upload },
     ],
@@ -44,7 +44,7 @@ export const routes: Routes = [
     component: AppLayout,
     children: [
       { path: 'admin', component: Admin },
-      // { path: 'notifications', component: Notifications },
+      { path: 'notifications', component: Notifications },
       { path: 'my-houses', component: MyHouses },
       { path: 'bookmarks', component: Bookmarks },
     ],
