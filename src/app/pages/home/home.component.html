@@ -1,5 +1,7 @@
-<div class="min-h-screen flex flex-col bg-black">
+<div class="min-h-screen flex flex-col bg-black text-white">
   <app-header></app-header>
+
+  <!-- HERO -->
   <main
     class="flex-1 flex flex-col justify-start items-center text-center gap-6 px-4 pt-8 md:pt-20 lg:pt-40"
   >
@@ -9,19 +11,93 @@
       <span class="text-[clamp(3rem,9vw,7rem)] select-none">na</span>
     </div>
 
-    <p
-      class="text-lg sm:text-2xl md:text-3xl max-w-md sm:max-w-lg px-3 text-gray-200 leading-relaxed"
-    >
+    <p class="text-lg sm:text-2xl md:text-3xl max-w-md sm:max-w-lg px-3 leading-relaxed">
       Rentals. Homes. Agents.
     </p>
 
     <p>የብርሃን ቤት ይሁንልዎ!</p>
+
+    <button
+      routerLink="/houses"
+      class="mt-4 bg-white text-black px-16 py-3 rounded-lg font-semibold hover:bg-gray-200 transition"
+    >
+      ቤትዎ
+    </button>
+
+    <search-house />
   </main>
+
+  <!-- WAVY TRANSITION -->
   <section class="bg-linear-to-r from-[#a87b56] via-[#c6a97b] to-[#8c6b4f] w-full overflow-hidden">
     <svg viewBox="0 0 1440 200" class="fill-black w-full">
       <path d="M0,132C180,0,1360,160,1440,0L140,0L0,0Z"></path>
     </svg>
   </section>
 
-  <i class="fa-brands fa-instagram"></i>
+  <!-- NEW CONTENT SECTIONS -->
+  <!-- FEATURED HOUSES -->
+  <section class="py-16 px-6 text-center">
+    <h2 class="text-3xl font-bold mb-10">Featured Homes</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <!-- Example house card -->
+      <div class="rounded-xl overflow-hidden shadow-lg border border-gray-800">
+        <div class="p-5 space-y-2">
+          <h3 class="text-xl font-semibold">Modern Apartment</h3>
+          <p class="text-gray-400 text-sm">Addis Ababa • 25,000 ETB/mo</p>
+        </div>
+      </div>
+
+      <div class="rounded-xl overflow-hidden shadow-lg border border-gray-800">
+        <div class="p-5 space-y-2">
+          <h3 class="text-xl font-semibold">Family Home</h3>
+          <p class="text-gray-400 text-sm">Bole • 40,000 ETB/mo</p>
+        </div>
+      </div>
+
+      <div class="rounded-xl overflow-hidden shadow-lg border border-gray-800">
+        <div class="p-5 space-y-2">
+          <h3 class="text-xl font-semibold">Luxury Condo</h3>
+          <p class="text-gray-400 text-sm">Kazanchis • 55,000 ETB/mo</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE US -->
+  <section class="py-20 text-center">
+    <h2 class="text-3xl font-bold mb-8">Why Choose Lumina?</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-10 max-w-5xl mx-auto px-6">
+      <div class="p-6 rounded-xl border border-gray-800">
+        <h3 class="text-xl font-semibold mb-2">Verified Listings</h3>
+        <p class="text-gray-400">Every property is screened for quality and accuracy.</p>
+      </div>
+
+      <div class="p-6 rounded-xl border border-gray-800">
+        <h3 class="text-xl font-semibold mb-2">Trusted Agents</h3>
+        <p class="text-gray-400">Work with experienced, reliable real-estate professionals.</p>
+      </div>
+
+      <div class="p-6 rounded-xl border border-gray-800">
+        <h3 class="text-xl font-semibold mb-2">Fast Support</h3>
+        <p class="text-gray-400">Need help? We respond quickly and clearly.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALL TO ACTION -->
+  <section
+    class="bg-linear-to-r from-[#a87b56] via-[#c6a97b] to-[#8c6b4f] py-20 text-center text-black"
+  >
+    <h2 class="text-3xl font-bold mb-4">Start Your Search Today</h2>
+    <p class="mb-8 text-lg">Find your perfect home with ease and confidence.</p>
+
+    <button
+      routerLink="/houses"
+      class="text-white px-8 py-3 rounded-xl font-semibold hover:bg-gray-800 transition"
+    >
+      Browse Homes
+    </button>
+  </section>
 </div>

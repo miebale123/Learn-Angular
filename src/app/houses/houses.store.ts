@@ -3,8 +3,8 @@ import { computed, inject } from '@angular/core';
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environments';
-import { AuthStateService } from '../core/auth/auth-state.service';
 import { jwtDecode } from 'jwt-decode';
+import { AuthStateService } from '../pages/auth-sign-in/sign-in.component';
 
 export const HOUSE_TYPES = ['for sale', 'for rent'] as const;
 export type HouseType = (typeof HOUSE_TYPES)[number];
@@ -38,9 +38,9 @@ export const HousesStore = signalStore(
     bedroom: number;
     bathroom: number;
     area: string;
-    searchLocation: string;
-    searchPrice: { min: number | null; max: number | null };
+    searchLocation: string | null;
     file: File | null;
+    house: HouseDto | null;
     houses: HouseDto[];
     bookmarks: {
       id: string;
@@ -53,6 +53,12 @@ export const HousesStore = signalStore(
       house: HouseDto;
       user: { id: number };
     }[];
+    searchPrice: { min: number | null; max: number | null };
+    priceOptions: number[];
+    minPrice: number | null;
+    maxPrice: number | null;
+    uploading: boolean;
+    notificationCounter: number;
   }>({
     type: 'for rent',
     property_type: 'house',
@@ -61,12 +67,18 @@ export const HousesStore = signalStore(
     bedroom: 0,
     bathroom: 0,
     area: '',
-    searchLocation: '',
-    searchPrice: { min: null, max: null },
+    searchLocation: null,
     file: null,
+    house: null,
     houses: [],
     bookmarks: [],
     notifications: [],
+    searchPrice: { min: null, max: null },
+    priceOptions: [50000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 750000, 1000000],
+    minPrice: null,
+    maxPrice: null,
+    uploading: false,
+    notificationCounter: 0,
   }),
 
   withMethods((store) => {
@@ -80,34 +92,35 @@ export const HousesStore = signalStore(
       return store.houses().filter((h) => h.userId === userId);
     });
 
-    const filteredHouses = computed(() => {
-      let list = store.houses();
-
-      if (store.searchLocation()) {
-        list = list.filter((h) =>
-          h.location.toLowerCase().includes(store.searchLocation().toLowerCase())
-        );
-      }
-
-      const min = store.searchPrice().min;
-      const max = store.searchPrice().max;
-
-      if (min !== null) list = list.filter((h) => h.price >= min);
-      if (max !== null) list = list.filter((h) => h.price <= max);
-
-      return list;
-    });
-
     return {
       myHouses,
-      filteredHouses,
+
+      incrementNCounter() {
+        patchState(store, { notificationCounter: store.notificationCounter() + 1 });
+      },
+
+      resetNCounter() {
+        patchState(store, { notificationCounter: 0 });
+      },
+      // setters
+      setMinPrice(value: number | null) {
+        patchState(store, { minPrice: value });
+      },
+      setMaxPrice(value: number | null) {
+        patchState(store, { maxPrice: value });
+      },
+
+      // apply search
+      setSearchPrice(min: number | null, max: number | null) {
+        patchState(store, { searchPrice: { min, max } });
+      },
 
       setSearchLocation(searchLocation: string) {
         patchState(store, { searchLocation });
       },
 
-      setSearchPrice(min: number | null, max: number | null) {
-        patchState(store, { searchPrice: { min, max } });
+      resetSearchLocation() {
+        patchState(store, { searchLocation: null });
       },
 
       setType(type: HouseType) {
@@ -143,6 +156,8 @@ export const HousesStore = signalStore(
       },
 
       async uploadHouse() {
+        console.log('hey uploading');
+        patchState(store, { uploading: true });
         if (!store.file() || !store.location()) return;
 
         const formData = new FormData();
@@ -163,12 +178,40 @@ export const HousesStore = signalStore(
           houses: [...store.houses(), res.savedHouse],
           file: null,
           location: '',
+          price: 0,
+          bedroom: 0,
+          bathroom: 0,
+          area: '',
+          uploading: false,
         });
       },
 
       async getHouses() {
-        const res: any = await firstValueFrom(http.get(`${environment.apiBaseUrl}/houses`));
+        const query = new URLSearchParams();
+
+        const min = store.searchPrice().min;
+        const max = store.searchPrice().max;
+
+        if (min !== null) query.set('min', String(min));
+        if (max !== null) query.set('max', String(max));
+
+        if (store.searchLocation()) query.set('location', store.searchLocation()!);
+        if (store.property_type()) query.set('property_type', store.property_type());
+        if (store.type()) query.set('type', store.type());
+        if (store.bedroom()) query.set('bedroom', String(store.bedroom()));
+        if (store.bathroom()) query.set('bathroom', String(store.bathroom()));
+
+        const url = `${environment.apiBaseUrl}/houses?${query.toString()}`;
+
+        const res: any = await firstValueFrom(http.get(url));
+
         patchState(store, { houses: res });
+      },
+
+      async getHouse(id: string) {
+        const res: any = await firstValueFrom(http.get(`${environment.apiBaseUrl}/houses/${id}`));
+
+        patchState(store, { house: res });
       },
 
       async getBookmarks() {
@@ -179,12 +222,36 @@ export const HousesStore = signalStore(
       },
 
       async getNotifications() {
-        const res: any = await firstValueFrom(
+        const notifs: any = await firstValueFrom(
           http.get(`${environment.apiBaseUrl}/houses/notifications`)
         );
-        patchState(store, { notifications: res });
-      },
 
+        // Map backend Notification[] to your expected shape
+        const mapped = notifs.map((n: any) => ({
+          id: n.id,
+          type: n.type as HouseType,
+          house: {
+            id: n.house.id,
+            type: n.house.type,
+            property_type: n.house.property_type,
+            secure_url: n.house.secure_url,
+            location: n.house.location,
+            previousPrice: n.house.previousPrice,
+            priceReduced: n.house.priceReduced,
+            price: n.house.price,
+            bedroom: n.house.bedroom,
+            bathroom: n.house.bathroom,
+            area: n.house.area,
+            userId: n.house.user.id,
+          },
+          user: { id: n.user.id },
+        }));
+
+        patchState(store, {
+          notifications: mapped,
+          notificationCounter: mapped.length, // always the correct count
+        });
+      },
       async updateHouse(
         id: string,
         location: string,
@@ -225,6 +292,13 @@ export const HousesStore = signalStore(
           houses: store.houses().filter((h) => h.id !== id),
           bookmarks: store.bookmarks().filter((b) => b.house.id !== id),
         });
+      },
+
+      async deleteNotification(id: string) {
+        await firstValueFrom(
+          http.delete(`${environment.apiBaseUrl}/houses/deleteNotification/${id}`)
+        );
+        patchState(store, { notifications: store.notifications().filter((n) => n.id !== id) });
       },
 
       async deleteBookmark(id: string) {

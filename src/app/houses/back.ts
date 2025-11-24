@@ -1,15 +1,471 @@
-//  <lucide-icon
-//                 [name]="bookmark"
-//                 class="w-5 h-5 text-blue-400 hover:text-blue-600 cursor-pointer"
-//                 (click)="addToBookmark(house.id)"
-//               ></lucide-icon>
+// import { CommonModule } from '@angular/common';
+// import { Component, inject, signal } from '@angular/core';
+// import { FormsModule } from '@angular/forms';
+// import { HousesStore } from './houses.store';
+// import { io } from 'socket.io-client';
+// import { LucideAngularModule, Heart, ArrowDown } from 'lucide-angular';
+// import { jwtDecode } from 'jwt-decode';
+// import { AuthStateService } from '../core/auth/auth-state.service';
 
-//  bookmark = Bookmark;
-//   locate = MapPin;
-//   phone = Phone;
+// @Component({
+//   selector: 'houses',
+//   standalone: true,
+//   imports: [CommonModule, FormsModule, LucideAngularModule],
+//   template: `
+//     <div class="p-4 space-y-6 ! bg-black!">
+//       <!-- search -->
+//       <div class="flex gap-2 ">
+//         <div class="flex gap-2 mb-4">
+//           <input
+//             type="text"
+//             placeholder="Search by location"
+//             [ngModel]="store.searchLocation()"
+//             (ngModelChange)="store.setSearchLocation($event)"
+//           />
+//         </div>
 
+//         <!-- price dropdown -->
 
-// <lucide-icon
-//                 [name]="phone"
-//                 class="w-5 h-5 text-blue-400 hover:text-blue-600 cursor-pointer"
-//               ></lucide-icon>
+//         <!-- Price button -->
+//         <button
+//           class="border px-3 py-2 rounded w-full text-left"
+//           (click)="priceOpen.set(!priceOpen())"
+//         >
+//           Price
+//         </button>
+
+//         @if (priceOpen()) {
+//         <div class="absolute mt-2 bg-black border rounded-xl p-4 w-72 shadow-lg z-30">
+//           <div class="font-semibold mb-2">Price</div>
+
+//           <!-- Min / Max rows -->
+//           <div class="flex items-center gap-3">
+//             <!-- Min -->
+//             <div class="relative flex-1">
+//               <button
+//                 class="border px-3 py-2 rounded w-full text-left"
+//                 (click)="minPriceOpen.set(!minPriceOpen())"
+//               >
+//                 {{ store.minPrice() ? store.minPrice() : 'No min' }}
+//               </button>
+
+//               @if (minPriceOpen()) {
+//               <ul
+//                 class="absolute bg-black border rounded w-full mt-1 max-h-40 overflow-y-auto shadow"
+//               >
+//                 <li
+//                   class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+//                   (mousedown)="store.setMinPrice(null); minPriceOpen.set(false)"
+//                 >
+//                   No min
+//                 </li>
+
+//                 @for (price of store.priceOptions(); track $index) {
+//                 <li
+//                   class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+//                   (mousedown)="store.setMinPrice(price); minPriceOpen.set(false)"
+//                 >
+//                   {{ price }}
+//                 </li>
+//                 }
+//               </ul>
+//               }
+//             </div>
+
+//             <span>-</span>
+
+//             <!-- Max -->
+//             <div class="relative flex-1">
+//               <button
+//                 class="border px-3 py-2 rounded w-full text-left"
+//                 (click)="maxPriceOpen.set(!maxPriceOpen())"
+//               >
+//                 {{ store.maxPrice() ? store.maxPrice() : 'No max' }}
+//               </button>
+
+//               @if (maxPriceOpen()) {
+//               <ul
+//                 class="absolute bg-black border rounded w-full mt-1 max-h-40 overflow-y-auto shadow"
+//               >
+//                 <li
+//                   class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+//                   (mousedown)="store.setMaxPrice(null); maxPriceOpen.set(false)"
+//                 >
+//                   No max
+//                 </li>
+
+//                 @for (price of store.priceOptions(); track $index) {
+//                 <li
+//                   class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+//                   (mousedown)="store.setMaxPrice(price); maxPriceOpen.set(false)"
+//                 >
+//                   {{ price }}
+//                 </li>
+//                 }
+//               </ul>
+//               }
+//             </div>
+//           </div>
+
+//           <!-- Done -->
+//           <button
+//             type="button"
+//             class="text-sm underline text-gray-600 hover:text-black"
+//             (click)="closeAll()"
+//           >
+//             Done
+//           </button>
+//         </div>
+//         }
+//       </div>
+
+//       <!-- upload -->
+//       <div>
+//         <select
+//           class="border px-2 py-1"
+//           [ngModel]="store.type()"
+//           (ngModelChange)="store.setType($event!)"
+//         >
+//           @for(t of ['for rent', 'for sale']; track t) {
+//           <option [value]="t">{{ t }}</option>
+//           }
+//         </select>
+
+//         <select
+//           class="border px-2 py-1"
+//           [ngModel]="store.property_type()"
+//           (ngModelChange)="store.setPropertyType($event!)"
+//         >
+//           @for(p of ['condo','house','land']; track p) {
+//           <option [value]="p">{{ p }}</option>
+//           }
+//         </select>
+
+//         <label class="border px-2 py-1 rounded cursor-pointer">
+//           Choose image
+//           <input type="file" (change)="onFileSelected($event)" class="hidden" />
+//         </label>
+
+//         <!-- Preview -->
+//         @if(uploadedPreview()) {
+//         <img [src]="uploadedPreview()" alt="Preview" class="w-48 h-48 object-cover rounded mt-2" />
+//         }
+//         <div class="flex gap-2">
+//           <input
+//             type="text"
+//             [ngModel]="store.location()"
+//             (ngModelChange)="store.setLocation($event)"
+//           />
+
+//           <input
+//             placeholder="Bedrooms"
+//             [ngModel]="store.bedroom()"
+//             (ngModelChange)="store.setBedroom($event)"
+//           />
+
+//           <input
+//             placeholder="Bathrooms"
+//             [ngModel]="store.bathroom()"
+//             (ngModelChange)="store.setBathroom($event)"
+//           />
+
+//           <input
+//             placeholder="Bedrooms"
+//             [ngModel]="store.area()"
+//             (ngModelChange)="store.setArea($event)"
+//           />
+
+//           <button class="border px-2" (click)="upload()">upload</button>
+//         </div>
+//       </div>
+
+//       <!-- All houses -->
+//       <div>
+//         <h2 class="text-xl font-semibold">the total houses are:</h2>
+//         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+//           @for(house of store.houses(); track $index) {
+
+//           <div
+//             class="bg-black rounded-xl overflow-hidden shadow hover:shadow-xl transition cursor-pointer"
+//           >
+//             <!-- Big image -->
+//             <img [src]="house.secure_url" alt="House Image" class="w-full h-60 object-cover" />
+
+//             <!-- Content -->
+//             <div class="p-4 space-y-2">
+//               <!-- Status + Price -->
+//               <p class="font-semibold text-sm capitalize ">
+//                 {{ house.property_type }} {{ house.type }}
+//               </p>
+
+//               <p class="text-2xl font-bold  flex items-center gap-2 !">
+//                 $ {{ house.price }}
+
+//                 @if(house.priceReduced) {
+//                 <lucide-icon [name]="down" class="w-4 h-4"></lucide-icon>
+//                 <span class="text-red-600 text-sm">
+//                   - {{ house.previousPrice! - house.price }}
+//                 </span>
+//                 }
+//               </p>
+
+//               <!-- Beds / Baths / Sqft -->
+//               <div class="flex items-center gap-4 text-gray-700 text-sm">
+//                 <span>{{ house.bedroom }} bed</span>
+//                 <span>{{ house.bathroom }} bath</span>
+//                 <span>{{ house.area }} sqft</span>
+//               </div>
+
+//               <!-- Location -->
+//               <p class="text-gray-800 text-sm">
+//                 {{ house.location }}
+//               </p>
+
+//               <!-- Bookmark -->
+//               <button
+//                 class="mt-3 border px-3 py-1 rounded hover:bg-gray-100"
+//                 (click)="store.createBookmark(house.id)"
+//               >
+//                 <lucide-icon [name]="heart" class="w-5 h-5 bg-black"></lucide-icon>
+//               </button>
+//             </div>
+//           </div>
+
+//           }
+//         </div>
+//       </div>
+
+//       <!-- My houses -->
+//       <div class="flex flex-col lg:flex-row gap-10 mt-10">
+//         <div class="flex-1">
+//           <h2 class="text-xl font-semibold mb-4">your created houses are:</h2>
+//           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+//             @for(house of store.myHouses(); track $index) {
+//             <div class="border p-3 rounded shadow hover:shadow-lg transition">
+//               @if(editingHouseId() === house.id) {
+//               <input
+//                 type="text"
+//                 [ngModel]="editedLocation"
+//                 (ngModelChange)="editedLocation = $event"
+//               />
+
+//               <input type="text" [ngModel]="editedPrice" (ngModelChange)="editedPrice = $event" />
+
+//               <input
+//                 placeholder="Bedrooms"
+//                 [ngModel]="editedBedroom"
+//                 (ngModelChange)="editedBedroom = $event"
+//               />
+
+//               <input
+//                 placeholder="Bathrooms"
+//                 [ngModel]="editedBathroom"
+//                 (ngModelChange)="editedBathroom = $event"
+//               />
+
+//               <input
+//                 placeholder="area"
+//                 [ngModel]="editedArea"
+//                 (ngModelChange)="editedArea = $event"
+//               />
+
+//               <button class="border px-2 rounded hover:bg-gray-100" (click)="confirmSave(house.id)">
+//                 save
+//               </button>
+//               } @else {
+//               <img
+//                 [src]="house.secure_url"
+//                 alt="House Image"
+//                 class="w-full h-40 object-cover rounded mb-2"
+//               />
+//               type:
+//               <p class="font-medium">{{ house.type }}</p>
+//               <p class="font-medium">{{ house.property_type }}</p>
+//               <p class="font-medium">{{ house.location }}</p>
+//               <p class="font-medium">
+//                 <strong> <span>$</span>{{ house.price }} </strong>
+//               </p>
+//               bed:
+//               <p class="font-medium">{{ house.bedroom }}</p>
+//               bath:
+//               <p class="font-medium">{{ house.bathroom }}</p>
+
+//               area:
+//               <p class="font-medium">{{ house.area }}</p>
+
+//               <p class="text-sm text-gray-500">{{ house.userId }}</p>
+//               <div class="flex gap-2 mt-2">
+//                 <button class="border px-2 rounded hover:bg-gray-100" (click)="startEdit(house)">
+//                   edit
+//                 </button>
+//                 <button
+//                   class="border px-2 rounded hover:bg-gray-100"
+//                   (click)="store.deleteHouse(house.id)"
+//                 >
+//                   delete
+//                 </button>
+//               </div>
+//               }
+//             </div>
+//             }
+//           </div>
+//         </div>
+
+//         <!-- Bookmarks -->
+//         <div class="flex-1">
+//           <h2 class="text-xl font-semibold mb-4">bookmarked are:</h2>
+//           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+//             @for(b of store.bookmarks(); track $index) {
+//             <div class="border p-2 rounded shadow hover:shadow-lg transition">
+//               <img
+//                 [src]="b.house.secure_url"
+//                 alt="House Image"
+//                 class="w-full h-40 object-cover rounded mb-2"
+//               />
+//               <p class="font-medium">{{ b.house.location }}</p>
+//               <button
+//                 class="mt-2 border px-2 rounded hover:bg-gray-100"
+//                 (click)="store.deleteBookmark(b.id)"
+//               >
+//                 delete
+//               </button>
+//             </div>
+//             }
+//           </div>
+//         </div>
+//       </div>
+
+//       <!-- Notifications  -->
+//       <div>
+//         <h2 class="text-xl font-semibold mt-10">notifications</h2>
+//         <ul class="space-y-1">
+//           @for(n of store.notifications(); track $index) {
+//           <li class="border p-2 rounded">
+//             {{ n.type }} — {{ n.house.location }} — {{ n.house.id }} — {{ n.house.userId }}
+//           </li>
+//           }
+//         </ul>
+//       </div>
+//     </div>
+//   `,
+// })
+// export class Houses {
+//   store = inject(HousesStore);
+//   editingHouseId = signal<string | null>(null);
+//   editedLocation = '';
+//   editedPrice = 0;
+//   editedBedroom = 0;
+//   editedBathroom = 0;
+//   editedArea = '';
+//   heart = Heart;
+//   down = ArrowDown;
+//   priceDropdownOpen = signal(false);
+//   minPrice: number | null = null;
+//   maxPrice: number | null = null;
+//   uploadedPreview = signal<string | null>(null);
+
+//   auth = inject(AuthStateService);
+
+//   socket;
+
+//   constructor() {
+//     const token = this.auth.accessToken();
+//     let userId = null;
+
+//     if (token) {
+//       userId = jwtDecode<{ sub: number }>(token).sub;
+//     }
+
+//     this.socket = io('http://localhost:4442', {
+//       query: { userId },
+//     });
+
+//     this.socket.on('notification', () => {
+//       this.store.getNotifications();
+//     });
+//   }
+
+//   async ngOnInit() {
+//     await this.store.getHouses();
+//     await this.store.getBookmarks();
+//     await this.store.getNotifications();
+//   }
+
+//   startEdit(house: {
+//     id: string;
+//     location: string;
+//     price: number;
+//     bedroom: number;
+//     bathroom: number;
+//     area: string;
+//   }) {
+//     this.editingHouseId.set(house.id);
+//     this.editedLocation = house.location;
+//     this.editedPrice = house.price;
+//     this.editedBedroom = house.bedroom;
+//     this.editedBathroom = house.bathroom;
+//     this.editedArea = house.area;
+//   }
+
+//   async confirmSave(id: string) {
+//     await this.store.updateHouse(
+//       id,
+//       this.editedLocation,
+//       this.editedPrice,
+//       this.editedBedroom,
+//       this.editedBathroom,
+//       this.editedArea
+//     );
+//     this.editingHouseId.set(null);
+//     this.editedLocation = '';
+//     this.editedPrice = 0;
+//     this.editedBedroom = 0;
+//     this.editedBathroom = 0;
+//     this.editedArea = '';
+//   }
+
+//   onFileSelected(event: Event) {
+//     const input = event.target as HTMLInputElement;
+//     if (!input.files?.length) return;
+
+//     const file = input.files[0];
+//     this.store.setFile(file);
+
+//     const reader = new FileReader();
+//     reader.onload = (e) => {
+//       this.uploadedPreview.set(e.target?.result as string);
+//     };
+//     reader.readAsDataURL(file);
+//   }
+
+//   async upload() {
+//     await this.store.uploadHouse(); // remove location()
+//     this.uploadedPreview.set(null);
+//   }
+
+//   minDropdownOpen = signal(false);
+//   maxDropdownOpen = signal(false);
+
+//   // To allow input blur without closing before click
+//   closeMinDropdown() {
+//     setTimeout(() => this.minDropdownOpen.set(false), 150);
+//   }
+//   closeMaxDropdown() {
+//     setTimeout(() => this.maxDropdownOpen.set(false), 150);
+//   }
+
+//   applyPriceRange() {
+//     this.store.setSearchPrice(this.minPrice, this.maxPrice);
+//     this.priceDropdownOpen.set(false);
+//   }
+
+//   priceOpen = signal(false);
+//   minPriceOpen = signal(false);
+//   maxPriceOpen = signal(false);
+
+//   closeAll() {
+//     this.priceOpen.set(false);
+//     this.minPriceOpen.set(false);
+//     this.maxPriceOpen.set(false);
+//   }
+// }

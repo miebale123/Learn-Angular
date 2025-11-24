@@ -9,13 +9,12 @@ import { LucideAngularModule } from 'lucide-angular';
   standalone: true,
   imports: [CommonModule, RouterOutlet, Header, LucideAngularModule],
   template: `
-    <div class="min-h-screen flex flex-col bg-blue-500 text-white">
-      <div>
-        <app-header></app-header>
-        <main class="flex-1 pt-16 pb-8 px-4 sm:px-6 md:px-8 overflow-y-auto ">
-          <router-outlet></router-outlet>
-        </main>
-      </div>
+    <div class="min-h-screen flex flex-col">
+      <!-- Force header to white -->
+      <app-header class="bg-white! text-black"></app-header>
+      <main class="flex-1 pt-16 pb-8 px-4 sm:px-6 md:px-8 overflow-y-auto">
+        <router-outlet></router-outlet>
+      </main>
     </div>
   `,
 })

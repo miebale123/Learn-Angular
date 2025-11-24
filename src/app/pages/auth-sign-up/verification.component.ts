@@ -2,16 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { Component, ViewChildren, QueryList, ElementRef, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { AuthStateService } from '../../core/auth/auth-state.service';
 import { environment } from '../../../environments/environments';
+import { AuthStateService } from '../auth-sign-in/sign-in.component';
 
 @Component({
   selector: 'app-verification',
   template: `
     <div
-      class="verification-container bg-black text-white flex flex-col items-center justify-center min-h-screen px-4"
+      class="verification-container bg-black  flex flex-col items-center justify-center min-h-screen px-4"
     >
-      <p class="text-gray-300 mb-2 text-center">
+      <p class=" mb-2 text-center">
         A verification code has been sent to your email. Please enter the 6-digit code below.
       </p>
 
@@ -29,10 +29,7 @@ import { environment } from '../../../environments/environments';
           }
         </div>
 
-        <button
-          type="submit"
-          class="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg"
-        >
+        <button type="submit" class="mt-6 bg-blue-600 hover:bg-blue-700  px-6 py-2 rounded-lg">
           {{ loading() ? 'verifying' : 'verify' }}
         </button>
       </form>

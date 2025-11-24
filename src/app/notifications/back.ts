@@ -1,0 +1,43 @@
+import { io } from 'socket.io-client';
+import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { Component, inject } from '@angular/core';
+import { environment } from '../../environments/environments';
+
+@Component({
+  selector: 'app-notifications',
+  template: `
+    <div class="p-4 w-80 bg-gray-800  rounded-2xl">
+      <h2 class="text-lg mb-3 font-semibold">Notifications</h2>
+      @if (notifications.length) {
+      <ul>
+        @for (note of notifications; track note) {
+
+        <li class="mb-2 bg-gray-700 p-2 rounded" (click)="getHouseFromNotification()">
+          {{ note.message }}
+        </li>
+        }
+      </ul>
+      } @else {
+      <p class="text-gray-400">No notifications yet.</p>
+      }
+    </div>
+  `,
+})
+export class NotificationsComponent {
+  notifications: any[] = [];
+  private socket = io(`${environment.apiBaseUrl}`);
+  private _notifications = new BehaviorSubject<any[]>([]);
+  notifications$ = this._notifications.asObservable();
+
+  constructor() {
+    this.socket.on('notification', (data: any) => {
+      const current = this._notifications.getValue();
+      this._notifications.next([data, ...current]);
+    });
+    this.notifications$.subscribe((notes) => {
+      this.notifications = notes;
+    });
+  }
+
+  async getHouseFromNotification() {}
+}

@@ -37,9 +37,7 @@ import { environment } from '../../environments/environments';
   imports: [CommonModule, FormsModule],
   template: `
     <section class="p-8 max-w-6xl mx-auto">
-      <div
-        class="bg-gray-900 text-white shadow-2xl rounded-2xl border border-gray-800 p-8 backdrop-blur-sm"
-      >
+      <div class="bg-gray-900  shadow-2xl rounded-2xl border border-gray-800 p-8 backdrop-blur-sm">
         <h1 class="text-3xl font-extrabold mb-6 text-center tracking-wide">
           Manage Users & Experts
         </h1>
@@ -51,9 +49,9 @@ import { environment } from '../../environments/environments';
           <table class="min-w-full divide-y divide-gray-700">
             <thead class="bg-gray-800/60">
               <tr>
-                <th class="p-4 text-left font-semibold text-gray-300">Email</th>
-                <th class="p-4 text-center font-semibold text-gray-300">can post?</th>
-                <th class="p-4 text-center font-semibold text-gray-300">Actions</th>
+                <th class="p-4 text-left font-semibold ">Email</th>
+                <th class="p-4 text-center font-semibold ">can post?</th>
+                <th class="p-4 text-center font-semibold ">Actions</th>
               </tr>
             </thead>
 

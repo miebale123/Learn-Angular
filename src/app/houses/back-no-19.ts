@@ -1,121 +1,258 @@
-// import { CommonModule } from '@angular/common';
-// import { Component, inject, signal } from '@angular/core';
-// import { FormsModule } from '@angular/forms';
-// import { HousesStore } from './houses.store';
-// import { io } from 'socket.io-client';
-// import { LucideAngularModule, Bookmark } from 'lucide-angular';
 // import { HttpClient } from '@angular/common/http';
+// import { computed, inject } from '@angular/core';
+// import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+// import { firstValueFrom } from 'rxjs';
+// import { environment } from '../../environments/environments';
+// import { AuthStateService } from '../core/auth/auth-state.service';
+// import { jwtDecode } from 'jwt-decode';
 
-// @Component({
-//   selector: 'houses',
-//   standalone: true,
-//   imports: [CommonModule, FormsModule, LucideAngularModule],
-//   template: `
-//     <div>
-//       <input type="text" [ngModel]="store.location()" (ngModelChange)="store.setLocation($event)" />
-//       <button (click)="store.uploadHouse(store.location())">upload</button>
+// export const HOUSE_TYPES = ['for sale', 'for rent'] as const;
+// export type HouseType = (typeof HOUSE_TYPES)[number];
 
-//       <h2>the total houses are:</h2>
-//       <ul>
-//         @for(house of store.houses(); track $index) {
-//         <li>
-//           <p>{{ house.location }}</p>
-//           <p>{{ house.userId }}</p>
-//           <button (click)="store.createBookmark(house.id)">
-//             <lucide-icon [name]="bookmark" class="w-5 h-5"></lucide-icon>
-//           </button>
-//         </li>
-//         }
-//       </ul>
+// export const PROPERTY_TYPES = ['condo', 'house', 'land'] as const;
+// export type PropertyType = (typeof PROPERTY_TYPES)[number];
 
-//       <div class="flex gap-20">
-//         <h2>your created houses are:</h2>
-//         <ul>
-//           @for(house of store.myHouses(); track $index) {
-//           <li>
-//             @if (editingHouseId()=== house.id) {
-//             <input
-//               type="text"
-//               [ngModel]="editedLocation"
-//               (ngModelChange)="editedLocation = $event"
-//             />
-//             <button (click)="confirmSave(house.id)">save</button>
-//             }@else {
-//             <p>{{ house.location }}</p>
-//             <p>{{ house.userId }}</p>
-
-//             <button (click)="startEdit(house)" class="border">edit</button>
-//             <button (click)="store.deleteHouse(house.id)">delete</button>
-//             }
-//           </li>
-//           }
-//         </ul>
-
-//         <div>
-//           <h2>bookmarked are:</h2>
-//           <ul>
-//             @for (b of store.bookmarks(); track $index) {
-//             <li>
-//               {{ b.location }}
-//               <button (click)="store.deleteBookmark(b.id)">delete</button>
-//             </li>
-//             }
-//           </ul>
-//         </div>
-//       </div>
-
-//       <h2>notifications</h2>
-
-//       @for (n of store.notifications(); track $index) {
-//       <li>
-//         <button>
-//           {{ n.type }}
-//           {{ n.location }}
-//           {{ n.houseId }}
-//           {{ n.userId }}
-//         </button>
-//       </li>
-//       }
-//     </div>
-//   `,
-// })
-// export class Houses {
-//   store = inject(HousesStore);
-//   editingHouseId = signal<string | null>(null);
-//   editedLocation = '';
-//   bookmark = Bookmark;
-//   http = inject(HttpClient);
-
-//   socket = io(`http://localhost:4442`);
-
-//   onFileSelected(event: Event): void {
-//     const input = event.target as HTMLInputElement;
-//     if (!input.files?.length) return;
-//     // this.store.setFile(input.files[0]);
-//   }
-
-//   constructor() {
-//     this.socket.on('notification', (data) => {
-//       console.log('the notifiction actully being listeneed: ', data);
-//       this.store.getNotifications();
-//     });
-//   }
-
-//   async ngOnInit() {
-//     await this.store.getHouses();
-//     await this.store.getBookmarks();
-//     await this.store.getNotifications();
-//   }
-
-//   startEdit(house: { id: string; location: string }) {
-//     this.editingHouseId.set(house.id);
-//     this.editedLocation = house.location;
-//   }
-
-//   async confirmSave(id: string) {
-//     console.log('when editedLocation before backend: ', this.editedLocation);
-//     await this.store.updateHouse(id, this.editedLocation);
-//     this.editingHouseId.set(null);
-//     this.editedLocation = '';
-//   }
+// interface HouseDto {
+//   id: string;
+//   type: HouseType;
+//   property_type: PropertyType;
+//   secure_url: string;
+//   location: string;
+//   previousPrice?: number;
+//   priceReduced?: boolean;
+//   price: number;
+//   bedroom: number;
+//   bathroom: number;
+//   area: string;
+//   userId: number;
 // }
+
+// export const HousesStore = signalStore(
+//   { providedIn: 'root' },
+
+//   withState<{
+//     type: HouseType;
+//     property_type: PropertyType;
+//     location: string;
+//     price: number;
+//     bedroom: number;
+//     bathroom: number;
+//     area: string;
+//     searchLocation: string;
+//     file: File | null;
+//     houses: HouseDto[];
+//     bookmarks: {
+//       id: string;
+//       house: HouseDto;
+//       user: { id: number; email: string };
+//     }[];
+//     notifications: {
+//       id: string;
+//       type: HouseType;
+//       house: HouseDto;
+//       user: { id: number };
+//     }[];
+//     searchPrice: { min: number | null; max: number | null };
+//     priceOptions: number[];
+//     minPrice: number | null;
+//     maxPrice: number | null;
+//   }>({
+//     type: 'for rent',
+//     property_type: 'house',
+//     location: '',
+//     price: 0,
+//     bedroom: 0,
+//     bathroom: 0,
+//     area: '',
+//     searchLocation: '',
+//     file: null,
+//     houses: [],
+//     bookmarks: [],
+//     notifications: [],
+//     searchPrice: { min: null, max: null },
+//     priceOptions: [50000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 750000, 1000000],
+//     minPrice: null,
+//     maxPrice: null,
+//   }),
+
+//   withMethods((store) => {
+//     const http = inject(HttpClient);
+//     const auth = inject(AuthStateService);
+
+//     const myHouses = computed(() => {
+//       const token = auth.accessToken();
+//       if (!token) return [];
+//       const userId = jwtDecode<{ sub: number }>(token).sub;
+//       return store.houses().filter((h) => h.userId === userId);
+//     });
+
+//     return {
+//       myHouses,
+
+//       // setters
+//       setMinPrice(value: number | null) {
+//         patchState(store, { minPrice: value });
+//       },
+//       setMaxPrice(value: number | null) {
+//         patchState(store, { maxPrice: value });
+//       },
+
+//       // apply search
+//       setSearchPrice(min: number | null, max: number | null) {
+//         patchState(store, { searchPrice: { min, max } });
+//       },
+
+//       setSearchLocation(searchLocation: string) {
+//         patchState(store, { searchLocation });
+//       },
+
+//       setType(type: HouseType) {
+//         patchState(store, { type });
+//       },
+
+//       setPropertyType(property_type: PropertyType) {
+//         patchState(store, { property_type });
+//       },
+
+//       setFile(file: File) {
+//         patchState(store, { file });
+//       },
+
+//       setLocation(location: string) {
+//         patchState(store, { location });
+//       },
+
+//       setPrice(price: number) {
+//         patchState(store, { price });
+//       },
+
+//       setBathroom(bathroom: number) {
+//         patchState(store, { bathroom });
+//       },
+
+//       setBedroom(bedroom: number) {
+//         patchState(store, { bedroom });
+//       },
+
+//       setArea(area: string) {
+//         patchState(store, { area });
+//       },
+
+//       async uploadHouse() {
+//         if (!store.file() || !store.location()) return;
+
+//         const formData = new FormData();
+//         formData.append('type', store.type());
+//         formData.append('property_type', store.property_type());
+//         formData.append('file', store.file()!);
+//         formData.append('location', store.location());
+//         formData.append('bedroom', String(store.bedroom()));
+//         formData.append('bathroom', String(store.bathroom()));
+//         formData.append('price', String(store.price()));
+//         formData.append('area', String(store.area()));
+
+//         const res: any = await firstValueFrom(
+//           http.post(`${environment.apiBaseUrl}/houses/upload-house`, formData)
+//         );
+
+//         patchState(store, {
+//           houses: [...store.houses(), res.savedHouse],
+//           file: null,
+//           location: '',
+//         });
+//       },
+
+//       async getHouses() {
+//         const query = new URLSearchParams();
+
+//         const min = store.searchPrice().min;
+//         const max = store.searchPrice().max;
+
+//         if (min !== null) query.set('min', String(min));
+//         if (max !== null) query.set('max', String(max));
+
+//         if (store.searchLocation()) query.set('location', store.searchLocation());
+//         if (store.property_type()) query.set('property_type', store.property_type());
+//         if (store.type()) query.set('type', store.type());
+//         if (store.bedroom()) query.set('bedroom', String(store.bedroom()));
+//         if (store.bathroom()) query.set('bathroom', String(store.bathroom()));
+
+//         const url = `${environment.apiBaseUrl}/houses?${query.toString()}`;
+
+//         const res: any = await firstValueFrom(http.get(url));
+
+//         patchState(store, { houses: res });
+//       },
+
+//       async getBookmarks() {
+//         const res: any = await firstValueFrom(
+//           http.get(`${environment.apiBaseUrl}/houses/bookmarks`)
+//         );
+//         patchState(store, { bookmarks: res });
+//       },
+
+//       async getNotifications() {
+//         const res: any = await firstValueFrom(
+//           http.get(`${environment.apiBaseUrl}/houses/notifications`)
+//         );
+//         patchState(store, { notifications: res });
+//       },
+
+//       async updateHouse(
+//         id: string,
+//         location: string,
+//         price: number,
+//         bedroom: number,
+//         bathroom: number,
+//         area: string
+//       ) {
+//         const res: any = await firstValueFrom(
+//           http.patch(`${environment.apiBaseUrl}/houses/${id}`, {
+//             location,
+//             price,
+//             bedroom,
+//             bathroom,
+//             area,
+//           })
+//         );
+
+//         const updated = res.updatedHouse;
+
+//         // update houses list
+//         patchState(store, {
+//           houses: store.houses().map((h) => (h.id === id ? updated : h)),
+//           // update bookmarks that reference this house
+//           bookmarks: store
+//             .bookmarks()
+//             .map((b) => (b.house.id === id ? { ...b, house: updated } : b)),
+//           // update notifications that reference this house
+//           notifications: store
+//             .notifications()
+//             .map((n) => (n.house.id === id ? { ...n, house: updated } : n)),
+//         });
+//       },
+
+//       async deleteHouse(id: string) {
+//         await firstValueFrom(http.delete(`${environment.apiBaseUrl}/houses/deleteHouse/${id}`));
+//         patchState(store, {
+//           houses: store.houses().filter((h) => h.id !== id),
+//           bookmarks: store.bookmarks().filter((b) => b.house.id !== id),
+//         });
+//       },
+
+//       async deleteBookmark(id: string) {
+//         await firstValueFrom(http.delete(`${environment.apiBaseUrl}/houses/deleteBookmark/${id}`));
+//         patchState(store, { bookmarks: store.bookmarks().filter((b) => b.id !== id) });
+//       },
+
+//       async createBookmark(houseId: string) {
+//         const res: any = await firstValueFrom(
+//           http.post(`${environment.apiBaseUrl}/houses/create-bookmark`, { houseId })
+//         );
+//         patchState(store, {
+//           bookmarks: [...store.bookmarks(), res.savedBookmark],
+//         });
+//       },
+//     };
+//   })
+// );

@@ -2,20 +2,21 @@ import { Routes } from '@angular/router';
 import { AuthGuard } from './core/auth/auth.guard';
 import { Home } from './pages/home/home.component';
 import { Signin } from './pages/auth-sign-in/sign-in.component';
-import { Signup } from './pages/auth-sign-up/sign-up.component';
-import { ForgotPassword } from './pages/auth-password-forgot/forgot-password..component';
-import { ResetPassword } from './pages/auth-password-reset/reset-password.component';
 import { AppLayout } from './lay-out/app-layout.component';
 import { Admin } from './admin/admin.component';
-// import { Bookmarks } from './pages/bookmarks/bookmarks.component';
-import { VerificationComponent } from './pages/auth-sign-up/verification.component';
-import { LoginSuccessComponent } from './pages/oauth-log-in.component';
 import { Houses } from './houses/houses.component';
-import { PushComponent } from './push.component';
+import { MyHouses } from './houses/my-houses.component';
+import { Upload } from './houses/upload-house.component';
+import { Bookmarks } from './pages/bookmarks/bookmarks.component';
+import { House } from './houses/house.component';
+import { Signup } from './pages/auth-sign-up/sign-up.component';
+import { VerificationComponent } from './pages/auth-sign-up/verification.component';
+import { Search } from './houses/search.component';
 
 export const routes: Routes = [
   { path: '', component: Home, pathMatch: 'full' },
-  { path: 'oauth-login', component: LoginSuccessComponent },
+  { path: 'search-house', component: Search, pathMatch: 'full' },
+  // { path: 'oauth-login', component: LoginSuccessComponent },
   {
     path: 'auth',
     children: [
@@ -23,8 +24,8 @@ export const routes: Routes = [
       { path: 'app-verification', component: VerificationComponent },
       { path: 'sign-in', component: Signin },
       { path: 'google', redirectTo: 'google/callback' },
-      { path: 'forgot-password', component: ForgotPassword },
-      { path: 'reset-password/:resetToken', component: ResetPassword },
+      // { path: 'forgot-password', component: ForgotPassword },
+      // { path: 'reset-password/:resetToken', component: ResetPassword },
     ],
   },
   {
@@ -32,8 +33,9 @@ export const routes: Routes = [
     component: AppLayout,
     children: [
       { path: 'houses', component: Houses },
-      // { path: 'upload-house', component: UploadHouse },
-      // { path: 'my-uploads', component: MyUploads },
+
+      { path: 'house', component: House },
+      { path: 'upload-house', component: Upload },
     ],
   },
   {
@@ -42,9 +44,9 @@ export const routes: Routes = [
     component: AppLayout,
     children: [
       { path: 'admin', component: Admin },
-      { path: 'app-notifications', component: Notification },
-      { path: 'app-push', component: PushComponent },
-      // { path: 'bookmarks', component: Bookmarks },
+      // { path: 'notifications', component: Notifications },
+      { path: 'my-houses', component: MyHouses },
+      { path: 'bookmarks', component: Bookmarks },
     ],
   },
 ];
