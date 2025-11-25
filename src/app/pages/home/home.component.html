@@ -1,13 +1,12 @@
-<div class="min-h-screen flex flex-col bg-black text-white">
+<div class="min-h-screen flex flex-col pt-12">
   <app-header></app-header>
 
-  <!-- HERO -->
   <main
-    class="flex-1 flex flex-col justify-start items-center text-center gap-6 px-4 pt-8 md:pt-20 lg:pt-40"
+    class="flex-1 flex flex-col justify-start items-center text-center gap-6 px-4 pt-8 md:pt-20 lg:pt-40 text-white hero-section"
   >
     <div class="flex items-baseline justify-center font-bold tracking-wide leading-none gap-1">
-      <span class="text-[clamp(3rem,9vw,7rem)] select-none">Lum</span>
-      <app-candle></app-candle>
+      <span class="text-[clamp(3rem,9vw,7rem)] select-none">Lumi</span>
+      <!-- <app-candle></app-candle> -->
       <span class="text-[clamp(3rem,9vw,7rem)] select-none">na</span>
     </div>
 
@@ -20,38 +19,36 @@
     <search-house (search)="onSearch($event)"></search-house>
   </main>
 
-  <!-- WAVY TRANSITION -->
-  <section class="bg-linear-to-r from-[#a87b56] via-[#c6a97b] to-[#8c6b4f] w-full overflow-hidden">
-    <svg viewBox="0 0 1440 200" class="fill-black w-full">
+  <section class="w-full overflow-hidden">
+    <svg viewBox="0 0 1440 200" class="fill-blue-500 w-full">
       <path d="M0,132C180,0,1360,160,1440,0L140,0L0,0Z"></path>
     </svg>
   </section>
 
-  <!-- NEW CONTENT SECTIONS -->
   <!-- FEATURED HOUSES -->
   <section class="py-16 px-6 text-center">
     <h2 class="text-3xl font-bold mb-10">Featured Homes</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
       <!-- Example house card -->
-      <div class="rounded-xl overflow-hidden shadow-lg border border-gray-800">
+      <div class="rounded-xl overflow-hidden shadow-lg border">
         <div class="p-5 space-y-2">
           <h3 class="text-xl font-semibold">Modern Apartment</h3>
-          <p class="text-gray-400 text-sm">Addis Ababa • 25,000 ETB/mo</p>
+          <p class="text-sm">Arat kilo • 25,000 ETB/mo</p>
         </div>
       </div>
 
-      <div class="rounded-xl overflow-hidden shadow-lg border border-gray-800">
+      <div class="rounded-xl overflow-hidden shadow-lg border">
         <div class="p-5 space-y-2">
           <h3 class="text-xl font-semibold">Family Home</h3>
-          <p class="text-gray-400 text-sm">Bole • 40,000 ETB/mo</p>
+          <p class="text-sm">Bole • 40,000 ETB/mo</p>
         </div>
       </div>
 
-      <div class="rounded-xl overflow-hidden shadow-lg border border-gray-800">
+      <div class="rounded-xl overflow-hidden shadow-lg border">
         <div class="p-5 space-y-2">
           <h3 class="text-xl font-semibold">Luxury Condo</h3>
-          <p class="text-gray-400 text-sm">Kazanchis • 55,000 ETB/mo</p>
+          <p class="text-sm">Kazanchis • 55,000 ETB/mo</p>
         </div>
       </div>
     </div>
@@ -62,27 +59,25 @@
     <h2 class="text-3xl font-bold mb-8">Why Choose Lumina?</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-10 max-w-5xl mx-auto px-6">
-      <div class="p-6 rounded-xl border border-gray-800">
+      <div class="p-6 rounded-xl border">
         <h3 class="text-xl font-semibold mb-2">Verified Listings</h3>
-        <p class="text-gray-400">Every property is screened for quality and accuracy.</p>
+        <p class="">Every property is screened for quality and accuracy.</p>
       </div>
 
-      <div class="p-6 rounded-xl border border-gray-800">
+      <div class="p-6 rounded-xl border">
         <h3 class="text-xl font-semibold mb-2">Trusted Agents</h3>
-        <p class="text-gray-400">Work with experienced, reliable real-estate professionals.</p>
+        <p class="">Work with experienced, reliable real-estate professionals.</p>
       </div>
 
-      <div class="p-6 rounded-xl border border-gray-800">
+      <div class="p-6 rounded-xl border">
         <h3 class="text-xl font-semibold mb-2">Fast Support</h3>
-        <p class="text-gray-400">Need help? We respond quickly and clearly.</p>
+        <p class="">Need help? We respond quickly and clearly.</p>
       </div>
     </div>
   </section>
 
   <!-- CALL TO ACTION -->
-  <section
-    class="bg-linear-to-r from-[#a87b56] via-[#c6a97b] to-[#8c6b4f] py-20 text-center text-black"
-  >
+  <section class="py-20 text-center text-black">
     <h2 class="text-3xl font-bold mb-4">Start Your Search Today</h2>
     <p class="mb-8 text-lg">Find your perfect home with ease and confidence.</p>
 

@@ -6,7 +6,7 @@ import { ArrowDown, LucideAngularModule, X } from 'lucide-angular';
   selector: 'bookmarks',
   imports: [LucideAngularModule],
   template: `
-    <div class="flex-1 p-4">
+    <div class="flex-1 p-4 ">
       <h2 class="text-2xl font-semibold mb-6 ">Bookmarked Houses</h2>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

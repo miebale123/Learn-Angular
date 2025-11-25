@@ -15,7 +15,7 @@ import { LucideAngularModule, Pencil, Trash2, Save } from 'lucide-angular';
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
     @for (house of store.myHouses(); track $index) {
 
-    <div class="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition relative p-4">
+    <div class="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition relative p-4 bg-blue-400">
 
       @if (editingHouseId() === house.id) {
       <!-- Editing Mode -->

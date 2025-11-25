@@ -37,15 +37,15 @@ import { environment } from '../../environments/environments';
   imports: [CommonModule, FormsModule],
   template: `
     <section class="p-8 max-w-6xl mx-auto">
-      <div class="bg-gray-900  shadow-2xl rounded-2xl border border-gray-800 p-8 backdrop-blur-sm">
+      <div class=" shadow-2xl rounded-2xl border ">
         <h1 class="text-3xl font-extrabold mb-6 text-center tracking-wide">
           Manage Users & Experts
         </h1>
 
         @if (users.length === 0) {
-        <p class="text-gray-400 text-center py-8 text-lg">Loading users...</p>
+        <p class=" text-center py-8 text-lg">Loading users...</p>
         } @else {
-        <div class="overflow-x-auto rounded-xl border border-gray-700">
+        <div class="overflow-x-auto rounded-xl ">
           <table class="min-w-full divide-y divide-gray-700">
             <thead class="bg-gray-800/60">
               <tr>

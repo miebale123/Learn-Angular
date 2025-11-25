@@ -21,8 +21,12 @@ export class Home {
 
   store = inject(HousesStore);
 
+  
+
   onSearch(searchValue: string) {
     this.store.setSearchLocation(searchValue); // store the search term
     this.router.navigateByUrl('/houses'); // go to houses page
   }
+
+
 }

@@ -22,7 +22,7 @@ import { AuthStateService } from '../pages/auth-sign-in/sign-in.component';
         <div class="space-y-3">
           @for (n of store.notifications(); track $index) {
           <div
-            class="p-4 rounded-xl border border-gray-700 bg-gray-800 hover:bg-gray-700
+            class="p-4 rounded-xl border hover:bg-gray-700
                    transition cursor-pointer shadow-sm hover:shadow-md"
             (click)="getHouse(n.house.id)"
             #cardRef
@@ -30,7 +30,7 @@ import { AuthStateService } from '../pages/auth-sign-in/sign-in.component';
             <div class="flex justify-between">
               <div>
                 <p class=" text-sm ">
-                  <span class="font-semibold text-indigo-400">{{ n.type }}</span>
+                  <span class="font-semibold ">{{ n.type }}</span>
                   for a house in
                   <span class="font-medium">{{ n.house.location }}</span>
                 </p>

@@ -11,15 +11,16 @@ import { HousesStore } from './houses.store';
     <div
       class="flex items-center w-full sm:w-[500px]
            bg-white rounded-full border border-gray-300
-           px-4 py-2 shadow-sm
-           focus-within:ring-2 focus-within:ring-black"
+           px-4 py-1
+           "
     >
       <input
         type="text"
-        placeholder="Try Addis Ababa, Bole…"
+        placeholder="Try Arat kilo, Bole…"
         class="flex-1 text-gray-700 placeholder-gray-400 focus:outline-none border-none"
         [ngModel]="store.searchLocation()"
         (ngModelChange)="store.setSearchLocation($event)"
+          (keydown.enter)="onSearchClick()"
       />
 
       <button

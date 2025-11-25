@@ -88,6 +88,7 @@ export class VerificationComponent {
       this.authState.setLoggedIn(true);
       this.authState.setAccessToken(res.accessToken);
       this.authState.setLoggedIn(true);
+      
       this.router.navigateByUrl('/');
     } else {
       console.warn('Please enter valid 6-digit OTP code.');

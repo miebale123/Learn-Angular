@@ -10,11 +10,11 @@ import { LucideAngularModule } from 'lucide-angular';
   imports: [CommonModule, RouterOutlet, Header, LucideAngularModule],
   template: `
     <div class="min-h-screen flex flex-col">
-      <!-- Force header to white -->
-      <app-header class="bg-white! text-black"></app-header>
-      <main class="flex-1 pt-16 pb-8 px-4 sm:px-6 md:px-8 overflow-y-auto">
+      <app-header></app-header>
+      <main class="flex-1 pt-16 pb-8 px-4 sm:px-6 md:px-8 overflow-y-auto bg-blue-500">
         <router-outlet></router-outlet>
       </main>
+      <!-- <app-footer></app-footer> -->
     </div>
   `,
 })

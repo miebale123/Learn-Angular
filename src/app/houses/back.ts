@@ -1,471 +1,367 @@
-// import { CommonModule } from '@angular/common';
-// import { Component, inject, signal } from '@angular/core';
-// import { FormsModule } from '@angular/forms';
-// import { HousesStore } from './houses.store';
-// import { io } from 'socket.io-client';
-// import { LucideAngularModule, Heart, ArrowDown } from 'lucide-angular';
+// import { HttpClient } from '@angular/common/http';
+// import { computed, inject } from '@angular/core';
+// import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+// import { firstValueFrom } from 'rxjs';
+// import { environment } from '../../environments/environments';
 // import { jwtDecode } from 'jwt-decode';
-// import { AuthStateService } from '../core/auth/auth-state.service';
+// import { AuthStateService } from '../pages/auth-sign-in/sign-in.component';
 
-// @Component({
-//   selector: 'houses',
-//   standalone: true,
-//   imports: [CommonModule, FormsModule, LucideAngularModule],
-//   template: `
-//     <div class="p-4 space-y-6 ! bg-black!">
-//       <!-- search -->
-//       <div class="flex gap-2 ">
-//         <div class="flex gap-2 mb-4">
-//           <input
-//             type="text"
-//             placeholder="Search by location"
-//             [ngModel]="store.searchLocation()"
-//             (ngModelChange)="store.setSearchLocation($event)"
-//           />
-//         </div>
+// export const HOUSE_TYPES = ['for sale', 'for rent'] as const;
+// export type HouseType = (typeof HOUSE_TYPES)[number];
 
-//         <!-- price dropdown -->
+// export const PROPERTY_TYPES = ['condo', 'house', 'land'] as const;
+// export type PropertyType = (typeof PROPERTY_TYPES)[number];
 
-//         <!-- Price button -->
-//         <button
-//           class="border px-3 py-2 rounded w-full text-left"
-//           (click)="priceOpen.set(!priceOpen())"
-//         >
-//           Price
-//         </button>
+// interface HouseDto {
+//   id: string;
+//   type: HouseType;
+//   property_type: PropertyType;
+//   secure_url: string;
+//   location: string;
+//   previousPrice?: number;
+//   priceReduced?: boolean;
+//   price: number;
+//   bedroom: number;
+//   bathroom: number;
+//   area: string;
+//   userId: number;
+// }
 
-//         @if (priceOpen()) {
-//         <div class="absolute mt-2 bg-black border rounded-xl p-4 w-72 shadow-lg z-30">
-//           <div class="font-semibold mb-2">Price</div>
+// export const HousesStore = signalStore(
+//   { providedIn: 'root' },
 
-//           <!-- Min / Max rows -->
-//           <div class="flex items-center gap-3">
-//             <!-- Min -->
-//             <div class="relative flex-1">
-//               <button
-//                 class="border px-3 py-2 rounded w-full text-left"
-//                 (click)="minPriceOpen.set(!minPriceOpen())"
-//               >
-//                 {{ store.minPrice() ? store.minPrice() : 'No min' }}
-//               </button>
-
-//               @if (minPriceOpen()) {
-//               <ul
-//                 class="absolute bg-black border rounded w-full mt-1 max-h-40 overflow-y-auto shadow"
-//               >
-//                 <li
-//                   class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-//                   (mousedown)="store.setMinPrice(null); minPriceOpen.set(false)"
-//                 >
-//                   No min
-//                 </li>
-
-//                 @for (price of store.priceOptions(); track $index) {
-//                 <li
-//                   class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-//                   (mousedown)="store.setMinPrice(price); minPriceOpen.set(false)"
-//                 >
-//                   {{ price }}
-//                 </li>
-//                 }
-//               </ul>
-//               }
-//             </div>
-
-//             <span>-</span>
-
-//             <!-- Max -->
-//             <div class="relative flex-1">
-//               <button
-//                 class="border px-3 py-2 rounded w-full text-left"
-//                 (click)="maxPriceOpen.set(!maxPriceOpen())"
-//               >
-//                 {{ store.maxPrice() ? store.maxPrice() : 'No max' }}
-//               </button>
-
-//               @if (maxPriceOpen()) {
-//               <ul
-//                 class="absolute bg-black border rounded w-full mt-1 max-h-40 overflow-y-auto shadow"
-//               >
-//                 <li
-//                   class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-//                   (mousedown)="store.setMaxPrice(null); maxPriceOpen.set(false)"
-//                 >
-//                   No max
-//                 </li>
-
-//                 @for (price of store.priceOptions(); track $index) {
-//                 <li
-//                   class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-//                   (mousedown)="store.setMaxPrice(price); maxPriceOpen.set(false)"
-//                 >
-//                   {{ price }}
-//                 </li>
-//                 }
-//               </ul>
-//               }
-//             </div>
-//           </div>
-
-//           <!-- Done -->
-//           <button
-//             type="button"
-//             class="text-sm underline text-gray-600 hover:text-black"
-//             (click)="closeAll()"
-//           >
-//             Done
-//           </button>
-//         </div>
-//         }
-//       </div>
-
-//       <!-- upload -->
-//       <div>
-//         <select
-//           class="border px-2 py-1"
-//           [ngModel]="store.type()"
-//           (ngModelChange)="store.setType($event!)"
-//         >
-//           @for(t of ['for rent', 'for sale']; track t) {
-//           <option [value]="t">{{ t }}</option>
-//           }
-//         </select>
-
-//         <select
-//           class="border px-2 py-1"
-//           [ngModel]="store.property_type()"
-//           (ngModelChange)="store.setPropertyType($event!)"
-//         >
-//           @for(p of ['condo','house','land']; track p) {
-//           <option [value]="p">{{ p }}</option>
-//           }
-//         </select>
-
-//         <label class="border px-2 py-1 rounded cursor-pointer">
-//           Choose image
-//           <input type="file" (change)="onFileSelected($event)" class="hidden" />
-//         </label>
-
-//         <!-- Preview -->
-//         @if(uploadedPreview()) {
-//         <img [src]="uploadedPreview()" alt="Preview" class="w-48 h-48 object-cover rounded mt-2" />
-//         }
-//         <div class="flex gap-2">
-//           <input
-//             type="text"
-//             [ngModel]="store.location()"
-//             (ngModelChange)="store.setLocation($event)"
-//           />
-
-//           <input
-//             placeholder="Bedrooms"
-//             [ngModel]="store.bedroom()"
-//             (ngModelChange)="store.setBedroom($event)"
-//           />
-
-//           <input
-//             placeholder="Bathrooms"
-//             [ngModel]="store.bathroom()"
-//             (ngModelChange)="store.setBathroom($event)"
-//           />
-
-//           <input
-//             placeholder="Bedrooms"
-//             [ngModel]="store.area()"
-//             (ngModelChange)="store.setArea($event)"
-//           />
-
-//           <button class="border px-2" (click)="upload()">upload</button>
-//         </div>
-//       </div>
-
-//       <!-- All houses -->
-//       <div>
-//         <h2 class="text-xl font-semibold">the total houses are:</h2>
-//         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-//           @for(house of store.houses(); track $index) {
-
-//           <div
-//             class="bg-black rounded-xl overflow-hidden shadow hover:shadow-xl transition cursor-pointer"
-//           >
-//             <!-- Big image -->
-//             <img [src]="house.secure_url" alt="House Image" class="w-full h-60 object-cover" />
-
-//             <!-- Content -->
-//             <div class="p-4 space-y-2">
-//               <!-- Status + Price -->
-//               <p class="font-semibold text-sm capitalize ">
-//                 {{ house.property_type }} {{ house.type }}
-//               </p>
-
-//               <p class="text-2xl font-bold  flex items-center gap-2 !">
-//                 $ {{ house.price }}
-
-//                 @if(house.priceReduced) {
-//                 <lucide-icon [name]="down" class="w-4 h-4"></lucide-icon>
-//                 <span class="text-red-600 text-sm">
-//                   - {{ house.previousPrice! - house.price }}
-//                 </span>
-//                 }
-//               </p>
-
-//               <!-- Beds / Baths / Sqft -->
-//               <div class="flex items-center gap-4 text-gray-700 text-sm">
-//                 <span>{{ house.bedroom }} bed</span>
-//                 <span>{{ house.bathroom }} bath</span>
-//                 <span>{{ house.area }} sqft</span>
-//               </div>
-
-//               <!-- Location -->
-//               <p class="text-gray-800 text-sm">
-//                 {{ house.location }}
-//               </p>
-
-//               <!-- Bookmark -->
-//               <button
-//                 class="mt-3 border px-3 py-1 rounded hover:bg-gray-100"
-//                 (click)="store.createBookmark(house.id)"
-//               >
-//                 <lucide-icon [name]="heart" class="w-5 h-5 bg-black"></lucide-icon>
-//               </button>
-//             </div>
-//           </div>
-
-//           }
-//         </div>
-//       </div>
-
-//       <!-- My houses -->
-//       <div class="flex flex-col lg:flex-row gap-10 mt-10">
-//         <div class="flex-1">
-//           <h2 class="text-xl font-semibold mb-4">your created houses are:</h2>
-//           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-//             @for(house of store.myHouses(); track $index) {
-//             <div class="border p-3 rounded shadow hover:shadow-lg transition">
-//               @if(editingHouseId() === house.id) {
-//               <input
-//                 type="text"
-//                 [ngModel]="editedLocation"
-//                 (ngModelChange)="editedLocation = $event"
-//               />
-
-//               <input type="text" [ngModel]="editedPrice" (ngModelChange)="editedPrice = $event" />
-
-//               <input
-//                 placeholder="Bedrooms"
-//                 [ngModel]="editedBedroom"
-//                 (ngModelChange)="editedBedroom = $event"
-//               />
-
-//               <input
-//                 placeholder="Bathrooms"
-//                 [ngModel]="editedBathroom"
-//                 (ngModelChange)="editedBathroom = $event"
-//               />
-
-//               <input
-//                 placeholder="area"
-//                 [ngModel]="editedArea"
-//                 (ngModelChange)="editedArea = $event"
-//               />
-
-//               <button class="border px-2 rounded hover:bg-gray-100" (click)="confirmSave(house.id)">
-//                 save
-//               </button>
-//               } @else {
-//               <img
-//                 [src]="house.secure_url"
-//                 alt="House Image"
-//                 class="w-full h-40 object-cover rounded mb-2"
-//               />
-//               type:
-//               <p class="font-medium">{{ house.type }}</p>
-//               <p class="font-medium">{{ house.property_type }}</p>
-//               <p class="font-medium">{{ house.location }}</p>
-//               <p class="font-medium">
-//                 <strong> <span>$</span>{{ house.price }} </strong>
-//               </p>
-//               bed:
-//               <p class="font-medium">{{ house.bedroom }}</p>
-//               bath:
-//               <p class="font-medium">{{ house.bathroom }}</p>
-
-//               area:
-//               <p class="font-medium">{{ house.area }}</p>
-
-//               <p class="text-sm text-gray-500">{{ house.userId }}</p>
-//               <div class="flex gap-2 mt-2">
-//                 <button class="border px-2 rounded hover:bg-gray-100" (click)="startEdit(house)">
-//                   edit
-//                 </button>
-//                 <button
-//                   class="border px-2 rounded hover:bg-gray-100"
-//                   (click)="store.deleteHouse(house.id)"
-//                 >
-//                   delete
-//                 </button>
-//               </div>
-//               }
-//             </div>
-//             }
-//           </div>
-//         </div>
-
-//         <!-- Bookmarks -->
-//         <div class="flex-1">
-//           <h2 class="text-xl font-semibold mb-4">bookmarked are:</h2>
-//           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-//             @for(b of store.bookmarks(); track $index) {
-//             <div class="border p-2 rounded shadow hover:shadow-lg transition">
-//               <img
-//                 [src]="b.house.secure_url"
-//                 alt="House Image"
-//                 class="w-full h-40 object-cover rounded mb-2"
-//               />
-//               <p class="font-medium">{{ b.house.location }}</p>
-//               <button
-//                 class="mt-2 border px-2 rounded hover:bg-gray-100"
-//                 (click)="store.deleteBookmark(b.id)"
-//               >
-//                 delete
-//               </button>
-//             </div>
-//             }
-//           </div>
-//         </div>
-//       </div>
-
-//       <!-- Notifications  -->
-//       <div>
-//         <h2 class="text-xl font-semibold mt-10">notifications</h2>
-//         <ul class="space-y-1">
-//           @for(n of store.notifications(); track $index) {
-//           <li class="border p-2 rounded">
-//             {{ n.type }} — {{ n.house.location }} — {{ n.house.id }} — {{ n.house.userId }}
-//           </li>
-//           }
-//         </ul>
-//       </div>
-//     </div>
-//   `,
-// })
-// export class Houses {
-//   store = inject(HousesStore);
-//   editingHouseId = signal<string | null>(null);
-//   editedLocation = '';
-//   editedPrice = 0;
-//   editedBedroom = 0;
-//   editedBathroom = 0;
-//   editedArea = '';
-//   heart = Heart;
-//   down = ArrowDown;
-//   priceDropdownOpen = signal(false);
-//   minPrice: number | null = null;
-//   maxPrice: number | null = null;
-//   uploadedPreview = signal<string | null>(null);
-
-//   auth = inject(AuthStateService);
-
-//   socket;
-
-//   constructor() {
-//     const token = this.auth.accessToken();
-//     let userId = null;
-
-//     if (token) {
-//       userId = jwtDecode<{ sub: number }>(token).sub;
-//     }
-
-//     this.socket = io('http://localhost:4442', {
-//       query: { userId },
-//     });
-
-//     this.socket.on('notification', () => {
-//       this.store.getNotifications();
-//     });
-//   }
-
-//   async ngOnInit() {
-//     await this.store.getHouses();
-//     await this.store.getBookmarks();
-//     await this.store.getNotifications();
-//   }
-
-//   startEdit(house: {
-//     id: string;
+//   withState<{
+//     type: HouseType;
+//     property_type: PropertyType;
 //     location: string;
 //     price: number;
 //     bedroom: number;
 //     bathroom: number;
 //     area: string;
-//   }) {
-//     this.editingHouseId.set(house.id);
-//     this.editedLocation = house.location;
-//     this.editedPrice = house.price;
-//     this.editedBedroom = house.bedroom;
-//     this.editedBathroom = house.bathroom;
-//     this.editedArea = house.area;
-//   }
+//     searchLocation: string | null;
+//     file: File | null;
+//     house: HouseDto | null;
+//     houses: HouseDto[];
+//     bookmarks: {
+//       id: string;
+//       house: HouseDto;
+//       user: { id: number; email: string };
+//     }[];
+//     notifications: {
+//       id: string;
+//       type: HouseType;
+//       house: HouseDto;
+//       user: { id: number };
+//     }[];
+//     searchPrice: { min: number | null; max: number | null };
+//     searchBedroom: { min: null, max: null },
+// searchBathroom: { min: null, max: null },
 
-//   async confirmSave(id: string) {
-//     await this.store.updateHouse(
-//       id,
-//       this.editedLocation,
-//       this.editedPrice,
-//       this.editedBedroom,
-//       this.editedBathroom,
-//       this.editedArea
-//     );
-//     this.editingHouseId.set(null);
-//     this.editedLocation = '';
-//     this.editedPrice = 0;
-//     this.editedBedroom = 0;
-//     this.editedBathroom = 0;
-//     this.editedArea = '';
-//   }
+//     priceOptions: number[];
+//     minPrice: number | null;
+//     maxPrice: number | null;
+//     minBedroom: number | null;
+//     maxBedroom: number | null;
+//     minBathroom: number | null;
+//     maxBathroom: number | null;
 
-//   onFileSelected(event: Event) {
-//     const input = event.target as HTMLInputElement;
-//     if (!input.files?.length) return;
+//     uploading: boolean;
+//     notificationCounter: number;
+//   }>({
+//     type: 'for rent',
+//     property_type: 'house',
+//     location: '',
+//     price: 0,
+//     bedroom: 0,
+//     bathroom: 0,
+//     area: '',
+//     searchLocation: null,
+//     file: null,
+//     house: null,
+//     houses: [],
+//     bookmarks: [],
+//     notifications: [],
+//     searchPrice: { min: null, max: null },
+//     priceOptions: [50000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 750000, 1000000],
+//     minPrice: null,
+//     maxPrice: null,
+//      minBedroom:  null,
+//     maxBedroom:  null,
+//     minBathroom: null,
+//     maxBathroom: null,
+//     uploading: false,
+//     notificationCounter: 0,
+//   }),
 
-//     const file = input.files[0];
-//     this.store.setFile(file);
+//   withMethods((store) => {
+//     const http = inject(HttpClient);
+//     const auth = inject(AuthStateService);
 
-//     const reader = new FileReader();
-//     reader.onload = (e) => {
-//       this.uploadedPreview.set(e.target?.result as string);
-//     };
-//     reader.readAsDataURL(file);
-//   }
+//     const myHouses = computed(() => {
+//       const token = auth.accessToken();
+//       if (!token) return [];
+//       const userId = jwtDecode<{ sub: number }>(token).sub;
+//       return store.houses().filter((h) => h.userId === userId);
+//     });
 
-//   async upload() {
-//     await this.store.uploadHouse(); // remove location()
-//     this.uploadedPreview.set(null);
-//   }
+//     return {
+//       myHouses,
 
-//   minDropdownOpen = signal(false);
-//   maxDropdownOpen = signal(false);
+//       incrementNCounter() {
+//         patchState(store, { notificationCounter: store.notificationCounter() + 1 });
+//       },
 
-//   // To allow input blur without closing before click
-//   closeMinDropdown() {
-//     setTimeout(() => this.minDropdownOpen.set(false), 150);
-//   }
-//   closeMaxDropdown() {
-//     setTimeout(() => this.maxDropdownOpen.set(false), 150);
-//   }
+//       resetNCounter() {
+//         patchState(store, { notificationCounter: 0 });
+//       },
 
-//   applyPriceRange() {
-//     this.store.setSearchPrice(this.minPrice, this.maxPrice);
-//     this.priceDropdownOpen.set(false);
-//   }
+//       setMinBedroom(value: number | null) {
+//         patchState(store, { minBedroom: value });
+//       },
 
-//   priceOpen = signal(false);
-//   minPriceOpen = signal(false);
-//   maxPriceOpen = signal(false);
+//       setMaxBedroom(value: number | null) {
+//         patchState(store, { maxBedroom: value });
+//       },
 
-//   closeAll() {
-//     this.priceOpen.set(false);
-//     this.minPriceOpen.set(false);
-//     this.maxPriceOpen.set(false);
-//   }
+//       setMinBathroom(value: number | null) {
+//         patchState(store, { minBathroom: value });
+//       },
+
+//       setMaxBathroom(value: number | null) {
+//         patchState(store, { maxBathroom: value });
+//       },
+
+//       // setters
+//       setMinPrice(value: number | null) {
+//         patchState(store, { minPrice: value });
+//       },
+//       setMaxPrice(value: number | null) {
+//         patchState(store, { maxPrice: value });
+//       },
+
+//       // apply search
+//       setSearchPrice(min: number | null, max: number | null) {
+//         patchState(store, { searchPrice: { min, max } });
+//       },
+//       setSearchBedroom(min: number | null, max: number | null) {
+//   patchState(store, { sear: { min, max } });
+// },
+
+// setSearchBathroom(min: number | null, max: number | null) {
+//   patchState(store, { searchBathroom: { min, max } });
 // }
+
+
+//       setSearchLocation(searchLocation: string) {
+//         patchState(store, { searchLocation });
+//       },
+
+//       resetSearchLocation() {
+//         patchState(store, { searchLocation: null });
+//       },
+
+//       setType(type: HouseType) {
+//         patchState(store, { type });
+//       },
+
+//       setPropertyType(property_type: PropertyType) {
+//         patchState(store, { property_type });
+//       },
+
+//       setFile(file: File) {
+//         patchState(store, { file });
+//       },
+
+//       setLocation(location: string) {
+//         patchState(store, { location });
+//       },
+
+//       setPrice(price: number) {
+//         patchState(store, { price });
+//       },
+
+//       setBathroom(bathroom: number) {
+//         patchState(store, { bathroom });
+//       },
+
+//       setBedroom(bedroom: number) {
+//         patchState(store, { bedroom });
+//       },
+
+//       setArea(area: string) {
+//         patchState(store, { area });
+//       },
+
+//       async uploadHouse() {
+//         console.log('hey uploading');
+//         patchState(store, { uploading: true });
+//         if (!store.file() || !store.location()) return;
+
+//         const formData = new FormData();
+//         formData.append('type', store.type());
+//         formData.append('property_type', store.property_type());
+//         formData.append('file', store.file()!);
+//         formData.append('location', store.location());
+//         formData.append('bedroom', String(store.bedroom()));
+//         formData.append('bathroom', String(store.bathroom()));
+//         formData.append('price', String(store.price()));
+//         formData.append('area', String(store.area()));
+
+//         const res: any = await firstValueFrom(
+//           http.post(`${environment.apiBaseUrl}/houses/upload-house`, formData)
+//         );
+
+//         patchState(store, {
+//           houses: [...store.houses(), res.savedHouse],
+//           file: null,
+//           location: '',
+//           price: 0,
+//           bedroom: 0,
+//           bathroom: 0,
+//           area: '',
+//           uploading: false,
+//         });
+//       },
+
+//       async getHouses() {
+//         const query = new URLSearchParams();
+
+//         const min = store.searchPrice().min;
+//         const max = store.searchPrice().max;
+
+//         if (min !== null) query.set('min', String(min));
+//         if (max !== null) query.set('max', String(max));
+
+//         if (store.searchLocation()) query.set('location', store.searchLocation()!);
+//         if (store.property_type()) query.set('property_type', store.property_type());
+//         if (store.type()) query.set('type', store.type());
+//         if (store.bedroom()) query.set('bedroom', String(store.bedroom()));
+//         if (store.bathroom()) query.set('bathroom', String(store.bathroom()));
+
+//         const url = `${environment.apiBaseUrl}/houses?${query.toString()}`;
+//         const bmin = store.searchBedroom().min;
+// const bmax = store.searchBedroom().max;
+// if (bmin !== null) query.set('bedroomMin', String(bmin));
+// if (bmax !== null) query.set('bedroomMax', String(bmax));
+
+// const bathmin = store.searchBathroom().min;
+// const bathmax = store.searchBathroom().max;
+// if (bathmin !== null) query.set('bathroomMin', String(bathmin));
+// if (bathmax !== null) query.set('bathroomMax', String(bathmax));
+
+
+//         const res: any = await firstValueFrom(http.get(url));
+
+//         patchState(store, { houses: res });
+//       },
+
+//       async getHouse(id: string) {
+//         const res: any = await firstValueFrom(http.get(`${environment.apiBaseUrl}/houses/${id}`));
+
+//         patchState(store, { house: res });
+//       },
+
+//       async getBookmarks() {
+//         const res: any = await firstValueFrom(
+//           http.get(`${environment.apiBaseUrl}/houses/bookmarks`)
+//         );
+//         patchState(store, { bookmarks: res });
+//       },
+
+//       async getNotifications() {
+//         const notifs: any = await firstValueFrom(
+//           http.get(`${environment.apiBaseUrl}/houses/notifications`)
+//         );
+
+//         // Map backend Notification[] to your expected shape
+//         const mapped = notifs.map((n: any) => ({
+//           id: n.id,
+//           type: n.type as HouseType,
+//           house: {
+//             id: n.house.id,
+//             type: n.house.type,
+//             property_type: n.house.property_type,
+//             secure_url: n.house.secure_url,
+//             location: n.house.location,
+//             previousPrice: n.house.previousPrice,
+//             priceReduced: n.house.priceReduced,
+//             price: n.house.price,
+//             bedroom: n.house.bedroom,
+//             bathroom: n.house.bathroom,
+//             area: n.house.area,
+//             userId: n.house.userId,
+//           },
+//           user: { id: n.user.id },
+//         }));
+
+//         patchState(store, {
+//           notifications: mapped,
+//           notificationCounter: mapped.length, // always the correct count
+//         });
+//       },
+//       async updateHouse(
+//         id: string,
+//         location: string,
+//         price: number,
+//         bedroom: number,
+//         bathroom: number,
+//         area: string
+//       ) {
+//         const res: any = await firstValueFrom(
+//           http.patch(`${environment.apiBaseUrl}/houses/${id}`, {
+//             location,
+//             price,
+//             bedroom,
+//             bathroom,
+//             area,
+//           })
+//         );
+
+//         const updated = res.updatedHouse;
+
+//         // update houses list
+//         patchState(store, {
+//           houses: store.houses().map((h) => (h.id === id ? updated : h)),
+//           // update bookmarks that reference this house
+//           bookmarks: store
+//             .bookmarks()
+//             .map((b) => (b.house.id === id ? { ...b, house: updated } : b)),
+//           // update notifications that reference this house
+//           notifications: store
+//             .notifications()
+//             .map((n) => (n.house.id === id ? { ...n, house: updated } : n)),
+//         });
+//       },
+
+//       async deleteHouse(id: string) {
+//         await firstValueFrom(http.delete(`${environment.apiBaseUrl}/houses/deleteHouse/${id}`));
+//         patchState(store, {
+//           houses: store.houses().filter((h) => h.id !== id),
+//           bookmarks: store.bookmarks().filter((b) => b.house.id !== id),
+//         });
+//       },
+
+//       async deleteNotification(id: string) {
+//         await firstValueFrom(
+//           http.delete(`${environment.apiBaseUrl}/houses/deleteNotification/${id}`)
+//         );
+//         patchState(store, { notifications: store.notifications().filter((n) => n.id !== id) });
+//       },
+
+//       async deleteBookmark(id: string) {
+//         await firstValueFrom(http.delete(`${environment.apiBaseUrl}/houses/deleteBookmark/${id}`));
+//         patchState(store, { bookmarks: store.bookmarks().filter((b) => b.id !== id) });
+//       },
+
+//       async createBookmark(houseId: string) {
+//         const res: any = await firstValueFrom(
+//           http.post(`${environment.apiBaseUrl}/houses/create-bookmark`, { houseId })
+//         );
+//         patchState(store, {
+//           bookmarks: [...store.bookmarks(), res.savedBookmark],
+//         });
+//       },
+//     };
+//   })
+// );
+

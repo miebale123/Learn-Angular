@@ -4,22 +4,26 @@ import { FormsModule } from '@angular/forms';
 import { HousesStore } from './houses.store';
 import { LucideAngularModule, Heart, ArrowDown, ChevronDown } from 'lucide-angular';
 import { Search } from './search.component';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
+import { Filters } from './filters.component';
 
 @Component({
   selector: 'houses',
   standalone: true,
-  imports: [CommonModule, FormsModule, LucideAngularModule, Search],
+  imports: [CommonModule, FormsModule, LucideAngularModule, Search, Filters],
   template: `
-    <div class=" p-6">
-      <search-house (search)="onSearch($event)"></search-house>
+    <div class=" p-6 flex flex-col ">
+      <div class="flex gap-2 items-center justify-center">
+        <search-house (search)="onSearch($event)"></search-house>
+      <filters />
+      </div>
 
       <!-- Houses Grid -->
       <div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-2">
           @for(house of store.houses(); track $index) {
           <div
-            class=" rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition cursor-pointer group relative"
+            class=" rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition cursor-pointer group relative bg-blue-300"
             (click)="showHouse(house.id)"
           >
             <!-- House Image -->

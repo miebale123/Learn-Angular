@@ -4,7 +4,11 @@ export default {
     "./src/**/*.{html,ts}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        hero: "url('/src/assets/icons/house.jpg')",
+      },
+    },
   },
   plugins: [],
 }

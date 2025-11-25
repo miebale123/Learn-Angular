@@ -54,9 +54,17 @@ export const HousesStore = signalStore(
       user: { id: number };
     }[];
     searchPrice: { min: number | null; max: number | null };
+    searchBedroom: { min: number | null; max: number | null };
+    searchBathroom: { min: number | null; max: number | null };
+
     priceOptions: number[];
     minPrice: number | null;
     maxPrice: number | null;
+    minBedroom: number | null;
+    maxBedroom: number | null;
+    minBathroom: number | null;
+    maxBathroom: number | null;
+
     uploading: boolean;
     notificationCounter: number;
   }>({
@@ -67,16 +75,23 @@ export const HousesStore = signalStore(
     bedroom: 0,
     bathroom: 0,
     area: '',
-    searchLocation: null,
+
     file: null,
     house: null,
     houses: [],
     bookmarks: [],
     notifications: [],
+    searchLocation: null,
     searchPrice: { min: null, max: null },
+    searchBedroom: { min: null, max: null },
+    searchBathroom: { min: null, max: null },
     priceOptions: [50000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 750000, 1000000],
     minPrice: null,
     maxPrice: null,
+    minBedroom: null,
+    maxBedroom: null,
+    minBathroom: null,
+    maxBathroom: null,
     uploading: false,
     notificationCounter: 0,
   }),
@@ -102,6 +117,23 @@ export const HousesStore = signalStore(
       resetNCounter() {
         patchState(store, { notificationCounter: 0 });
       },
+
+      setMinBedroom(value: number | null) {
+        patchState(store, { minBedroom: value });
+      },
+
+      setMaxBedroom(value: number | null) {
+        patchState(store, { maxBedroom: value });
+      },
+
+      setMinBathroom(value: number | null) {
+        patchState(store, { minBathroom: value });
+      },
+
+      setMaxBathroom(value: number | null) {
+        patchState(store, { maxBathroom: value });
+      },
+
       // setters
       setMinPrice(value: number | null) {
         patchState(store, { minPrice: value });
@@ -114,8 +146,15 @@ export const HousesStore = signalStore(
       setSearchPrice(min: number | null, max: number | null) {
         patchState(store, { searchPrice: { min, max } });
       },
+      setSearchBedroom(min: number | null, max: number | null) {
+        patchState(store, { searchBedroom: { min, max } });
+      },
 
-      setSearchLocation(searchLocation: string) {
+      setSearchBathroom(min: number | null, max: number | null) {
+        patchState(store, { searchBathroom: { min, max } });
+      },
+
+      setSearchLocation(searchLocation: string | null) {
         patchState(store, { searchLocation });
       },
 
@@ -189,18 +228,27 @@ export const HousesStore = signalStore(
       async getHouses() {
         const query = new URLSearchParams();
 
-        const min = store.searchPrice().min;
-        const max = store.searchPrice().max;
+        // Price range
+        const { min: priceMin, max: priceMax } = store.searchPrice();
+        if (priceMin !== null) query.set('min', String(priceMin));
+        if (priceMax !== null) query.set('max', String(priceMax));
 
-        if (min !== null) query.set('min', String(min));
-        if (max !== null) query.set('max', String(max));
-
+        // Location, type, property_type
         if (store.searchLocation()) query.set('location', store.searchLocation()!);
         if (store.property_type()) query.set('property_type', store.property_type());
         if (store.type()) query.set('type', store.type());
-        if (store.bedroom()) query.set('bedroom', String(store.bedroom()));
-        if (store.bathroom()) query.set('bathroom', String(store.bathroom()));
 
+        // Bedroom range
+        const { min: bedroomMin, max: bedroomMax } = store.searchBedroom();
+        if (bedroomMin !== null) query.set('bedroomMin', String(bedroomMin));
+        if (bedroomMax !== null) query.set('bedroomMax', String(bedroomMax));
+
+        // Bathroom range
+        const { min: bathroomMin, max: bathroomMax } = store.searchBathroom();
+        if (bathroomMin !== null) query.set('bathroomMin', String(bathroomMin));
+        if (bathroomMax !== null) query.set('bathroomMax', String(bathroomMax));
+
+        // Build URL after all params
         const url = `${environment.apiBaseUrl}/houses?${query.toString()}`;
 
         const res: any = await firstValueFrom(http.get(url));
@@ -242,7 +290,7 @@ export const HousesStore = signalStore(
             bedroom: n.house.bedroom,
             bathroom: n.house.bathroom,
             area: n.house.area,
-            userId: n.house.user.id,
+            userId: n.house.userId,
           },
           user: { id: n.user.id },
         }));
@@ -284,6 +332,13 @@ export const HousesStore = signalStore(
             .notifications()
             .map((n) => (n.house.id === id ? { ...n, house: updated } : n)),
         });
+
+        // 🔥 <— ADD THIS
+        if (updated.priceReduced) {
+          patchState(store, {
+            notificationCounter: store.notificationCounter() + 1,
+          });
+        }
       },
 
       async deleteHouse(id: string) {
