@@ -17,7 +17,7 @@ import { HousesStore } from './houses.store';
       <input
         type="text"
         placeholder="enter address, school, city or neighbourhood"
-        class="flex-1 text-gray-700 placeholder-gray-400 focus:outline-none border-none"
+        class="flex-1 text-gray-700 placeholder-gray-400 focus:outline-none border-none p-2"
         [ngModel]="store.searchLocation()"
         (ngModelChange)="store.setSearchLocation($event)"
           (keydown.enter)="onSearchClick()"

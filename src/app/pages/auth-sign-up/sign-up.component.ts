@@ -1,14 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
-import { SigninDto, SignupSchema, zodFieldValidator } from '../../core/auth/auth-credentials.dto';
+import { SigninDto, SignupSchema, zodFieldValidator } from '../../auth/auth-credentials.dto';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MatIconModule } from '@angular/material/icon';
 import { environment } from '../../../environments/environments';
 import { AuthFormService, AuthStateService } from '../auth-sign-in/sign-in.component';
-
-
 
 @Component({
   selector: 'sign-up',

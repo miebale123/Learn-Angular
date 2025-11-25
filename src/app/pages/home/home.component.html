@@ -2,54 +2,33 @@
   <app-header></app-header>
 
   <main
-    class="flex-1 flex flex-col justify-start items-center text-center gap-6 px-4 pt-8 md:pt-20 lg:pt-40 text-white hero-section"
+    class="flex-1 flex flex-col justify-start items-center text-center gap-6 px-4 pt-8 md:pt-20 lg:pt-40 text-white hero-section min-h-[60vh]"
   >
-    <div class="flex items-baseline justify-center font-bold tracking-wide leading-none gap-1">
-      <!-- <app-candle></app-candle> -->
-    </div>
+    <div
+      class="flex items-baseline justify-center font-bold tracking-wide leading-none gap-1"
+    ></div>
 
-    <p class="text-lg sm:text-2xl md:text-3xl max-w-md sm:max-w-lg px-3 leading-relaxed">
+    <p class="text-xl sm:text-2xl md:text-3xl max-w-md sm:max-w-lg px-3 leading-relaxed font-bold">
       Rentals. Homes. Agents.
     </p>
 
-    <p>የብርሃን ቤት ይሁንልዎ!</p>
+    <p class="font-bold text-2xl">የብርሃን ቤት ይሁንልዎ!</p>
 
     <search-house (search)="onSearch($event)"></search-house>
   </main>
 
-  <section class="w-full overflow-hidden">
-    <svg viewBox="0 0 1440 200" class="fill-blue-500 w-full">
-      <path d="M0,132C180,0,1360,160,1440,0L140,0L0,0Z"></path>
-    </svg>
-  </section>
-
   <!-- FEATURED HOUSES -->
-  <section class="py-16 px-6 text-center">
-    <h2 class="text-3xl font-bold mb-10">Featured Homes</h2>
+  <section class="py-16 px-6 text-center text-black">
+    <h2 class="text-3xl font-bold mb-10 text-black!">Browse Homes</h2>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+    <!-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"> -->
       <!-- Example house card -->
-      <div class="rounded-xl overflow-hidden shadow-lg border">
-        <div class="p-5 space-y-2">
-          <h3 class="text-xl font-semibold">Modern Apartment</h3>
-          <p class="text-sm">Arat kilo • 25,000 ETB/mo</p>
-        </div>
-      </div>
 
-      <div class="rounded-xl overflow-hidden shadow-lg border">
-        <div class="p-5 space-y-2">
-          <h3 class="text-xl font-semibold">Family Home</h3>
-          <p class="text-sm">Bole • 40,000 ETB/mo</p>
-        </div>
-      </div>
+      <img src="/assets/afterB.png" alt="">
+      <!-- <div class="rounded-xl overflow-hidden shadow-lg border"></div> -->
 
-      <div class="rounded-xl overflow-hidden shadow-lg border">
-        <div class="p-5 space-y-2">
-          <h3 class="text-xl font-semibold">Luxury Condo</h3>
-          <p class="text-sm">Kazanchis • 55,000 ETB/mo</p>
-        </div>
-      </div>
-    </div>
+      <!-- <div class="rounded-xl overflow-hidden shadow-lg border"></div> -->
+    <!-- </div> -->
   </section>
 
   <!-- WHY CHOOSE US -->

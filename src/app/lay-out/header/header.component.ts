@@ -22,58 +22,56 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
   template: `
     <header
       class="fixed top-0 left-0 right-0 z-[9999] flex items-center justify-between
-       px-4 md:px-8 py-2  "
+         px-4 md:px-8 py-2"
     >
-      <!-- LEFT SECTION -->
-      <div class="flex items-center gap-3">
-        <!-- Mobile Hamburger -->
+      <!-- LEFT SIDE -->
+      <div class="flex items-center gap-6 ml-20">
+        <!-- Hamburger (mobile) -->
         <button class="md:hidden" (click)="do()">
           <lucide-icon [name]="menu" class="w-6 h-6"></lucide-icon>
         </button>
 
         <!-- Logo -->
-        <a routerLink="/" routerLinkActive="active-link">
-          <div class="flex items-center gap-2">
-          <img src="../../../assets/image.png" alt="" class="w-5 h-5">
-
-            <div class="hidden md:flex">
-              <span class="text-lg font-bold">Lumina</span>
-              <span class="text-lg font-bold">.com</span>
+        <a routerLink="/">
+          <div class="flex items-center gap-2 justify-center">
+            <img src="../../../assets/HomeLogo.png" alt="" class="w-6 h-6" />
+            <div class="md:flex">
+              <span class="text-xl font-bold mt-1">Lumina</span>
             </div>
           </div>
         </a>
+
+        <!-- LEFT NAV LINKS -->
+        <nav class="hidden md:flex items-center gap-6 text-md ">
+          <a routerLink="/" class="flex items-center gap-1 hover:underline">Buy</a>
+          <button (click)="onNewPostClick()">Rent</button>
+          <button (click)="onNewPostClick()">Sell</button>
+          <button >Find an agent</button>
+          <button >My Home</button>
+          <button >news & insights</button>
+
+
+          @if (auth.isAdmin()) {
+          <a routerLink="/admin" class="flex items-center gap-1"> Admin </a>
+          } @if (auth.isExpert()) {
+          <a routerLink="/my-houses" class="flex items-center gap-1">Agent</a>
+          }
+        </nav>
       </div>
 
-      <!-- DESKTOP NAV -->
-      <nav class="hidden md:flex items-center gap-6">
+      <!-- RIGHT SIDE -->
+      <div class="hidden md:flex items-center gap-4">
+        @if (!auth.isLoggedIn()) {
+        <button (click)="go('auth/sign-in')" class="text-sm hover:underline">Sign in</button>
 
-        <a routerLink="/" class="flex items-center gap-1">
-          <span>Buy</span>
-        </a>
-
-        <a routerLink="/bookmarks" class="flex items-center gap-1">
-          <span>Saved</span>
-        </a>
-
-        <button (click)="onNewPostClick()" class="flex items-center gap-1">
-          <span>Rent</span>
+        <button
+          (click)="go('auth/sign-up')"
+          class="text-sm border border-white px-3 py-1 rounded bg-black text-white hover:bg-blue-600 transition"
+        >
+          Sign up
         </button>
-
-         <button (click)="onNewPostClick()" class="flex items-center gap-1">
-          <span>Sell</span>
-        </button>
-
-        @if (auth.isAdmin()) {
-        <a routerLink="/admin" class="flex items-center gap-1">
-          <lucide-icon [name]="shield" class="w-5 h-5"></lucide-icon>
-          <span>Admin</span>
-        </a>
-        } @if (auth.isExpert()) {
-        <a routerLink="/my-houses" class="flex items-center gap-1">
-          <span>Agent</span>
-        </a>
-        }
-
+        } @if (auth.isLoggedIn()) {
+        <!-- Notifications -->
         <a
           routerLink="/notifications"
           (click)="store.resetNCounter()"
@@ -83,24 +81,14 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
 
           @if (store.notificationCounter()) {
           <div
-            class="absolute -top-1 -right-1 bg-red-500 text-xs font-bold rounded-full
-                 w-3 h-3 flex items-center justify-center"
+            class="absolute -top-1 -right-1 bg-red-500 text-xs font-bold rounded-full w-3 h-3 flex items-center justify-center"
           >
             {{ store.notificationCounter() }}
           </div>
           }
         </a>
 
-        @if (!auth.isLoggedIn()) {
-        <button (click)="go('auth/sign-in')" class="text-sm hover:underline">Sign in</button>
-
-        <button
-          (click)="go('auth/sign-up')"
-          class="text-sm border border-white px-3 py-1 rounded hover:bg-blue-600 hover:text-white transition bg-black text-white"
-        >
-          Sign up
-        </button>
-        } @if (auth.isLoggedIn()) {
+        <!-- Profile Menu -->
         <div class="relative">
           <button (click)="toggleDropdown()" class="flex items-center gap-2 pl-3">
             <div
@@ -111,15 +99,13 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
           </button>
 
           @if (dropdownOpen()) {
-          <div class="absolute left-0 mt-2 w-44 bg-gray-700 rounded-lg shadow-lg text-sm py-2">
+          <div class="absolute right-0 mt-2 w-44 bg-gray-700 rounded-lg shadow-lg text-sm py-2">
             <p class="px-4 pb-2 text-gray-300 border-b border-gray-600 text-xs">
               {{ auth.userEmail() }}
             </p>
-
             <button (click)="go('settings')" class="px-4 py-2 text-gray-200 hover:bg-gray-600">
               Settings
             </button>
-
             <button
               (click)="logout()"
               class="px-4 py-2 text-gray-200 hover:bg-gray-600 flex items-center gap-2"
@@ -131,7 +117,7 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
           }
         </div>
         }
-      </nav>
+      </div>
     </header>
 
     @if (mobileOpen()) {
@@ -153,8 +139,11 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
       <a routerLink="/bookmarks" (click)="closeMobile()" class="flex items-center gap-2"> Saved </a>
 
       <button (click)="onNewPostClick(); closeMobile()" class="flex items-center gap-2">
-        <lucide-icon [name]="plus" class="w-5 h-5"></lucide-icon>
-        Rent/Sell
+        Rent
+      </button>
+
+      <button (click)="onNewPostClick(); closeMobile()" class="flex items-center gap-2">
+        Sell
       </button>
 
       @if (auth.isAdmin()) {
@@ -164,7 +153,10 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
       </a>
       } @if (auth.isExpert()) {
       <a routerLink="/my-houses" (click)="closeMobile()" class="flex items-center gap-2"> Agent </a>
-      }
+      } @if (!auth.isLoggedIn()) {
+      <button (click)="go('auth/sign-in'); closeMobile()" class="block text-left">Sign in</button>
+      <button (click)="go('auth/sign-up'); closeMobile()" class="block text-left">Sign up</button>
+      } @if (auth.isLoggedIn()) {
 
       <a
         routerLink="/notifications"
@@ -175,12 +167,13 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
         Notifications
       </a>
 
-      @if (!auth.isLoggedIn()) {
-      <button (click)="go('auth/sign-in'); closeMobile()" class="block text-left">Sign in</button>
-      <button (click)="go('auth/sign-up'); closeMobile()" class="block text-left">Sign up</button>
-      } @if (auth.isLoggedIn()) {
+      <a routerLink="/bookmarks" class="flex items-center gap-1">
+        <span>Saved</span>
+      </a>
+
       <button (click)="go('settings'); closeMobile()" class="block text-left">Settings</button>
       <button (click)="logout(); closeMobile()" class="block text-left">Log out</button>
+
       }
     </div>
     }

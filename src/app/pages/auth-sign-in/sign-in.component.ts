@@ -1,14 +1,14 @@
 import { Component, inject, Injectable, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, Router, ActivatedRoute } from '@angular/router';
-import { SigninDto, SigninSchema, zodFieldValidator } from '../../core/auth/auth-credentials.dto';
+import { SigninDto, SigninSchema, zodFieldValidator } from '../../auth/auth-credentials.dto';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material/icon';
 import { MatIconModule } from '@angular/material/icon';
 import { jwtDecode } from 'jwt-decode';
 import { firstValueFrom } from 'rxjs';
-import { AuthFormState } from '../../core/auth/auth-form.state';
-import { mapAuthError } from '../../core/auth/auth-err.util';
+import { AuthFormState } from '../../auth/auth-form.state';
+import { mapAuthError } from '../../auth/auth-err.util';
 import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
 import { catchError, switchMap, throwError } from 'rxjs';
