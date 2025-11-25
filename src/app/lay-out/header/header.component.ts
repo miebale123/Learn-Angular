@@ -49,7 +49,6 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
       <!-- DESKTOP NAV -->
       <nav class="hidden md:flex items-center gap-6">
         <a routerLink="/bookmarks" class="flex items-center gap-1">
-          <lucide-icon [name]="bookmark" class="w-5 h-5"></lucide-icon>
           <span>Saved</span>
         </a>
 
