@@ -22,7 +22,7 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
   template: `
     <header
       class="fixed top-0 left-0 right-0 z-[9999] flex items-center justify-between
-       px-4 md:px-8 py-2 bg-blue-500 text-white"
+       px-4 md:px-8 py-2  "
     >
       <!-- LEFT SECTION -->
       <div class="flex items-center gap-3">
@@ -34,9 +34,7 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
         <!-- Logo -->
         <a routerLink="/" routerLinkActive="active-link">
           <div class="flex items-center gap-2">
-            <div class="w-8 h-8 flex items-center justify-center bg-red-200 text-black font-bold">
-              L
-            </div>
+          <img src="../../../assets/image.png" alt="" class="w-5 h-5">
 
             <div class="hidden md:flex">
               <span class="text-lg font-bold">Lumina</span>
@@ -48,13 +46,21 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
 
       <!-- DESKTOP NAV -->
       <nav class="hidden md:flex items-center gap-6">
+
+        <a routerLink="/" class="flex items-center gap-1">
+          <span>Buy</span>
+        </a>
+
         <a routerLink="/bookmarks" class="flex items-center gap-1">
           <span>Saved</span>
         </a>
 
         <button (click)="onNewPostClick()" class="flex items-center gap-1">
-          <lucide-icon [name]="plus" class="w-5 h-5"></lucide-icon>
-          <span>Rent/Sell</span>
+          <span>Rent</span>
+        </button>
+
+         <button (click)="onNewPostClick()" class="flex items-center gap-1">
+          <span>Sell</span>
         </button>
 
         @if (auth.isAdmin()) {
@@ -90,7 +96,7 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
 
         <button
           (click)="go('auth/sign-up')"
-          class="text-sm border border-white px-3 py-1 rounded hover:bg-white hover:text-black transition"
+          class="text-sm border border-white px-3 py-1 rounded hover:bg-blue-600 hover:text-white transition bg-black text-white"
         >
           Sign up
         </button>

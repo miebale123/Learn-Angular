@@ -16,7 +16,7 @@ import { HousesStore } from './houses.store';
     >
       <input
         type="text"
-        placeholder="Try Arat kilo, Bole…"
+        placeholder="enter address, school, city or neighbourhood"
         class="flex-1 text-gray-700 placeholder-gray-400 focus:outline-none border-none"
         [ngModel]="store.searchLocation()"
         (ngModelChange)="store.setSearchLocation($event)"
