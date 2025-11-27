@@ -156,7 +156,7 @@ export class Upload {
   onFileSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file) return;
-    this.store.setFile(file);
+    this.store.set('file', file);
     this.imageLocked.set(true);
     const reader = new FileReader();
     reader.onload = (e) => this.uploadedPreview.set(e.target?.result as string);

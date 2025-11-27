@@ -16,44 +16,50 @@
 
     <search-house (search)="onSearch($event)"></search-house>
   </main>
-
-  <!-- FEATURED HOUSES -->
   <section class="py-16 px-6 text-center text-black">
     <h2 class="text-3xl font-bold mb-10 text-black!">Browse Homes</h2>
 
-    <!-- <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"> -->
-      <!-- Example house card -->
-
-      <img src="/assets/afterB.png" alt="">
-      <!-- <div class="rounded-xl overflow-hidden shadow-lg border"></div> -->
-
-      <!-- <div class="rounded-xl overflow-hidden shadow-lg border"></div> -->
-    <!-- </div> -->
+    <button (click)="done()">
+      <img src="/assets/afterB.png" alt="" />
+    </button>
   </section>
 
-  <!-- WHY CHOOSE US -->
-  <section class="py-20 text-center">
-    <h2 class="text-3xl font-bold mb-8">Why Choose Lumina?</h2>
+  <section class="py-24 bg-gray-50 text-gray-900">
+    <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-center">Why Choose Lumina?</h2>
+    <p class="text-center text-gray-600 mb-14 text-lg max-w-2xl mx-auto">
+      Smart tools, trusted agents, and verified homes — everything to make your search effortless.
+    </p>
 
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-10 max-w-5xl mx-auto px-6">
-      <div class="p-6 rounded-xl border">
-        <h3 class="text-xl font-semibold mb-2">Verified Listings</h3>
-        <p class="">Every property is screened for quality and accuracy.</p>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-6xl mx-auto px-6">
+      <div
+        class="p-8 rounded-2xl bg-white shadow-sm hover:shadow-md border border-gray-200 transition"
+      >
+        <h3 class="text-xl font-semibold mb-3">Verified Listings</h3>
+        <p class="text-gray-600">
+          Every property is checked for quality, accuracy, and trustworthiness.
+        </p>
       </div>
 
-      <div class="p-6 rounded-xl border">
-        <h3 class="text-xl font-semibold mb-2">Trusted Agents</h3>
-        <p class="">Work with experienced, reliable real-estate professionals.</p>
+      <div
+        class="p-8 rounded-2xl bg-white shadow-sm hover:shadow-md border border-gray-200 transition"
+      >
+        <h3 class="text-xl font-semibold mb-3">Trusted Agents</h3>
+        <p class="text-gray-600">
+          Work with reliable, experienced agents who understand the market.
+        </p>
       </div>
 
-      <div class="p-6 rounded-xl border">
-        <h3 class="text-xl font-semibold mb-2">Fast Support</h3>
-        <p class="">Need help? We respond quickly and clearly.</p>
+      <div
+        class="p-8 rounded-2xl bg-white shadow-sm hover:shadow-md border border-gray-200 transition"
+      >
+        <h3 class="text-xl font-semibold mb-3">Fast Support</h3>
+        <p class="text-gray-600">
+          We provide quick, clear, and helpful support whenever you need it.
+        </p>
       </div>
     </div>
   </section>
 
-  <!-- CALL TO ACTION -->
   <section class="py-20 text-center text-black">
     <h2 class="text-3xl font-bold mb-4">Start Your Search Today</h2>
     <p class="mb-8 text-lg">Find your perfect home with ease and confidence.</p>
@@ -65,4 +71,9 @@
       Browse Homes
     </button>
   </section>
+
+  <section>
+    <img src="/assets/icons.png" alt="" class="w-[100]" />
+  </section>
+  <app-footer />
 </div>

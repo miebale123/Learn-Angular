@@ -13,7 +13,7 @@ import {
   X,
 } from 'lucide-angular';
 import { HousesStore } from '../../houses/houses.store';
-import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.component';
+import { AuthStateService } from '../../pages/auth-sign-in/sign-in.component';
 
 @Component({
   selector: 'app-header',
@@ -22,16 +22,14 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
   template: `
     <header
       class="fixed top-0 left-0 right-0 z-[9999] flex items-center justify-between
-         px-4 md:px-8 py-2"
+         px-4 md:px-8 py-2 bg-white backdrop-blur-md font-bold shadow-lg"
     >
       <!-- LEFT SIDE -->
       <div class="flex items-center gap-6 ml-20">
-        <!-- Hamburger (mobile) -->
         <button class="md:hidden" (click)="do()">
           <lucide-icon [name]="menu" class="w-6 h-6"></lucide-icon>
         </button>
 
-        <!-- Logo -->
         <a routerLink="/">
           <div class="flex items-center gap-2 justify-center">
             <img src="../../../assets/HomeLogo.png" alt="" class="w-6 h-6" />
@@ -44,12 +42,14 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
         <!-- LEFT NAV LINKS -->
         <nav class="hidden md:flex items-center gap-6 text-md ">
           <a routerLink="/" class="flex items-center gap-1 hover:underline">Buy</a>
-          <button (click)="onNewPostClick()">Rent</button>
-          <button (click)="onNewPostClick()">Sell</button>
-          <button >Find an agent</button>
-          <button >My Home</button>
-          <button >news & insights</button>
-
+          <button (click)="onNewPostClick()" class="hover:underline">Sell/Rent out</button>
+          <a routerLink="/" class="flex items-center gap-1 hover:underline">Rent</a>
+           <a routerLink="/upload-broker-info" class="flex items-center gap-1">
+        <span>Become Broker</span>
+      </a>
+          <button class="hover:underline">Find an Agent</button>
+          <button class="hover:underline">My Home</button>
+          <button class="hover:underline">News & Insights</button>
 
           @if (auth.isAdmin()) {
           <a routerLink="/admin" class="flex items-center gap-1"> Admin </a>
@@ -61,12 +61,15 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
 
       <!-- RIGHT SIDE -->
       <div class="hidden md:flex items-center gap-4">
+        <!-- Moved to the right -->
+        <button routerLink="/manage-rentals" class="hover:underline">Manage rentals</button>
+        <button routerLink="/advertise" class="hover:underline">Advertise</button>
         @if (!auth.isLoggedIn()) {
         <button (click)="go('auth/sign-in')" class="text-sm hover:underline">Sign in</button>
 
         <button
           (click)="go('auth/sign-up')"
-          class="text-sm border border-white px-3 py-1 rounded bg-black text-white hover:bg-blue-600 transition"
+          class="text-sm border border-white px-3 py-1 rounded bg-black text-white  transition"
         >
           Sign up
         </button>
@@ -120,7 +123,9 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
       </div>
     </header>
 
-    @if (mobileOpen()) {
+    @if (warningMessage) {
+    <p class="text-red-600 text-sm ml-2">{{ warningMessage }}</p>
+    } @if (mobileOpen()) {
     <!-- BACKDROP -->
     <div class="fixed inset-0 bg-black/40 z-[9998]" (click)="closeMobile()"></div>
 
@@ -138,9 +143,7 @@ import { AuthStateService, UserRole } from '../../pages/auth-sign-in/sign-in.com
       <!-- MENU ITEMS -->
       <a routerLink="/bookmarks" (click)="closeMobile()" class="flex items-center gap-2"> Saved </a>
 
-      <button (click)="onNewPostClick(); closeMobile()" class="flex items-center gap-2">
-        Rent
-      </button>
+      <button (click)="closeMobile()" class="flex items-center gap-2">Rent</button>
 
       <button (click)="onNewPostClick(); closeMobile()" class="flex items-center gap-2">
         Sell
@@ -208,15 +211,13 @@ export class Header {
   }
 
   onNewPostClick() {
-    const isBroker = this.auth.userRoles().includes(UserRole.Expert);
-
-    if (isBroker) {
+    if (this.auth.isLoggedIn()) {
       this.warningMessage = '';
       this.router.navigate(['/upload-house']);
       return;
     }
 
-    this.warningMessage = 'Only Brokers can create new posts. please call us at 09... to post.';
+    this.warningMessage = 'please log in to upload house';
     setTimeout(() => (this.warningMessage = ''), 3000);
   }
 

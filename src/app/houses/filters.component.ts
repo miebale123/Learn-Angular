@@ -45,7 +45,7 @@ import { HousesStore } from './houses.store';
               >
                 <li
                   class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.setMinPrice(null); minPriceOpen.set(false)"
+                  (mousedown)="store.set('minPrice', null); minPriceOpen.set(false)"
                 >
                   No min
                 </li>
@@ -53,7 +53,7 @@ import { HousesStore } from './houses.store';
                 @for(price of store.priceOptions(); track $index) {
                 <li
                   class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.setMinPrice(price); minPriceOpen.set(false)"
+                  (mousedown)="store.set('minPrice', price); minPriceOpen.set(false)"
                 >
                   {{ price }}
                 </li>
@@ -82,7 +82,7 @@ import { HousesStore } from './houses.store';
               >
                 <li
                   class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.setMaxPrice(null); maxPriceOpen.set(false)"
+                  (mousedown)="store.set('maxPrice', null); maxPriceOpen.set(false)"
                 >
                   No max
                 </li>
@@ -90,7 +90,7 @@ import { HousesStore } from './houses.store';
                 @for(price of store.priceOptions(); track $index) {
                 <li
                   class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.setMaxPrice(price); maxPriceOpen.set(false)"
+                  (mousedown)="store.set('maxPrice', price); maxPriceOpen.set(false)"
                 >
                   {{ price }}
                 </li>
@@ -109,8 +109,9 @@ import { HousesStore } from './houses.store';
         </div>
         }
       </div>
+
       <!-- Bedroom Filter -->
-      <div class="relative sm:w-auto w-full mt-3">
+      <div class="relative sm:w-auto w-full">
         <button
           class="w-full sm:w-40 px-4 py-2 bg-white border border-gray-300
            rounded-full flex items-center justify-between shadow-sm
@@ -135,7 +136,8 @@ import { HousesStore } from './houses.store';
                  hover:bg-gray-100 transition flex items-center justify-between"
                 (click)="toggleMinBedroom()"
               >
-                {{ store.minBedroom() ?? 'No min' }}
+                {{ store.minBedroom() ? store.minBedroom() : 'No min' }}
+
                 <lucide-icon [name]="cdown" class="w-4 h-4 text-gray-400"></lucide-icon>
               </button>
 
@@ -145,7 +147,7 @@ import { HousesStore } from './houses.store';
               >
                 <li
                   class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.setMinBedroom(null); minBedroomOpen.set(false)"
+                  (mousedown)="store.set('minBedroom', null); minBedroomOpen.set(false)"
                 >
                   No min
                 </li>
@@ -153,7 +155,7 @@ import { HousesStore } from './houses.store';
                 @for(num of [1,2,3,4,5]; track $index) {
                 <li
                   class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.setMinBedroom(num); minBedroomOpen.set(false)"
+                  (mousedown)="store.set('minBedroom', num); minBedroomOpen.set(false)"
                 >
                   {{ num }}
                 </li>
@@ -171,7 +173,8 @@ import { HousesStore } from './houses.store';
                  hover:bg-gray-100 transition flex items-center justify-between"
                 (click)="toggleMaxBedroom()"
               >
-                {{ store.maxBedroom() ?? 'No max' }}
+                {{ store.maxBedroom() ? store.maxBedroom() : 'No min' }}
+
                 <lucide-icon [name]="cdown" class="w-4 h-4 text-gray-400"></lucide-icon>
               </button>
 
@@ -181,7 +184,7 @@ import { HousesStore } from './houses.store';
               >
                 <li
                   class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.setMaxBedroom(null); maxBedroomOpen.set(false)"
+                  (mousedown)="store.set('maxBedroom', null); maxBedroomOpen.set(false)"
                 >
                   No max
                 </li>
@@ -189,7 +192,7 @@ import { HousesStore } from './houses.store';
                 @for(num of [1,2,3,4,5]; track $index) {
                 <li
                   class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.setMaxBedroom(num); maxBedroomOpen.set(false)"
+                  (mousedown)="store.set('maxBedroom', num); maxBedroomOpen.set(false)"
                 >
                   {{ num }}
                 </li>
@@ -208,8 +211,9 @@ import { HousesStore } from './houses.store';
         </div>
         }
       </div>
+
       <!-- Bathroom Filter -->
-      <div class="relative sm:w-auto w-full mt-3">
+      <div class="relative sm:w-auto w-full">
         <button
           class="w-full sm:w-40 px-4 py-2 bg-white border border-gray-300
            rounded-full flex items-center justify-between shadow-sm
@@ -244,7 +248,7 @@ import { HousesStore } from './houses.store';
               >
                 <li
                   class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.setMinBathroom(null); minBathroomOpen.set(false)"
+                  (mousedown)="store.set('minBathroom', null); minBathroomOpen.set(false)"
                 >
                   No min
                 </li>
@@ -252,7 +256,7 @@ import { HousesStore } from './houses.store';
                 @for(num of [1,2,3,4,5]; track $index) {
                 <li
                   class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.setMinBathroom(num); minBathroomOpen.set(false)"
+                  (mousedown)="store.set('minBathroom', num); minBathroomOpen.set(false)"
                 >
                   {{ num }}
                 </li>
@@ -280,7 +284,7 @@ import { HousesStore } from './houses.store';
               >
                 <li
                   class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.setMaxBathroom(null); maxBathroomOpen.set(false)"
+                  (mousedown)="store.set('maxBathroom', null); maxBathroomOpen.set(false)"
                 >
                   No max
                 </li>
@@ -288,7 +292,7 @@ import { HousesStore } from './houses.store';
                 @for(num of [1,2,3,4,5]; track $index) {
                 <li
                   class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.setMaxBathroom(num); maxBathroomOpen.set(false)"
+                  (mousedown)="store.set('maxBathroom', num); maxBathroomOpen.set(false)"
                 >
                   {{ num }}
                 </li>
@@ -314,26 +318,15 @@ export class Filters {
   store = inject(HousesStore);
   down = ArrowDown;
   cdown = ChevronDown;
-  minDropdownOpen = signal(false);
-  maxDropdownOpen = signal(false);
-
-  // To allow input blur without closing before click
-  closeMinDropdown() {
-    setTimeout(() => this.minDropdownOpen.set(false), 150);
-  }
-  closeMaxDropdown() {
-    setTimeout(() => this.maxDropdownOpen.set(false), 150);
-  }
 
   priceOpen = signal(false);
   minPriceOpen = signal(false);
   maxPriceOpen = signal(false);
-  // Bedroom signals
+
   bedroomOpen = signal(false);
   minBedroomOpen = signal(false);
   maxBedroomOpen = signal(false);
 
-  // Bathroom signals
   bathroomOpen = signal(false);
   minBathroomOpen = signal(false);
   maxBathroomOpen = signal(false);
@@ -342,24 +335,25 @@ export class Filters {
     this.priceOpen.set(false);
     this.minPriceOpen.set(false);
     this.maxPriceOpen.set(false);
+
+    this.bedroomOpen.set(false);
     this.minBedroomOpen.set(false);
     this.maxBedroomOpen.set(false);
+  }
+  closeBath() {
+    this.bathroomOpen.set(false);
     this.minBathroomOpen.set(false);
     this.maxBathroomOpen.set(false);
   }
 
   toggleMinDropdown() {
     this.minPriceOpen.set(!this.minPriceOpen());
-    if (this.minPriceOpen()) {
-      this.maxPriceOpen.set(false); // close max if min opens
-    }
+    if (this.minPriceOpen()) this.maxPriceOpen.set(false);
   }
 
   toggleMaxDropdown() {
     this.maxPriceOpen.set(!this.maxPriceOpen());
-    if (this.maxPriceOpen()) {
-      this.minPriceOpen.set(false); // close min if max opens
-    }
+    if (this.maxPriceOpen()) this.minPriceOpen.set(false);
   }
 
   toggleMinBedroom() {
@@ -383,13 +377,8 @@ export class Filters {
   }
 
   applyPriceRange() {
-    // set the searchPrice in the store
     this.store.setSearchPrice(this.store.minPrice(), this.store.maxPrice());
-
-    // fetch houses AFTER setting the search price
     this.store.getHouses();
-
-    // close dropdowns
     this.closeAll();
   }
 
@@ -402,6 +391,6 @@ export class Filters {
   applyBathroomRange() {
     this.store.setSearchBathroom(this.store.minBathroom(), this.store.maxBathroom());
     this.store.getHouses();
-    this.closeAll();
+    this.closeBath();
   }
 }

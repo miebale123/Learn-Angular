@@ -15,17 +15,26 @@ import { Filters } from './filters.component';
     <div class=" p-6 flex flex-col ">
       <div class="flex gap-2 items-center justify-center">
         <search-house (search)="onSearch($event)"></search-house>
-      <filters />
+        <filters />
       </div>
+
+      @if(store.searchLocation()){
+      <h2 class=" mt-4">
+        {{ store.searchLocation() + ' ' + store.property_type() + 's' + ' ' + store.type() }}
+      </h2>
+      <h3>{{ store.houses().length + 'homes' }}</h3>
+      }
 
       <!-- Houses Grid -->
       <div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-2">
           @for(house of store.houses(); track $index) {
           <div
-            class=" rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition cursor-pointer group relative bg-blue-300"
+            class=" rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition cursor-pointer group relative "
             (click)="showHouse(house.id)"
           >
+            <p>brokered by {{ house.assignedBroker }}</p>
+
             <!-- House Image -->
             <div class="relative">
               <img
@@ -108,7 +117,7 @@ export class Houses {
   }
 
   async onSearch(searchValue: string) {
-    this.store.setSearchLocation(searchValue);
+    this.store.set('searchLocation', searchValue);
     await this.store.getHouses(); // filter in-place
   }
 }

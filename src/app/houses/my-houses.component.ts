@@ -10,12 +10,12 @@ import { LucideAngularModule, Pencil, Trash2, Save } from 'lucide-angular';
   imports: [CommonModule, FormsModule, LucideAngularModule],
   template: `
 <div class="p-6 min-h-screen">
-  <h2 class="text-2xl font-bold mb-6">My Houses</h2>
+  <h2 class="text-2xl font-bold mb-6">Houses you uploaded</h2>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
     @for (house of store.myHouses(); track $index) {
 
-    <div class="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition relative p-4 bg-blue-400">
+    <div class="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition relative p-4 ">
 
       @if (editingHouseId() === house.id) {
       <!-- Editing Mode -->

@@ -9,7 +9,7 @@ import { AuthStateService } from '../auth-sign-in/sign-in.component';
   selector: 'app-verification',
   template: `
     <div
-      class="verification-container bg-black  flex flex-col items-center justify-center min-h-screen px-4"
+      class="verification-container  flex flex-col items-center justify-center min-h-screen px-4"
     >
       <p class=" mb-2 text-center">
         A verification code has been sent to your email. Please enter the 6-digit code below.
@@ -88,7 +88,7 @@ export class VerificationComponent {
       this.authState.setLoggedIn(true);
       this.authState.setAccessToken(res.accessToken);
       this.authState.setLoggedIn(true);
-      
+
       this.router.navigateByUrl('/');
     } else {
       console.warn('Please enter valid 6-digit OTP code.');

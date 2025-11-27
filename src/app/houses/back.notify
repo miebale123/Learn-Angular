@@ -1,0 +1,31 @@
+    async getNotifications() {
+        const notifs: any = await firstValueFrom(
+          http.get(`${environment.apiBaseUrl}/houses/notifications`)
+        );
+
+        // Map backend Notification[] to your expected shape
+        const mapped = notifs.map((n: any) => ({
+          id: n.id,
+          type: n.type as HouseType,
+          house: {
+            id: n.house.id,
+            type: n.house.type,
+            property_type: n.house.property_type,
+            secure_url: n.house.secure_url,
+            location: n.house.location,
+            previousPrice: n.house.previousPrice,
+            priceReduced: n.house.priceReduced,
+            price: n.house.price,
+            bedroom: n.house.bedroom,
+            bathroom: n.house.bathroom,
+            area: n.house.area,
+            userId: n.house.userId,
+          },
+          user: { id: n.user.id },
+        }));
+
+        patchState(store, {
+          notifications: mapped,
+          notificationCounter: mapped.length, // always the correct count
+        });
+      },
