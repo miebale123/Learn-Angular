@@ -17,39 +17,55 @@ export interface HouseDto {
   bathroom: number | null;
   area: string;
   userId: number;
-  assignedBroker: string;
+  // <- add this (optional so existing code still compiles)
+  assignedBrokerCompanyName?: string | null;
+}
+
+interface BrokerDto {
+  username: string | null;
+  location: string | null;
 }
 
 export interface Typo {
   brokerUsername: string | null;
   brokerLocation: string | null;
+
   type: HouseType;
   property_type: PropertyType;
+
   location: string;
   price: number;
   bedroom: number | null;
   bathroom: number | null;
   area: string;
+
   searchLocation: string | null;
+  searchPrice: { min: number | null; max: number | null };
+  searchBedroom: { min: number | null; max: number | null };
+  searchBathroom: { min: number | null; max: number | null };
+
   file: File | null;
+
+  broker: BrokerDto | null;
   house: HouseDto | null;
   houses: HouseDto[];
+  brokers: BrokerDto[];
+
   bookmarks: {
     id: string;
     house: HouseDto;
     user: { id: number; email: string };
   }[];
+
   notifications: {
     id: string;
     type: HouseType;
     house: HouseDto;
     user: { id: number };
   }[];
-  searchPrice: { min: number | null; max: number | null };
-  searchBedroom: { min: number | null; max: number | null };
-  searchBathroom: { min: number | null; max: number | null };
 
   priceOptions: number[];
+
   minPrice: number | null;
   maxPrice: number | null;
   minBedroom: number | null;

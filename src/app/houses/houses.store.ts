@@ -12,31 +12,40 @@ export const HousesStore = signalStore(
 
   withState<Typo>({
     brokerUsername: null,
-    brokerLocation: '',
+    brokerLocation: null,
+
     type: 'for rent',
     property_type: 'house',
+
     location: '',
     price: 0,
-
+    bedroom: null,
+    bathroom: null,
     area: '',
+
     file: null,
+    broker: null,
     house: null,
     houses: [],
+    brokers: [],
+
     bookmarks: [],
     notifications: [],
+
     searchLocation: null,
     searchPrice: { min: null, max: null },
     searchBedroom: { min: null, max: null },
     searchBathroom: { min: null, max: null },
+
     priceOptions: [50000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 750000, 1000000],
-    bedroom: null,
-    bathroom: null,
+
     minPrice: null,
     maxPrice: null,
     minBedroom: null,
     maxBedroom: null,
     minBathroom: null,
     maxBathroom: null,
+
     uploading: false,
     notificationCounter: 0,
   }),
@@ -114,8 +123,26 @@ export const HousesStore = signalStore(
           http.post(`${environment.apiBaseUrl}/houses/upload-house`, formData)
         );
 
+        console.log(
+          'res of uploading house is with assignment is: ',
+          res.savedHouse.assignedBrokerCompanyName
+        );
+
+        res.savedHouse.assignedBrokerCompanyName =
+          res.savedHouse.assignedBroker?.brokerCompanyName ?? null;
+
+        const newHouse = {
+          ...res.savedHouse,
+          assignedBrokerCompanyName: res.savedHouse.assignedBroker?.brokerCompanyName ?? null,
+        };
+
+        console.log('new house is', newHouse);
+
         patchState(store, {
-          houses: [...store.houses(), res.savedHouse],
+          houses: [...store.houses(), newHouse],
+        });
+
+        patchState(store, {
           file: null,
           location: '',
           price: 0,
@@ -131,29 +158,31 @@ export const HousesStore = signalStore(
         patchState(store, { uploading: true });
 
         const formData = new FormData();
-        formData.append('username', String(store.bedroom()));
-        formData.append('location', store.location());
+        formData.append('file', store.file()!); // NOT String()
+        formData.append('brokerCompanyName', store.brokerUsername()!);
+        formData.append('location', store.brokerLocation()!);
 
         const res: any = await firstValueFrom(
           http.post(`${environment.apiBaseUrl}/houses/upload-broker-info`, formData)
         );
 
+        console.log('uplaoding broker info res: ', res);
+
         patchState(store, {
-          houses: [...store.houses(), res.savedHouse],
+          brokers: [...store.brokers(), res.savedBroker],
           file: null,
-          location: '',
-          price: 0,
-          bedroom: 0,
-          bathroom: 0,
-          area: '',
+          brokerUsername: '',
+          brokerLocation: '',
           uploading: false,
         });
       },
 
       async getHouses() {
+        console.log('houses are: ', store.houses());
         const query = new URLSearchParams();
 
         // Price range
+
         const { min: priceMin, max: priceMax } = store.searchPrice();
         if (priceMin !== null) query.set('min', String(priceMin));
         if (priceMax !== null) query.set('max', String(priceMax));
@@ -245,7 +274,6 @@ export const HousesStore = signalStore(
             .map((n) => (n.house.id === id ? { ...n, house: updated } : n)),
         });
 
-        // 🔥 <— ADD THIS
         if (updated.priceReduced) {
           patchState(store, {
             notificationCounter: store.notificationCounter() + 1,

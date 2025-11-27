@@ -9,7 +9,9 @@ import { HousesStore } from './houses/houses.store';
   imports: [CommonModule, FormsModule],
   template: `
     @if (uploadedMessage()) {
-    <p class="mt-4 text-green-600 font-semibold text-center">Uploaded.</p>
+    <div class="mt-4 p-3 bg-green-100 text-green-700 text-center rounded-xl font-semibold">
+      Successfully uploaded broker info ✔
+    </div>
     }
 
     <div class="flex gap-6 items-start">
@@ -96,7 +98,7 @@ import { HousesStore } from './houses/houses.store';
             <label class="font-medium block mb-1">Location</label>
             <input
               type="text"
-              [(ngModel)]="store.location"
+              [(ngModel)]="store.brokerLocation"
               placeholder="enter City / Area"
               class="
               w-full px-4 py-3 rounded-xl border border-gray-300
@@ -152,8 +154,10 @@ export class UploadBrokerInfo {
 
   async upload() {
     this.uploading.set(true);
-    await this.store.uploadHouse();
+    await this.store.uploadBrokerInfo();
     this.uploadedPreview.set(null);
     this.uploadedMessage.set(true);
+
+    setTimeout(() => this.uploadedMessage.set(false), 2500);
   }
 }
