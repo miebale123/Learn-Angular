@@ -6,311 +6,398 @@ import { HousesStore } from './houses.store';
   selector: 'filters',
   imports: [LucideAngularModule],
   template: `
-    <!-- Price Filter -->
-    <div class="flex items-center justify-center gap-2">
-      <div class="relative sm:w-auto w-full">
-        <button
-          class="w-full sm:w-40 px-4 py-2 bg-white border border-gray-300
-             rounded-full flex items-center justify-between
-             shadow-sm font-medium text-gray-700"
-          (click)="priceOpen.set(!priceOpen())"
-        >
-          Price
-          <lucide-icon [name]="cdown" class="w-4 h-4 text-black"></lucide-icon>
-        </button>
-
-        @if(priceOpen()) {
-        <div
-          class="absolute mt-3 bg-white border border-gray-200 rounded-xl shadow-xl
-             w-72 p-4 z-50"
-        >
-          <div class="font-semibold mb-3 text-gray-700">Price Range</div>
-
-          <div class="flex items-center gap-3 mb-3">
-            <!-- Min Price -->
-            <div class="relative flex-1">
+    <div class="flex justify-bewteen items-center">
+      <div class="flex items-center justify-center gap-2">
+        <!-- Price Filter -->
+        <div class="flex items-center justify-center gap-2">
+          <div class="flex items-center justify-center gap-2">
+            <div class="relative sm:w-auto w-full">
               <button
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-left
-                   bg-gray-50 hover:bg-gray-100 transition flex items-center justify-between"
-                (click)="toggleMinDropdown()"
+                class="w-full sm:w-40 px-4 py-2 bg-white border border-gray-300
+         rounded-full flex items-center justify-between shadow-sm font-medium text-gray-700"
+                (click)="priceOpen.set(!priceOpen())"
               >
-                {{ store.minPrice() ? store.minPrice() : 'No min' }}
-                <lucide-icon [name]="cdown" class="w-4 h-4 text-gray-400"></lucide-icon>
+                Price
+                <lucide-icon [name]="cdown" class="w-4 h-4 text-black"></lucide-icon>
               </button>
 
-              @if(minPriceOpen()) {
-              <ul
-                class="absolute mt-1 w-full border border-gray-200 bg-white rounded-lg
-                   max-h-40 overflow-y-auto shadow z-50"
+              @if(priceOpen()) {
+              <div
+                class="absolute mt-3 bg-white border border-gray-200 rounded-xl shadow-xl
+         w-80 p-5 z-50"
               >
-                <li
-                  class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.set('minPrice', null); minPriceOpen.set(false)"
-                >
-                  No min
-                </li>
+                <!-- Header -->
+                <div class="flex items-center justify-between mb-4">
+                  <div class="text-lg font-semibold text-gray-800">Price</div>
 
-                @for(price of store.priceOptions(); track $index) {
-                <li
-                  class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.set('minPrice', price); minPriceOpen.set(false)"
-                >
-                  {{ price }}
-                </li>
+                  <button
+                    class="text-indigo-500 text-sm font-medium"
+                    (click)="applyPriceRange(); priceOpen.set(false)"
+                  >
+                    Done
+                  </button>
+                </div>
+
+                <!-- Tabs -->
+                <div class="grid grid-cols-2 bg-gray-100 rounded-xl mb-5 p-1">
+                  <button
+                    class="py-2 rounded-lg text-sm font-medium"
+                    [class.bg-black]="priceTab() === 'list'"
+                    [class.shadow]="priceTab() === 'list'"
+                    [class.text-white]="priceTab() === 'list'"
+                    (click)="priceTab.set('list')"
+                  >
+                    List price
+                  </button>
+
+                  <button
+                    class="py-2 rounded-lg text-sm font-medium"
+                    [class.text-white]="priceTab() === 'monthly'"
+                    [class.bg-black]="priceTab() === 'monthly'"
+                    [class.shadow]="priceTab() === 'monthly'"
+                    (click)="priceTab.set('monthly')"
+                  >
+                    Monthly payment
+                  </button>
+                </div>
+
+                <!-- LIST PRICE UI (Functional) -->
+                @if(priceTab() === 'list') {
+                <div>
+                  <div class="flex items-center gap-3 mb-5">
+                    <!-- Min Price -->
+                    <div class="relative flex-1">
+                      <button
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg text-left
+                 bg-gray-50 hover:bg-gray-100 transition flex items-center justify-between"
+                        (click)="toggleMinDropdown()"
+                      >
+                        {{ store.minPrice() ?? '$ No min' }}
+                        <lucide-icon [name]="cdown" class="w-4 h-4 text-gray-400"></lucide-icon>
+                      </button>
+
+                      @if(minPriceOpen()) {
+                      <ul
+                        class="absolute mt-1 w-full border border-gray-200 bg-white rounded-lg
+                 max-h-40 overflow-y-auto shadow z-50"
+                      >
+                        <li
+                          class="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                          (mousedown)="store.set('minPrice', null); minPriceOpen.set(false)"
+                        >
+                          $ No min
+                        </li>
+
+                        @for(price of store.priceOptions(); track $index) {
+                        <li
+                          class="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                          (mousedown)="store.set('minPrice', price); minPriceOpen.set(false)"
+                        >
+                          {{ price }}
+                        </li>
+                        }
+                      </ul>
+                      }
+                    </div>
+
+                    <span class="text-gray-500">-</span>
+
+                    <!-- Max Price -->
+                    <div class="relative flex-1">
+                      <button
+                        class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-left
+                 hover:bg-gray-100 transition flex items-center justify-between"
+                        (click)="toggleMaxDropdown()"
+                      >
+                        {{ store.maxPrice() ?? '$ No max' }}
+                        <lucide-icon [name]="cdown" class="w-4 h-4 text-gray-400"></lucide-icon>
+                      </button>
+
+                      @if(maxPriceOpen()) {
+                      <ul
+                        class="absolute mt-1 w-full border border-gray-200 bg-white rounded-lg
+                 max-h-40 overflow-y-auto shadow z-50"
+                      >
+                        <li
+                          class="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                          (mousedown)="store.set('maxPrice', null); maxPriceOpen.set(false)"
+                        >
+                          $ No max
+                        </li>
+
+                        @for(price of store.priceOptions(); track $index) {
+                        <li
+                          class="px-3 py-2 cursor-pointer hover:bg-gray-100"
+                          (mousedown)="store.set('maxPrice', price); maxPriceOpen.set(false)"
+                        >
+                          {{ price }}
+                        </li>
+                        }
+                      </ul>
+                      }
+                    </div>
+                  </div>
+                </div>
                 }
-              </ul>
-              }
-            </div>
 
-            <span class="text-gray-400">-</span>
-
-            <!-- Max Price -->
-            <div class="relative flex-1">
-              <button
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-left
-                   hover:bg-gray-100 transition flex items-center justify-between"
-                (click)="toggleMaxDropdown()"
-              >
-                {{ store.maxPrice() ? store.maxPrice() : 'No max' }}
-                <lucide-icon [name]="cdown" class="w-4 h-4 text-gray-400"></lucide-icon>
-              </button>
-
-              @if(maxPriceOpen()) {
-              <ul
-                class="absolute mt-1 w-full border border-gray-200 bg-white rounded-lg
-                   max-h-40 overflow-y-auto shadow z-50"
-              >
-                <li
-                  class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.set('maxPrice', null); maxPriceOpen.set(false)"
-                >
-                  No max
-                </li>
-
-                @for(price of store.priceOptions(); track $index) {
-                <li
-                  class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.set('maxPrice', price); maxPriceOpen.set(false)"
-                >
-                  {{ price }}
-                </li>
+                <!-- MONTHLY PAYMENT UI (NO LOGIC) -->
+                @if(priceTab() === 'monthly') {
+                <div class="text-sm text-gray-500 mb-5">
+                  Monthly payment UI placeholder (no functionality yet)
+                </div>
                 }
-              </ul>
+
+                <!-- More Price Options -->
+                <div class="pt-4 border-t border-gray-200">
+                  <label class="text-black">More price options</label>
+                  <label class="flex items-center gap-2 cursor-pointer select-none">
+                    <input type="checkbox" class="w-4 h-4" />
+                    <span class="text-sm text-gray-700">Price reduced</span>
+                  </label>
+                </div>
+              </div>
               }
             </div>
           </div>
 
-          <button
-            class="text-sm underline text-indigo-500 hover:text-indigo-400"
-            (click)="applyPriceRange()"
-          >
-            Apply
-          </button>
-        </div>
-        }
-      </div>
+          <!-- Rooms Filter -->
+          <div class="relative sm:w-auto w-full">
+            <button
+              class="w-full sm:w-40 px-4 py-2 bg-white border border-gray-300
+      rounded-full flex items-center justify-between shadow-sm
+      font-medium text-gray-700"
+              (click)="roomsOpen.set(!roomsOpen())"
+            >
+              Rooms
+              <lucide-icon [name]="cdown" class="w-4 h-4 text-black"></lucide-icon>
+            </button>
 
-      <!-- Bedroom Filter -->
-      <div class="relative sm:w-auto w-full">
-        <button
-          class="w-full sm:w-40 px-4 py-2 bg-white border border-gray-300
-           rounded-full flex items-center justify-between shadow-sm
-           font-medium text-gray-700"
-          (click)="bedroomOpen.set(!bedroomOpen())"
-        >
-          Bedroom
-          <lucide-icon [name]="cdown" class="w-4 h-4 text-black"></lucide-icon>
-        </button>
+            @if (roomsOpen()) {
+            <div
+              class="absolute mt-3 bg-white border border-gray-200 rounded-xl shadow-xl
+      w-80 p-5 z-50"
+            >
+              <div class="flex items-center justify-between mb-4">
+                <div class="font-semibold text-gray-700">Rooms</div>
+                <button class="text-indigo-500 text-sm" (click)="applyRooms()">Done</button>
+              </div>
 
-        @if (bedroomOpen()) {
-        <div
-          class="absolute mt-3 bg-white border border-gray-200 rounded-xl shadow-xl w-72 p-4 z-50"
-        >
-          <div class="font-semibold mb-3 text-gray-700">Bedrooms Range</div>
+              <!-- Bedrooms -->
+              <div class="mb-4">
+                <div class="font-medium text-gray-700 mb-2">Bedrooms</div>
 
-          <div class="flex items-center gap-3 mb-3">
-            <!-- Min Bedroom -->
-            <div class="relative flex-1">
-              <button
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-left
-                 hover:bg-gray-100 transition flex items-center justify-between"
-                (click)="toggleMinBedroom()"
-              >
-                {{ store.minBedroom() ? store.minBedroom() : 'No min' }}
+                <div class="flex items-center gap-3">
+                  <!-- Min Bedroom -->
+                  <div class="relative flex-1">
+                    <button
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-left
+              flex items-center justify-between hover:bg-gray-100"
+                      (click)="minBedroomOpen.set(!minBedroomOpen())"
+                    >
+                      {{ store.minBedroom() ?? 'No min' }}
+                      <lucide-icon [name]="cdown" class="w-4 h-4 text-gray-500"></lucide-icon>
+                    </button>
 
-                <lucide-icon [name]="cdown" class="w-4 h-4 text-gray-400"></lucide-icon>
-              </button>
+                    @if (minBedroomOpen()) {
+                    <ul
+                      class="absolute mt-1 w-full border border-gray-200 bg-white rounded-lg max-h-40
+              overflow-y-auto shadow z-50"
+                    >
+                      <li
+                        class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                        (mousedown)="store.set('minBedroom', null); minBedroomOpen.set(false)"
+                      >
+                        No min
+                      </li>
 
-              @if (minBedroomOpen()) {
-              <ul
-                class="absolute mt-1 w-full border border-gray-200 bg-white rounded-lg max-h-40 overflow-y-auto shadow z-50"
-              >
-                <li
-                  class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.set('minBedroom', null); minBedroomOpen.set(false)"
-                >
-                  No min
-                </li>
+                      @for(n of store.bedroomCounts(); track $index) {
+                      <li
+                        class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                        (mousedown)="store.set('minBedroom', n); minBedroomOpen.set(false)"
+                      >
+                        {{ n }}
+                      </li>
+                      }
+                    </ul>
+                    }
+                  </div>
 
-                @for(num of [1,2,3,4,5]; track $index) {
-                <li
-                  class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.set('minBedroom', num); minBedroomOpen.set(false)"
-                >
-                  {{ num }}
-                </li>
-                }
-              </ul>
-              }
+                  <span class="text-gray-400">-</span>
+
+                  <!-- Max Bedroom -->
+                  <div class="relative flex-1">
+                    <button
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-left
+              flex items-center justify-between hover:bg-gray-100"
+                      (click)="maxBedroomOpen.set(!maxBedroomOpen())"
+                    >
+                      {{ store.maxBedroom() ?? 'No max' }}
+                      <lucide-icon [name]="cdown" class="w-4 h-4 text-gray-500"></lucide-icon>
+                    </button>
+
+                    @if (maxBedroomOpen()) {
+                    <ul
+                      class="absolute mt-1 w-full border border-gray-200 bg-white rounded-lg max-h-40
+              overflow-y-auto shadow z-50"
+                    >
+                      <li
+                        class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                        (mousedown)="store.set('maxBedroom', null); maxBedroomOpen.set(false)"
+                      >
+                        No max
+                      </li>
+
+                      @for(n of store.bedroomCounts(); track $index) {
+                      <li
+                        class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                        (mousedown)="store.set('maxBedroom', n); maxBedroomOpen.set(false)"
+                      >
+                        {{ n }}
+                      </li>
+                      }
+                    </ul>
+                    }
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bathrooms -->
+              <div>
+                <div class="font-medium text-gray-700 mb-2">Bathrooms</div>
+
+                <div class="flex items-center gap-3">
+                  <!-- Min Bath -->
+                  <div class="relative flex-1">
+                    <button
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-left
+              flex items-center justify-between hover:bg-gray-100"
+                      (click)="minBathroomOpen.set(!minBathroomOpen())"
+                    >
+                      {{ store.minBathroom() ?? 'No min' }}
+                      <lucide-icon [name]="cdown" class="w-4 h-4 text-gray-500"></lucide-icon>
+                    </button>
+
+                    @if (minBathroomOpen()) {
+                    <ul
+                      class="absolute mt-1 w-full border border-gray-200 bg-white rounded-lg max-h-40
+              overflow-y-auto shadow z-50"
+                    >
+                      <li
+                        class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                        (mousedown)="store.set('minBathroom', null); minBathroomOpen.set(false)"
+                      >
+                        No min
+                      </li>
+
+                      @for(n of store.bathroomCounts(); track $index) {
+                      <li
+                        class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                        (mousedown)="store.set('minBathroom', n); minBathroomOpen.set(false)"
+                      >
+                        {{ n }}
+                      </li>
+                      }
+                    </ul>
+                    }
+                  </div>
+
+                  <span class="text-gray-400">-</span>
+
+                  <!-- Max Bath -->
+                  <div class="relative flex-1">
+                    <button
+                      class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-left
+              flex items-center justify-between hover:bg-gray-100"
+                      (click)="maxBathroomOpen.set(!maxBathroomOpen())"
+                    >
+                      {{ store.maxBathroom() ?? 'No max' }}
+                      <lucide-icon [name]="cdown" class="w-4 h-4 text-gray-500"></lucide-icon>
+                    </button>
+
+                    @if (maxBathroomOpen()) {
+                    <ul
+                      class="absolute mt-1 w-full border border-gray-200 bg-white rounded-lg max-h-40
+              overflow-y-auto shadow z-50"
+                    >
+                      <li
+                        class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                        (mousedown)="store.set('maxBathroom', null); maxBathroomOpen.set(false)"
+                      >
+                        No max
+                      </li>
+
+                      @for(n of store.bathroomCounts(); track $index) {
+                      <li
+                        class="px-3 py-2 hover:bg-gray-100 cursor-pointer"
+                        (mousedown)="store.set('maxBathroom', n); maxBathroomOpen.set(false)"
+                      >
+                        {{ n }}
+                      </li>
+                      }
+                    </ul>
+                    }
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <span class="text-gray-400">-</span>
-
-            <!-- Max Bedroom -->
-            <div class="relative flex-1">
-              <button
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-left
-                 hover:bg-gray-100 transition flex items-center justify-between"
-                (click)="toggleMaxBedroom()"
-              >
-                {{ store.maxBedroom() ? store.maxBedroom() : 'No min' }}
-
-                <lucide-icon [name]="cdown" class="w-4 h-4 text-gray-400"></lucide-icon>
-              </button>
-
-              @if (maxBedroomOpen()) {
-              <ul
-                class="absolute mt-1 w-full border border-gray-200 bg-white rounded-lg max-h-40 overflow-y-auto shadow z-50"
-              >
-                <li
-                  class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.set('maxBedroom', null); maxBedroomOpen.set(false)"
-                >
-                  No max
-                </li>
-
-                @for(num of [1,2,3,4,5]; track $index) {
-                <li
-                  class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.set('maxBedroom', num); maxBedroomOpen.set(false)"
-                >
-                  {{ num }}
-                </li>
-                }
-              </ul>
-              }
-            </div>
+            }
           </div>
-
-          <button
-            class="text-sm underline text-indigo-500 hover:text-indigo-400"
-            (click)="applyBedroomRange()"
-          >
-            Apply
-          </button>
         </div>
-        }
-      </div>
 
-      <!-- Bathroom Filter -->
-      <div class="relative sm:w-auto w-full">
-        <button
-          class="w-full sm:w-40 px-4 py-2 bg-white border border-gray-300
-           rounded-full flex items-center justify-between shadow-sm
-           font-medium text-gray-700"
-          (click)="bathroomOpen.set(!bathroomOpen())"
-        >
-          Bathroom
-          <lucide-icon [name]="cdown" class="w-4 h-4 text-black"></lucide-icon>
-        </button>
+        <div class="flex items-center justify-start gap-3 px-4 py-3">
+          <!-- SAVE SEARCH -->
 
-        @if (bathroomOpen()) {
-        <div
-          class="absolute mt-3 bg-white border border-gray-200 rounded-xl shadow-xl w-72 p-4 z-50"
-        >
-          <div class="font-semibold mb-3 text-gray-700">Bathrooms Range</div>
+          <!-- MORE -->
+          <div class="relative">
+            <button
+              class="px-4 py-2 bg-white border border-gray-300 rounded-full shadow-sm flex items-center gap-1 text-sm font-medium"
+              (click)="moreOpen.set(!moreOpen())"
+            >
+              More
+              <lucide-icon [name]="cdown" class="w-4 h-4 text-black"></lucide-icon>
+            </button>
 
-          <div class="flex items-center gap-3 mb-3">
-            <!-- Min Bath -->
-            <div class="relative flex-1">
+            @if(moreOpen()) {
+            <div
+              class="absolute mt-2 bg-white border border-gray-200 shadow-xl rounded-xl p-4 w-80 z-50"
+            >
+              <div class="font-semibold mb-3">More filters</div>
+
+              <label class="flex items-center gap-2 mb-2">
+                <input type="checkbox" class="rounded" />
+                Pool
+              </label>
+
+              <label class="flex items-center gap-2 mb-2">
+                <input type="checkbox" class="rounded" />
+                New construction
+              </label>
+
+              <label class="flex items-center gap-2 mb-2">
+                <input type="checkbox" class="rounded" />
+                Garage
+              </label>
+
               <button
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-left
-                 hover:bg-gray-100 transition flex items-center justify-between"
-                (click)="toggleMinBathroom()"
+                class="mt-3 text-indigo-600 text-sm font-medium"
+                (click)="moreOpen.set(false)"
               >
-                {{ store.minBathroom() ?? 'No min' }}
-                <lucide-icon [name]="cdown" class="w-4 h-4 text-gray-400"></lucide-icon>
+                Done
               </button>
-
-              @if (minBathroomOpen()) {
-              <ul
-                class="absolute mt-1 w-full border border-gray-200 bg-white rounded-lg max-h-40 overflow-y-auto shadow z-50"
-              >
-                <li
-                  class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.set('minBathroom', null); minBathroomOpen.set(false)"
-                >
-                  No min
-                </li>
-
-                @for(num of [1,2,3,4,5]; track $index) {
-                <li
-                  class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.set('minBathroom', num); minBathroomOpen.set(false)"
-                >
-                  {{ num }}
-                </li>
-                }
-              </ul>
-              }
             </div>
-
-            <span class="text-gray-400">-</span>
-
-            <!-- Max Bath -->
-            <div class="relative flex-1">
-              <button
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-left
-                 hover:bg-gray-100 transition flex items-center justify-between"
-                (click)="toggleMaxBathroom()"
-              >
-                {{ store.maxBathroom() ?? 'No max' }}
-                <lucide-icon [name]="cdown" class="w-4 h-4 text-gray-400"></lucide-icon>
-              </button>
-
-              @if (maxBathroomOpen()) {
-              <ul
-                class="absolute mt-1 w-full border border-gray-200 bg-white rounded-lg max-h-40 overflow-y-auto shadow z-50"
-              >
-                <li
-                  class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.set('maxBathroom', null); maxBathroomOpen.set(false)"
-                >
-                  No max
-                </li>
-
-                @for(num of [1,2,3,4,5]; track $index) {
-                <li
-                  class="px-3 py-2 cursor-pointer hover:bg-gray-100"
-                  (mousedown)="store.set('maxBathroom', num); maxBathroomOpen.set(false)"
-                >
-                  {{ num }}
-                </li>
-                }
-              </ul>
-              }
-            </div>
+            }
           </div>
-
           <button
-            class="text-sm underline text-indigo-500 hover:text-indigo-400"
-            (click)="applyBathroomRange()"
+            class="px-4 py-2 bg-white border border-gray-300 rounded-full shadow-sm text-sm font-medium"
           >
-            Apply
+            Save search
           </button>
         </div>
-        }
+
+        <!-- FILTER BAR -->
       </div>
+
+
     </div>
   `,
 })
@@ -393,4 +480,20 @@ export class Filters {
     this.store.getHouses();
     this.closeBath();
   }
+
+  roomsOpen = signal(false);
+
+  applyRooms() {
+    this.store.setSearchBedroom(this.store.minBedroom(), this.store.maxBedroom());
+    this.store.setSearchBathroom(this.store.minBathroom(), this.store.maxBathroom());
+    this.store.getHouses();
+    this.roomsOpen.set(false);
+  }
+
+  priceTab = signal<'list' | 'monthly'>('list');
+
+  viewMode: 'list' | 'map' = 'list';
+
+  moreOpen = signal(false);
+  propertyTypeOpen = signal(false);
 }

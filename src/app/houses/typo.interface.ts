@@ -1,29 +1,11 @@
-export const HOUSE_TYPES = ['for sale', 'for rent'] as const;
-export type HouseType = (typeof HOUSE_TYPES)[number];
-
-export const PROPERTY_TYPES = ['condo', 'house', 'land'] as const;
-export type PropertyType = (typeof PROPERTY_TYPES)[number];
-
-export interface HouseDto {
-  id: string;
-  type: HouseType;
-  property_type: PropertyType;
-  secure_url: string;
-  location: string;
-  previousPrice?: number;
-  priceReduced?: boolean;
-  price: number;
-  bedroom: number | null;
-  bathroom: number | null;
-  area: string;
-  userId: number;
-  // <- add this (optional so existing code still compiles)
-  assignedBrokerCompanyName?: string | null;
-}
+import { HouseDto, HouseType, PropertyType } from './house.dto';
 
 interface BrokerDto {
+  id: string;
   username: string | null;
   location: string | null;
+  secure_url: File;
+  status: 'pending' | 'active' | 'deleted' | 'rejected';
 }
 
 export interface Typo {
@@ -46,10 +28,11 @@ export interface Typo {
 
   file: File | null;
 
-  broker: BrokerDto | null;
   house: HouseDto | null;
   houses: HouseDto[];
+  pendingHouses: HouseDto[];
   brokers: BrokerDto[];
+  pendingBrokers: BrokerDto[];
 
   bookmarks: {
     id: string;
@@ -65,6 +48,8 @@ export interface Typo {
   }[];
 
   priceOptions: number[];
+  bedroomCounts: number[];
+  bathroomCounts: number[];
 
   minPrice: number | null;
   maxPrice: number | null;
@@ -76,3 +61,45 @@ export interface Typo {
   uploading: boolean;
   notificationCounter: number;
 }
+
+export const typoValue: Omit<Typo, 'bookmarks'> = {
+  brokerUsername: null,
+  brokerLocation: null,
+
+  type: 'for rent', // make sure this matches HouseType
+  property_type: 'house', // make sure this matches PropertyType
+
+  location: '',
+  price: 0,
+  bedroom: null,
+  bathroom: null,
+  area: '',
+
+  file: null,
+  house: null,
+  houses: [],
+  pendingHouses: [],
+  brokers: [],
+  pendingBrokers: [],
+
+  notifications: [],
+
+  searchLocation: null,
+  searchPrice: { min: null, max: null },
+  searchBedroom: { min: null, max: null },
+  searchBathroom: { min: null, max: null },
+
+  priceOptions: [50000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 750000, 1000000],
+  bedroomCounts: [1, 2, 3, 4, 5],
+  bathroomCounts: [1, 2, 3, 4, 5],
+
+  minPrice: null,
+  maxPrice: null,
+  minBedroom: null,
+  maxBedroom: null,
+  minBathroom: null,
+  maxBathroom: null,
+
+  uploading: false,
+  notificationCounter: 0,
+};

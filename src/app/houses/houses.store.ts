@@ -5,50 +5,13 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environments';
 import { jwtDecode } from 'jwt-decode';
 import { AuthStateService } from '../pages/auth-sign-in/sign-in.component';
-import { HouseType, PropertyType, Typo } from './typo.interface';
+import { Typo, typoValue } from './typo.interface';
+import { BookmarkStore } from './bookmarks.store';
 
 export const HousesStore = signalStore(
   { providedIn: 'root' },
 
-  withState<Typo>({
-    brokerUsername: null,
-    brokerLocation: null,
-
-    type: 'for rent',
-    property_type: 'house',
-
-    location: '',
-    price: 0,
-    bedroom: null,
-    bathroom: null,
-    area: '',
-
-    file: null,
-    broker: null,
-    house: null,
-    houses: [],
-    brokers: [],
-
-    bookmarks: [],
-    notifications: [],
-
-    searchLocation: null,
-    searchPrice: { min: null, max: null },
-    searchBedroom: { min: null, max: null },
-    searchBathroom: { min: null, max: null },
-
-    priceOptions: [50000, 100000, 150000, 200000, 250000, 300000, 400000, 500000, 750000, 1000000],
-
-    minPrice: null,
-    maxPrice: null,
-    minBedroom: null,
-    maxBedroom: null,
-    minBathroom: null,
-    maxBathroom: null,
-
-    uploading: false,
-    notificationCounter: 0,
-  }),
+  withState<Omit<Typo, 'bookmarks'>>(typoValue),
 
   withMethods((store) => {
     const http = inject(HttpClient);
@@ -61,11 +24,69 @@ export const HousesStore = signalStore(
       return store.houses().filter((h) => h.userId === userId);
     });
 
+    const bookmarkStore = inject(BookmarkStore);
+
+    const houseBookmarks = computed(() => {
+      const myHouseIds = store.houses().map((h) => h.id);
+      return bookmarkStore.bookmarks().filter((b) => myHouseIds.includes(b.house.id));
+    });
+
     return {
-      set<K extends keyof Typo>(key: K, value: Typo[K]) {
-        patchState(store, { [key]: value } as any);
-      },
       myHouses,
+      houseBookmarks,
+
+      async getPendingHouses() {
+        const res: any = await firstValueFrom(
+          http.get(`${environment.apiBaseUrl}/houses/pendingHouses`)
+        );
+        patchState(store, { pendingHouses: res });
+      },
+
+      async approveHouse(id: string) {
+        const res: any = await firstValueFrom(
+          http.get(`${environment.apiBaseUrl}/houses/${id}/approve`)
+        );
+
+        const approved = res; // FIXED
+
+        const pbs = store.pendingHouses().filter((ph) => ph.id !== id);
+
+        const exists = store.houses().some((h) => h.id === id);
+
+        patchState(store, {
+          pendingHouses: pbs,
+          houses: exists
+            ? store.houses().map((h) => (h.id === id ? approved : h))
+            : [...store.houses(), approved],
+        });
+      },
+
+      async activateBroker(id: string) {
+        const res: any = await firstValueFrom(
+          http.patch(`${environment.apiBaseUrl}/admin-page/${id}/approve`, {})
+        );
+
+        const existing = store.pendingBrokers().find((pb) => pb.id === id);
+
+        if (!existing) {
+          console.log('broker in front end not found');
+          return;
+        }
+
+        existing.status = 'active';
+
+        const pbs = store.pendingBrokers().filter((pb) => pb.id !== id);
+
+        patchState(store, { pendingBrokers: pbs });
+      },
+      async getPendingBrokers() {
+        const res: any = await firstValueFrom(
+          http.get(`${environment.apiBaseUrl}/admin-page/brokers`)
+        );
+
+        patchState(store, { pendingBrokers: res });
+        console.log('pending brokers: ', store.pendingBrokers());
+      },
 
       async updateBrokerLocation() {
         const location = store.brokerLocation();
@@ -74,40 +95,13 @@ export const HousesStore = signalStore(
         const res: any = await firstValueFrom(
           http.patch(`${environment.apiBaseUrl}/user_profile/location`, { location })
         );
-
-        console.log(res);
-
-        patchState(store, { location });
-      },
-
-      setBrokerLocation(brokerLocation: string | null) {
-        patchState(store, { brokerLocation });
-      },
-
-      incrementNCounter() {
-        patchState(store, { notificationCounter: store.notificationCounter() + 1 });
-      },
-
-      resetNCounter() {
-        patchState(store, { notificationCounter: 0 });
-      },
-
-      // apply search
-      setSearchPrice(min: number | null, max: number | null) {
-        patchState(store, { searchPrice: { min, max } });
-      },
-      setSearchBedroom(min: number | null, max: number | null) {
-        patchState(store, { searchBedroom: { min, max } });
-      },
-
-      setSearchBathroom(min: number | null, max: number | null) {
-        patchState(store, { searchBathroom: { min, max } });
+        patchState(store, { brokerLocation: location });
       },
 
       async uploadHouse() {
-        console.log('hey uploading');
-        patchState(store, { uploading: true });
         if (!store.file() || !store.location()) return;
+
+        patchState(store, { uploading: true });
 
         const formData = new FormData();
         formData.append('type', store.type());
@@ -123,26 +117,13 @@ export const HousesStore = signalStore(
           http.post(`${environment.apiBaseUrl}/houses/upload-house`, formData)
         );
 
-        console.log(
-          'res of uploading house is with assignment is: ',
-          res.savedHouse.assignedBrokerCompanyName
-        );
-
-        res.savedHouse.assignedBrokerCompanyName =
-          res.savedHouse.assignedBroker?.brokerCompanyName ?? null;
-
         const newHouse = {
           ...res.savedHouse,
           assignedBrokerCompanyName: res.savedHouse.assignedBroker?.brokerCompanyName ?? null,
         };
 
-        console.log('new house is', newHouse);
-
         patchState(store, {
           houses: [...store.houses(), newHouse],
-        });
-
-        patchState(store, {
           file: null,
           location: '',
           price: 0,
@@ -154,11 +135,12 @@ export const HousesStore = signalStore(
       },
 
       async uploadBrokerInfo() {
-        console.log('hey uploading');
+        if (!store.file() || !store.brokerUsername() || !store.brokerLocation()) return;
+
         patchState(store, { uploading: true });
 
         const formData = new FormData();
-        formData.append('file', store.file()!); // NOT String()
+        formData.append('file', store.file()!);
         formData.append('brokerCompanyName', store.brokerUsername()!);
         formData.append('location', store.brokerLocation()!);
 
@@ -166,47 +148,40 @@ export const HousesStore = signalStore(
           http.post(`${environment.apiBaseUrl}/houses/upload-broker-info`, formData)
         );
 
-        console.log('uplaoding broker info res: ', res);
-
         patchState(store, {
           brokers: [...store.brokers(), res.savedBroker],
           file: null,
-          brokerUsername: '',
-          brokerLocation: '',
+          brokerUsername: null, // FIXED
+          brokerLocation: null, // FIXED
           uploading: false,
         });
       },
 
       async getHouses() {
-        console.log('houses are: ', store.houses());
         const query = new URLSearchParams();
-
-        // Price range
 
         const { min: priceMin, max: priceMax } = store.searchPrice();
         if (priceMin !== null) query.set('min', String(priceMin));
         if (priceMax !== null) query.set('max', String(priceMax));
 
-        // Location, type, property_type
         if (store.searchLocation()) query.set('location', store.searchLocation()!);
         if (store.property_type()) query.set('property_type', store.property_type());
         if (store.type()) query.set('type', store.type());
 
-        // Bedroom range
         const { min: bedroomMin, max: bedroomMax } = store.searchBedroom();
         if (bedroomMin !== null) query.set('bedroomMin', String(bedroomMin));
         if (bedroomMax !== null) query.set('bedroomMax', String(bedroomMax));
 
-        // Bathroom range
         const { min: bathroomMin, max: bathroomMax } = store.searchBathroom();
         if (bathroomMin !== null) query.set('bathroomMin', String(bathroomMin));
         if (bathroomMax !== null) query.set('bathroomMax', String(bathroomMax));
 
-        // Build URL after all params
-        const url = `${environment.apiBaseUrl}/houses?${query.toString()}`;
+        const qs = query.toString();
+        const url = qs
+          ? `${environment.apiBaseUrl}/houses?${qs}`
+          : `${environment.apiBaseUrl}/houses`;
 
         const res: any = await firstValueFrom(http.get(url));
-
         patchState(store, { houses: res });
       },
 
@@ -214,13 +189,6 @@ export const HousesStore = signalStore(
         const res: any = await firstValueFrom(http.get(`${environment.apiBaseUrl}/houses/${id}`));
 
         patchState(store, { house: res });
-      },
-
-      async getBookmarks() {
-        const res: any = await firstValueFrom(
-          http.get(`${environment.apiBaseUrl}/houses/bookmarks`)
-        );
-        patchState(store, { bookmarks: res });
       },
 
       async getNotifications() {
@@ -259,33 +227,20 @@ export const HousesStore = signalStore(
           })
         );
 
-        const updated = res.updatedHouse;
+        const draft = res.updatedHouse;
 
-        // update houses list
         patchState(store, {
-          houses: store.houses().map((h) => (h.id === id ? updated : h)),
-          // update bookmarks that reference this house
-          bookmarks: store
-            .bookmarks()
-            .map((b) => (b.house.id === id ? { ...b, house: updated } : b)),
-          // update notifications that reference this house
-          notifications: store
-            .notifications()
-            .map((n) => (n.house.id === id ? { ...n, house: updated } : n)),
+          pendingHouses: [
+            ...store.pendingHouses().filter((h) => h.id !== id), // FIXED
+            draft,
+          ],
         });
-
-        if (updated.priceReduced) {
-          patchState(store, {
-            notificationCounter: store.notificationCounter() + 1,
-          });
-        }
       },
 
       async deleteHouse(id: string) {
         await firstValueFrom(http.delete(`${environment.apiBaseUrl}/houses/deleteHouse/${id}`));
         patchState(store, {
           houses: store.houses().filter((h) => h.id !== id),
-          bookmarks: store.bookmarks().filter((b) => b.house.id !== id),
         });
       },
 
@@ -296,19 +251,65 @@ export const HousesStore = signalStore(
         patchState(store, { notifications: store.notifications().filter((n) => n.id !== id) });
       },
 
-      async deleteBookmark(id: string) {
-        await firstValueFrom(http.delete(`${environment.apiBaseUrl}/houses/deleteBookmark/${id}`));
-        patchState(store, { bookmarks: store.bookmarks().filter((b) => b.id !== id) });
+      setBrokerLocation(brokerLocation: string | null) {
+        patchState(store, { brokerLocation });
       },
 
-      async createBookmark(houseId: string) {
-        const res: any = await firstValueFrom(
-          http.post(`${environment.apiBaseUrl}/houses/create-bookmark`, { houseId })
-        );
-        patchState(store, {
-          bookmarks: [...store.bookmarks(), res.savedBookmark],
-        });
+      incrementNCounter() {
+        patchState(store, { notificationCounter: store.notificationCounter() + 1 });
+      },
+
+      resetNCounter() {
+        patchState(store, { notificationCounter: 0 });
+      },
+
+      setSearchPrice(min: number | null, max: number | null) {
+        patchState(store, { searchPrice: { min, max } });
+      },
+
+      setSearchBedroom(min: number | null, max: number | null) {
+        patchState(store, { searchBedroom: { min, max } });
+      },
+
+      setSearchBathroom(min: number | null, max: number | null) {
+        patchState(store, { searchBathroom: { min, max } });
+      },
+
+      set<K extends keyof Omit<Typo, 'bookmarks'>>(key: K, value: Omit<Typo, 'bookmarks'>[K]) {
+        patchState(store, { [key]: value } as any);
       },
     };
   })
 );
+
+// async updateHouse(
+//   id: string,
+//   location: string,
+//   price: number,
+//   bedroom: number,
+//   bathroom: number,
+//   area: string
+// ) {
+//   const res: any = await firstValueFrom(
+//     http.patch(`${environment.apiBaseUrl}/houses/${id}`, {
+//       location,
+//       price,
+//       bedroom,
+//       bathroom,
+//       area,
+//     })
+//   );
+
+//   const updated = res.updatedHouse;
+
+//   patchState(store, {
+//     houses: store.houses().map((h) => (h.id === id ? updated : h)),
+//     notifications: store
+//       .notifications()
+//       .map((n) => (n.house.id === id ? { ...n, house: updated } : n)),
+//   });
+
+//   if (updated.priceReduced) {
+//     patchState(store, { notificationCounter: store.notificationCounter() + 1 });
+//   }
+// },

@@ -81,7 +81,7 @@ import { HousesStore } from './houses/houses.store';
         <!-- Inputs -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div>
-            <label class="font-medium block mb-1">Username</label>
+            <label class="font-medium block mb-1">enter LLC/Inc/</label>
             <input
               type="text"
               [(ngModel)]="store.brokerUsername"

@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { HousesStore } from '../../houses/houses.store';
 import { ArrowDown, LucideAngularModule, X } from 'lucide-angular';
+import { BookmarkStore } from '../../houses/bookmarks.store';
 
 @Component({
   selector: 'bookmarks',
@@ -10,7 +11,7 @@ import { ArrowDown, LucideAngularModule, X } from 'lucide-angular';
       <h2 class="text-2xl font-semibold mb-6 ">Bookmarked Houses</h2>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        @for (b of store.bookmarks(); track $index) {
+        @for (b of bookmarks.bookmarks(); track $index) {
         <div
           class="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition cursor-pointer group relative"
         >
@@ -25,7 +26,7 @@ import { ArrowDown, LucideAngularModule, X } from 'lucide-angular';
             <!-- Delete bookmark -->
             <button
               class="absolute top-3 right-3 bg-white bg-opacity-70 hover:bg-indigo-200 p-2 rounded-full transition flex items-center justify-center"
-              (click)="store.deleteBookmark(b.id)"
+              (click)="bookmarks.deleteBookmark(b.id)"
             >
               <lucide-icon [name]="x" class="w-5 h-5"></lucide-icon>
             </button>
@@ -64,18 +65,18 @@ import { ArrowDown, LucideAngularModule, X } from 'lucide-angular';
         }
       </div>
 
-      @if (store.bookmarks().length === 0) {
+      @if (bookmarks.bookmarks().length === 0) {
       <p class=" text-sm mt-6">No bookmarks yet.</p>
       }
     </div>
   `,
 })
 export class Bookmarks {
-  store = inject(HousesStore);
+  bookmarks = inject(BookmarkStore);
   x = X;
   down=ArrowDown
 
   async ngOnInit() {
-    await this.store.getBookmarks();
+    await this.bookmarks.getBookmarks();
   }
 }

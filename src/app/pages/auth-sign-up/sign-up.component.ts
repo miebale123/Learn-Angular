@@ -79,7 +79,6 @@ export class Signup {
 
   // --- Google Sign-In ---
   loginWithGoogle() {
-    console.log(environment.apiBaseUrl);
     this.auth.loginWithGoogle(); // redirects to backend /auth/google
   }
 }

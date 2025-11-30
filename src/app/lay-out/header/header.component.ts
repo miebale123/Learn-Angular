@@ -11,176 +11,17 @@ import {
   Bell,
   Menu,
   X,
+  Heart,
 } from 'lucide-angular';
 import { HousesStore } from '../../houses/houses.store';
 import { AuthStateService } from '../../pages/auth-sign-in/sign-in.component';
+import { Logo } from './logo.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, RouterLink],
-  template: `
-    <header
-      class="fixed top-0 left-0 right-0 z-[9999] flex items-center justify-between
-         px-4 md:px-8 py-2 bg-white backdrop-blur-md font-bold shadow-lg"
-    >
-      <!-- LEFT SIDE -->
-      <div class="flex items-center gap-6 ml-20">
-        <button class="md:hidden" (click)="do()">
-          <lucide-icon [name]="menu" class="w-6 h-6"></lucide-icon>
-        </button>
-
-        <a routerLink="/">
-          <div class="flex items-center gap-2 justify-center">
-            <img src="../../../assets/HomeLogo.png" alt="" class="w-6 h-6" />
-            <div class="md:flex">
-              <span class="text-xl font-bold mt-1">Lumina</span>
-            </div>
-          </div>
-        </a>
-
-        <!-- LEFT NAV LINKS -->
-        <nav class="hidden md:flex items-center gap-6 text-md ">
-          <a routerLink="/" class="flex items-center gap-1 hover:underline">Buy</a>
-          <button (click)="onNewPostClick()" class="hover:underline">Sell/Rent out</button>
-          <a routerLink="/" class="flex items-center gap-1 hover:underline">Rent</a>
-           <a routerLink="/upload-broker-info" class="flex items-center gap-1">
-        <span>Become Broker</span>
-      </a>
-          <button class="hover:underline">Find an Agent</button>
-          <button class="hover:underline">My Home</button>
-          <button class="hover:underline">News & Insights</button>
-
-          @if (auth.isAdmin()) {
-          <a routerLink="/admin" class="flex items-center gap-1"> Admin </a>
-          } @if (auth.isExpert()) {
-          <a routerLink="/my-houses" class="flex items-center gap-1">Agent</a>
-          }
-        </nav>
-      </div>
-
-      <!-- RIGHT SIDE -->
-      <div class="hidden md:flex items-center gap-4">
-        <!-- Moved to the right -->
-        <button routerLink="/manage-rentals" class="hover:underline">Manage rentals</button>
-        <button routerLink="/advertise" class="hover:underline">Advertise</button>
-        @if (!auth.isLoggedIn()) {
-        <button (click)="go('auth/sign-in')" class="text-sm hover:underline">Sign in</button>
-
-        <button
-          (click)="go('auth/sign-up')"
-          class="text-sm border border-white px-3 py-1 rounded bg-black text-white  transition"
-        >
-          Sign up
-        </button>
-        } @if (auth.isLoggedIn()) {
-        <!-- Notifications -->
-        <a
-          routerLink="/notifications"
-          (click)="store.resetNCounter()"
-          class="relative flex items-center"
-        >
-          <lucide-icon [name]="bell" class="w-5 h-5"></lucide-icon>
-
-          @if (store.notificationCounter()) {
-          <div
-            class="absolute -top-1 -right-1 bg-red-500 text-xs font-bold rounded-full w-3 h-3 flex items-center justify-center"
-          >
-            {{ store.notificationCounter() }}
-          </div>
-          }
-        </a>
-
-        <!-- Profile Menu -->
-        <div class="relative">
-          <button (click)="toggleDropdown()" class="flex items-center gap-2 pl-3">
-            <div
-              class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-bold uppercase"
-            >
-              {{ getInitial() }}
-            </div>
-          </button>
-
-          @if (dropdownOpen()) {
-          <div class="absolute right-0 mt-2 w-44 bg-gray-700 rounded-lg shadow-lg text-sm py-2">
-            <p class="px-4 pb-2 text-gray-300 border-b border-gray-600 text-xs">
-              {{ auth.userEmail() }}
-            </p>
-            <button (click)="go('settings')" class="px-4 py-2 text-gray-200 hover:bg-gray-600">
-              Settings
-            </button>
-            <button
-              (click)="logout()"
-              class="px-4 py-2 text-gray-200 hover:bg-gray-600 flex items-center gap-2"
-            >
-              <lucide-icon [name]="logOut" class="w-5 h-5"></lucide-icon>
-              Log out
-            </button>
-          </div>
-          }
-        </div>
-        }
-      </div>
-    </header>
-
-    @if (warningMessage) {
-    <p class="text-red-600 text-sm ml-2">{{ warningMessage }}</p>
-    } @if (mobileOpen()) {
-    <!-- BACKDROP -->
-    <div class="fixed inset-0 bg-black/40 z-[9998]" (click)="closeMobile()"></div>
-
-    <!-- RIGHT-SIDE DRAWER -->
-    <div
-      class="fixed top-0 left-0 h-full w-72 bg-blue-600 text-white z-[9999] shadow-xl
-           p-6 flex flex-col gap-6 transition-transform duration-300 translate-x-0"
-    >
-      <!-- CLOSE BUTTON -->
-      <button class="self-end" (click)="closeMobile()">
-        <lucide-icon [name]="x" class="w-6 h-6 rotate-90"></lucide-icon>
-        <!-- lucide has no X by default in your imports, so we rotate menu to mimic X -->
-      </button>
-
-      <!-- MENU ITEMS -->
-      <a routerLink="/bookmarks" (click)="closeMobile()" class="flex items-center gap-2"> Saved </a>
-
-      <button (click)="closeMobile()" class="flex items-center gap-2">Rent</button>
-
-      <button (click)="onNewPostClick(); closeMobile()" class="flex items-center gap-2">
-        Sell
-      </button>
-
-      @if (auth.isAdmin()) {
-      <a routerLink="/admin" (click)="closeMobile()" class="flex items-center gap-2">
-        <lucide-icon [name]="shield" class="w-5 h-5"></lucide-icon>
-        Admin
-      </a>
-      } @if (auth.isExpert()) {
-      <a routerLink="/my-houses" (click)="closeMobile()" class="flex items-center gap-2"> Agent </a>
-      } @if (!auth.isLoggedIn()) {
-      <button (click)="go('auth/sign-in'); closeMobile()" class="block text-left">Sign in</button>
-      <button (click)="go('auth/sign-up'); closeMobile()" class="block text-left">Sign up</button>
-      } @if (auth.isLoggedIn()) {
-
-      <a
-        routerLink="/notifications"
-        (click)="store.resetNCounter(); closeMobile()"
-        class="flex items-center gap-2"
-      >
-        <lucide-icon [name]="bell" class="w-5 h-5"></lucide-icon>
-        Notifications
-      </a>
-
-      <a routerLink="/bookmarks" class="flex items-center gap-1">
-        <span>Saved</span>
-      </a>
-
-      <button (click)="go('settings'); closeMobile()" class="block text-left">Settings</button>
-      <button (click)="logout(); closeMobile()" class="block text-left">Log out</button>
-
-      }
-    </div>
-    }
-  `,
+  imports: [CommonModule, LucideAngularModule, RouterLink, Logo],
+  templateUrl: './header.component.html',
 })
 export class Header {
   router = inject(Router);
@@ -189,6 +30,7 @@ export class Header {
   el = inject(ElementRef);
 
   plus = Plus;
+  heart = Heart;
   shield = Shield;
   x = X;
   house = House;

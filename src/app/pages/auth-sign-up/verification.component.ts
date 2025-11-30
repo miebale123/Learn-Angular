@@ -70,8 +70,6 @@ export class VerificationComponent {
   combineOtp() {
     // read all inputs and join them into a single string
     this.otp = this.otpInputs.map((el) => el.nativeElement.value).join('');
-
-    console.log('OTP value:', this.otp);
   }
 
   async onSubmit(event: Event) {

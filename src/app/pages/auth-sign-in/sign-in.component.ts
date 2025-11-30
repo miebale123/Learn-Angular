@@ -77,7 +77,6 @@ export class AuthFormService {
     try {
       const dto = form.value;
       const res: any = await firstValueFrom(this.http.post(`${this.baseUrl}/${apiUrl}`, dto));
-      console.log(res);
 
       message.set(res?.message);
       userEmail.set(res?.userEmail);
@@ -157,6 +156,7 @@ export class AuthStateService {
       const decoded = jwtDecode<JwtPayload>(token);
       this._userRoles.set(decoded.roles ?? []);
       this._userEmail.set(decoded.email);
+      console.log('user roles are: ', this.userRoles);
     } else {
       this._userRoles.set([]);
       this._userEmail.set(null);
@@ -186,8 +186,6 @@ export class AuthStateService {
     const res: any = await firstValueFrom(
       this.http.post(`${environment.apiBaseUrl}/auth/log-out`, {}, { withCredentials: true })
     );
-
-    console.log(res);
 
     this.isLoggedIn.set(false);
     this._userEmail.set(null);

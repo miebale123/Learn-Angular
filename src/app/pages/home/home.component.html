@@ -1,21 +1,5 @@
-<div class="min-h-screen flex flex-col pt-12">
-  <app-header></app-header>
-
-  <main
-    class="flex-1 flex flex-col justify-start items-center text-center gap-6 px-4 pt-8 md:pt-20 lg:pt-40 text-white hero-section min-h-[60vh]"
-  >
-    <div
-      class="flex items-baseline justify-center font-bold tracking-wide leading-none gap-1"
-    ></div>
-
-    <p class="text-xl sm:text-2xl md:text-3xl max-w-md sm:max-w-lg px-3 leading-relaxed font-bold">
-      Rentals. Homes. Agents.
-    </p>
-
-    <p class="font-bold text-2xl">የብርሃን ቤት ይሁንልዎ!</p>
-
-    <search-house (search)="onSearch($event)"></search-house>
-  </main>
+<div class="min-h-screen flex flex-col">
+  <hero />
   <section class="py-16 px-6 text-center text-black">
     <h2 class="text-3xl font-bold mb-10 text-black!">Browse Homes</h2>
 
@@ -24,56 +8,5 @@
     </button>
   </section>
 
-  <section class="py-24 bg-gray-50 text-gray-900">
-    <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-center">Why Choose Lumina?</h2>
-    <p class="text-center text-gray-600 mb-14 text-lg max-w-2xl mx-auto">
-      Smart tools, trusted agents, and verified homes — everything to make your search effortless.
-    </p>
-
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-6xl mx-auto px-6">
-      <div
-        class="p-8 rounded-2xl bg-white shadow-sm hover:shadow-md border border-gray-200 transition"
-      >
-        <h3 class="text-xl font-semibold mb-3">Verified Listings</h3>
-        <p class="text-gray-600">
-          Every property is checked for quality, accuracy, and trustworthiness.
-        </p>
-      </div>
-
-      <div
-        class="p-8 rounded-2xl bg-white shadow-sm hover:shadow-md border border-gray-200 transition"
-      >
-        <h3 class="text-xl font-semibold mb-3">Trusted Agents</h3>
-        <p class="text-gray-600">
-          Work with reliable, experienced agents who understand the market.
-        </p>
-      </div>
-
-      <div
-        class="p-8 rounded-2xl bg-white shadow-sm hover:shadow-md border border-gray-200 transition"
-      >
-        <h3 class="text-xl font-semibold mb-3">Fast Support</h3>
-        <p class="text-gray-600">
-          We provide quick, clear, and helpful support whenever you need it.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="py-20 text-center text-black">
-    <h2 class="text-3xl font-bold mb-4">Start Your Search Today</h2>
-    <p class="mb-8 text-lg">Find your perfect home with ease and confidence.</p>
-
-    <button
-      routerLink="/houses"
-      class="text-white px-8 py-3 rounded-xl font-semibold hover:bg-gray-800 transition"
-    >
-      Browse Homes
-    </button>
-  </section>
-
-  <section>
-    <img src="/assets/icons.png" alt="" class="w-[100]" />
-  </section>
-  <app-footer />
+  <home-section />
 </div>

@@ -15,9 +15,10 @@ import { Search } from './houses/search.component';
 import { Notifications } from './notifications/notifications.component';
 import { Settings } from './pages/settings.component';
 import { UploadBrokerInfo } from './upload_broker-info.component';
+import { Broker } from './houses/broker.component';
+import { HousesSearchResults } from './houses/houses-search-results.component';
 
 export const routes: Routes = [
-  { path: '', component: Home, pathMatch: 'full' },
   { path: 'search-house', component: Search, pathMatch: 'full' },
   // { path: 'oauth-login', component: LoginSuccessComponent },
   {
@@ -35,7 +36,9 @@ export const routes: Routes = [
     path: '',
     component: AppLayout,
     children: [
+      { path: '', component: Home, pathMatch: 'full' },
       { path: 'houses', component: Houses },
+      { path: 'houses-search-results', component: HousesSearchResults },
       { path: 'house', component: House },
     ],
   },
@@ -44,13 +47,14 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     component: AppLayout,
     children: [
-    { path: 'admin', component: Admin },
+      { path: 'admin', component: Admin },
+      { path: 'broker', component: Broker },
       { path: 'notifications', component: Notifications },
       { path: 'my-houses', component: MyHouses },
       { path: 'bookmarks', component: Bookmarks },
       { path: 'upload-house', component: Upload },
-      {path: 'upload-broker-info', component: UploadBrokerInfo},
-      {path: 'settings', component: Settings}
+      { path: 'upload-broker-info', component: UploadBrokerInfo },
+      { path: 'settings', component: Settings },
     ],
   },
 ];
