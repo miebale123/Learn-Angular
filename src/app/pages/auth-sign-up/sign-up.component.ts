@@ -47,7 +47,7 @@ export class Signup {
     const email = this.route.snapshot.queryParamMap.get('email');
 
     if (token) {
-      localStorage.setItem('access-token', token);
+      sessionStorage.setItem('access-token', token);
       this.authState.setAccessToken(token);
       this.authState.setLoggedIn(true);
     }
@@ -71,7 +71,7 @@ export class Signup {
     });
 
     if (this.isSuccess()) {
-      localStorage.setItem('access-token', this.accessToken());
+      sessionStorage.setItem('access-token', this.accessToken());
       this.authState.setLoggedIn(true);
       this.router.navigateByUrl('/auth/app-verification');
     }

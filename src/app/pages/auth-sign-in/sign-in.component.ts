@@ -18,7 +18,7 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthStateService);
   const http = inject(HttpClient);
 
-  const accessToken = localStorage.getItem('access-token');
+  const accessToken = sessionStorage.getItem('access-token');
   const cloned = accessToken
     ? req.clone({
         setHeaders: { Authorization: `Bearer ${accessToken}` },
@@ -37,7 +37,7 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
           )
           .pipe(
             switchMap((res) => {
-              localStorage.setItem('access-token', res.accessToken);
+              sessionStorage.setItem('access-token', res.accessToken);
               const retryReq = req.clone({
                 setHeaders: { Authorization: `Bearer ${res.accessToken}` },
                 withCredentials: true,
@@ -86,7 +86,7 @@ export class AuthFormService {
       const token = res?.accessToken;
       if (token) {
         accessToken.set(token);
-        localStorage.setItem('access-token', token);
+        sessionStorage.setItem('access-token', token);
 
         this.authState.setAccessToken(token);
         this.authState.setLoggedIn(true);
@@ -124,7 +124,7 @@ export enum UserRole {
 
 @Injectable({ providedIn: 'root' })
 export class AuthStateService {
-  isLoggedIn = signal(!!localStorage.getItem('access-token'));
+  isLoggedIn = signal(!!sessionStorage.getItem('access-token'));
 
   private _userEmail = signal<string | null>(null);
   private _accessToken = signal<string | null>(null);
@@ -137,7 +137,7 @@ export class AuthStateService {
   http = inject(HttpClient);
 
   constructor() {
-    const token = localStorage.getItem('access-token');
+    const token = sessionStorage.getItem('access-token');
     if (token) this.setAccessToken(token);
   }
 
@@ -169,7 +169,7 @@ export class AuthStateService {
         this.http.post(`${environment.apiBaseUrl}/auth/refresh`, {}, { withCredentials: true })
       );
       if (res?.accessToken) {
-        localStorage.setItem('access-token', res.accessToken);
+        sessionStorage.setItem('access-token', res.accessToken);
         this.setAccessToken(res.accessToken);
         this.setLoggedIn(true);
       }
@@ -191,7 +191,7 @@ export class AuthStateService {
     this._userEmail.set(null);
     this._accessToken.set(null);
     this._userRoles.set([]);
-    localStorage.removeItem('access-token');
+    sessionStorage.removeItem('access-token');
     this.router.navigate(['/']);
   }
 
@@ -247,7 +247,7 @@ export class Signin {
     const email = this.route.snapshot.queryParamMap.get('email');
 
     if (token) {
-      localStorage.setItem('access-token', token);
+      sessionStorage.setItem('access-token', token);
       this.authState.setAccessToken(token);
       this.authState.setLoggedIn(true);
     }
@@ -271,9 +271,10 @@ export class Signin {
     });
 
     if (this.isSuccess()) {
-      localStorage.setItem('access-token', this.accessToken());
+      sessionStorage.setItem('access-token', this.accessToken());
       this.authState.setLoggedIn(true);
-      this.router.navigateByUrl('/houses');
+
+      this.router.navigateByUrl('/');
     }
   }
 

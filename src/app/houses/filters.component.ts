@@ -1,5 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
-import { ArrowDown, ChevronDown, LucideAngularModule } from 'lucide-angular';
+import {
+  ArrowDown,
+  Building,
+  Building2,
+  ChevronDown,
+  Home,
+  LucideAngularModule,
+  TreePine,
+} from 'lucide-angular';
 import { HousesStore } from './houses.store';
 
 @Component({
@@ -13,8 +21,8 @@ import { HousesStore } from './houses.store';
           <div class="flex items-center justify-center gap-2">
             <div class="relative sm:w-auto w-full">
               <button
-                class="w-full sm:w-40 px-4 py-2 bg-white border border-gray-300
-         rounded-full flex items-center justify-between shadow-sm font-medium text-gray-700"
+                class="w-full sm:w-28 px-4 py-2 bg-white border border-gray-300
+         rounded-xl flex items-center justify-around shadow-sm font-medium text-gray-700"
                 (click)="priceOpen.set(!priceOpen())"
               >
                 Price
@@ -27,7 +35,7 @@ import { HousesStore } from './houses.store';
          w-80 p-5 z-50"
               >
                 <!-- Header -->
-                <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center justify-around mb-4">
                   <div class="text-lg font-semibold text-gray-800">Price</div>
 
                   <button
@@ -69,7 +77,7 @@ import { HousesStore } from './houses.store';
                     <div class="relative flex-1">
                       <button
                         class="w-full px-3 py-2 border border-gray-300 rounded-lg text-left
-                 bg-gray-50 hover:bg-gray-100 transition flex items-center justify-between"
+                 bg-gray-50 hover:bg-gray-100 transition flex items-center justify-around"
                         (click)="toggleMinDropdown()"
                       >
                         {{ store.minPrice() ?? '$ No min' }}
@@ -106,7 +114,7 @@ import { HousesStore } from './houses.store';
                     <div class="relative flex-1">
                       <button
                         class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-left
-                 hover:bg-gray-100 transition flex items-center justify-between"
+                 hover:bg-gray-100 transition flex items-center justify-around"
                         (click)="toggleMaxDropdown()"
                       >
                         {{ store.maxPrice() ?? '$ No max' }}
@@ -163,8 +171,8 @@ import { HousesStore } from './houses.store';
           <!-- Rooms Filter -->
           <div class="relative sm:w-auto w-full">
             <button
-              class="w-full sm:w-40 px-4 py-2 bg-white border border-gray-300
-      rounded-full flex items-center justify-between shadow-sm
+              class="w-full sm:w-28 px-4 py-2 bg-white border border-gray-300
+      rounded-xl flex items-center justify-around shadow-sm
       font-medium text-gray-700"
               (click)="roomsOpen.set(!roomsOpen())"
             >
@@ -177,7 +185,7 @@ import { HousesStore } from './houses.store';
               class="absolute mt-3 bg-white border border-gray-200 rounded-xl shadow-xl
       w-80 p-5 z-50"
             >
-              <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center justify-around mb-4">
                 <div class="font-semibold text-gray-700">Rooms</div>
                 <button class="text-indigo-500 text-sm" (click)="applyRooms()">Done</button>
               </div>
@@ -191,7 +199,7 @@ import { HousesStore } from './houses.store';
                   <div class="relative flex-1">
                     <button
                       class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-left
-              flex items-center justify-between hover:bg-gray-100"
+              flex items-center justify-around hover:bg-gray-100"
                       (click)="minBedroomOpen.set(!minBedroomOpen())"
                     >
                       {{ store.minBedroom() ?? 'No min' }}
@@ -228,7 +236,7 @@ import { HousesStore } from './houses.store';
                   <div class="relative flex-1">
                     <button
                       class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-left
-              flex items-center justify-between hover:bg-gray-100"
+              flex items-center justify-around hover:bg-gray-100"
                       (click)="maxBedroomOpen.set(!maxBedroomOpen())"
                     >
                       {{ store.maxBedroom() ?? 'No max' }}
@@ -270,7 +278,7 @@ import { HousesStore } from './houses.store';
                   <div class="relative flex-1">
                     <button
                       class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-left
-              flex items-center justify-between hover:bg-gray-100"
+              flex items-center justify-around hover:bg-gray-100"
                       (click)="minBathroomOpen.set(!minBathroomOpen())"
                     >
                       {{ store.minBathroom() ?? 'No min' }}
@@ -307,7 +315,7 @@ import { HousesStore } from './houses.store';
                   <div class="relative flex-1">
                     <button
                       class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-left
-              flex items-center justify-between hover:bg-gray-100"
+              flex items-center justify-around hover:bg-gray-100"
                       (click)="maxBathroomOpen.set(!maxBathroomOpen())"
                     >
                       {{ store.maxBathroom() ?? 'No max' }}
@@ -344,13 +352,62 @@ import { HousesStore } from './houses.store';
           </div>
         </div>
 
+          <!-- PROPERTY TYPE -->
+      <div class="relative sm:w-auto w-full">
+        <button
+        class="w-full sm:w-40 px-8 py-2 bg-white border border-gray-300
+        rounded-xl flex items-center justify-center gap-2
+        shadow-sm font-medium text-gray-700 whitespace-nowrap"
+        (click)="propertyTypeOpen.set(!propertyTypeOpen())"
+        >
+          Property type
+          <lucide-icon [name]="cdown" class="w-4 h-4"></lucide-icon>
+        </button>
+
+        @if (propertyTypeOpen()) {
+        <div
+          class="absolute mt-3 bg-white border border-gray-200 rounded-xl shadow-xl
+    w-96 p-5  z-50"
+        >
+          <!-- Header -->
+          <div class="flex items-center justify-between mb-4">
+            <div class="text-lg font-semibold text-gray-800">Property type</div>
+
+            <button
+              class="text-indigo-500 text-sm font-medium"
+              (click)="propertyTypeOpen.set(false)"
+            >
+              Done
+            </button>
+          </div>
+
+          <!-- GRID -->
+          <div class="grid grid-cols-3 gap-3">
+            @for (p of propertyTypes; track $index) {
+            <button
+              class="p-4 border rounded-xl flex flex-col items-center gap-2 text-sm
+        transition"
+              [class.bg-black]="store.property_type() === p.value"
+              [class.text-white]="store.property_type() === p.value"
+              [class.border-gray-900]="store.property_type() === p.value"
+              (click)="selectPropertyType(p.value)"
+            >
+              <lucide-icon [name]="p.icon" class="w-5 h-5"></lucide-icon>
+              {{ p.label }}
+            </button>
+            }
+          </div>
+        </div>
+        }
+      </div>
+
         <div class="flex items-center justify-start gap-3 px-4 py-3">
           <!-- SAVE SEARCH -->
 
           <!-- MORE -->
           <div class="relative">
             <button
-              class="px-4 py-2 bg-white border border-gray-300 rounded-full shadow-sm flex items-center gap-1 text-sm font-medium"
+              class="px-4 py-2 bg-white border border-gray-300 rounded-xl shadow-sm flex items-center gap-1 text-sm font-medium"
               (click)="moreOpen.set(!moreOpen())"
             >
               More
@@ -388,7 +445,7 @@ import { HousesStore } from './houses.store';
             }
           </div>
           <button
-            class="px-4 py-2 bg-white border border-gray-300 rounded-full shadow-sm text-sm font-medium"
+            class="px-4 py-2 bg-white border border-gray-300 rounded-xl shadow-sm text-sm font-medium"
           >
             Save search
           </button>
@@ -496,4 +553,24 @@ export class Filters {
 
   moreOpen = signal(false);
   propertyTypeOpen = signal(false);
+
+  home = Home;
+  building = Building;
+  building2 = Building2;
+  tree = TreePine;
+
+  propertyTypes = [
+    { label: 'Any', value: null, icon: this.home },
+    { label: 'House', value: 'house', icon: this.home },
+    { label: 'Condo', value: 'condo', icon: this.building },
+    { label: 'Townhome', value: 'townhome', icon: this.home },
+    { label: 'Multi family', value: 'multi', icon: this.building2 },
+    { label: 'Mobile', value: 'mobile', icon: this.home },
+    { label: 'Farm', value: 'farm', icon: this.home },
+    { label: 'Land', value: 'land', icon: this.tree },
+  ];
+
+  selectPropertyType(type: any) {
+    this.store.setPropertyType(type);
+  }
 }

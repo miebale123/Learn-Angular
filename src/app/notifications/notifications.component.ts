@@ -4,7 +4,6 @@ import { jwtDecode } from 'jwt-decode';
 import { io } from 'socket.io-client';
 import { Router } from '@angular/router';
 import { LucideAngularModule, EllipsisVertical, Trash } from 'lucide-angular';
-import { patchState } from '@ngrx/signals';
 import { AuthStateService } from '../pages/auth-sign-in/sign-in.component';
 
 @Component({
@@ -14,40 +13,45 @@ import { AuthStateService } from '../pages/auth-sign-in/sign-in.component';
     '(document:click)': 'onDocumentClick($event)',
   },
   template: `
-    <div class="p-4 flex justify-center">
+    <div class="p-6 flex justify-center bg-white min-h-screen">
       <div class="w-full max-w-xl">
-        <h2 class="text-2xl font-semibold mt-10 mb-4 text-gray-200">Notifications</h2>
+        <h2 class="text-3xl font-bold mb-6 text-gray-800">Notifications</h2>
 
         <!-- List -->
-        <div class="space-y-3">
+        <div class="space-y-4">
           @for (n of store.notifications(); track $index) {
           <div
-            class="p-4 rounded-xl border hover:bg-gray-700
-                   transition cursor-pointer shadow-sm hover:shadow-md"
+            class="p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-lg transition cursor-pointer bg-gray-50 hover:bg-gray-100 relative"
             (click)="getHouse(n.house.id)"
             #cardRef
           >
-            <div class="flex justify-between">
+            <div class="flex justify-between items-start">
               <div>
-                <p class=" text-sm ">
-                  <span class="font-semibold ">{{ n.type }}</span>
+                <p class="text-sm text-gray-700">
+                  <span class="font-semibold text-gray-900">{{ n.type }}</span>
                   for a house in
-                  <span class="font-medium">{{ n.house.location }}</span>
+                  <span class="font-medium text-gray-800">{{ n.house.location }}</span>
                 </p>
               </div>
 
-              <button class="p-2" (click)="openDropdown($event, n.id, cardRef)">
+              <button
+                class="p-2 text-gray-400 hover:text-gray-600"
+                (click)="openDropdown($event, n.id, cardRef)"
+              >
                 <lucide-icon [name]="ev" class="w-5 h-5"></lucide-icon>
               </button>
 
               @if(open() === n.id) {
               <div
-                class="border bg-red-600 p-2 rounded absolute mt-6 right-3 z-10"
+                class="absolute right-0 mt-10 bg-white border border-gray-200 rounded shadow-lg z-20 w-44"
                 (click)="$event.stopPropagation()"
               >
-                <div class="flex items-center gap-2" (click)="deleteNotification(n.id, $event)">
+                <div
+                  class="flex items-center gap-2 p-2 hover:bg-red-100 cursor-pointer text-red-600"
+                  (click)="deleteNotification(n.id, $event)"
+                >
                   <lucide-icon [name]="t" class="w-5 h-5"></lucide-icon>
-                  <span>Delete notification</span>
+                  <span class="text-sm font-medium">Delete notification</span>
                 </div>
               </div>
               }
@@ -57,7 +61,7 @@ import { AuthStateService } from '../pages/auth-sign-in/sign-in.component';
         </div>
 
         @if (store.notifications().length === 0) {
-        <p class=" text-sm mt-6">No notifications yet.</p>
+        <p class="text-sm text-gray-500 mt-8 text-center">No notifications yet.</p>
         }
       </div>
     </div>

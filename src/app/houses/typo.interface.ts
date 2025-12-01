@@ -9,6 +9,7 @@ interface BrokerDto {
 }
 
 export interface Typo {
+  ad: boolean;
   brokerUsername: string | null;
   brokerLocation: string | null;
 
@@ -63,6 +64,7 @@ export interface Typo {
 }
 
 export const typoValue: Omit<Typo, 'bookmarks'> = {
+  ad: true,
   brokerUsername: null,
   brokerLocation: null,
 

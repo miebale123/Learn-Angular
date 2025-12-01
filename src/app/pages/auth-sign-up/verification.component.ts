@@ -82,7 +82,7 @@ export class VerificationComponent {
         this.http.post(`${environment.apiBaseUrl}/auth/verify`, { otp: this.otp })
       );
 
-      localStorage.setItem('access-token', res.accessToken);
+      sessionStorage.setItem('access-token', res.accessToken);
       this.authState.setLoggedIn(true);
       this.authState.setAccessToken(res.accessToken);
       this.authState.setLoggedIn(true);

@@ -7,6 +7,7 @@ import { jwtDecode } from 'jwt-decode';
 import { AuthStateService } from '../pages/auth-sign-in/sign-in.component';
 import { Typo, typoValue } from './typo.interface';
 import { BookmarkStore } from './bookmarks.store';
+import { PropertyType } from './house.dto';
 
 export const HousesStore = signalStore(
   { providedIn: 'root' },
@@ -35,19 +36,24 @@ export const HousesStore = signalStore(
       myHouses,
       houseBookmarks,
 
+      showAd(value: boolean) {
+        patchState(store, { ad: value });
+      },
+
       async getPendingHouses() {
         const res: any = await firstValueFrom(
           http.get(`${environment.apiBaseUrl}/houses/pendingHouses`)
         );
+
         patchState(store, { pendingHouses: res });
       },
 
       async approveHouse(id: string) {
         const res: any = await firstValueFrom(
-          http.get(`${environment.apiBaseUrl}/houses/${id}/approve`)
+          http.get(`${environment.apiBaseUrl}/houses/pendingHouses/${id}/approve`)
         );
 
-        const approved = res; // FIXED
+        const approved = res.approvedHouse; // FIXED
 
         const pbs = store.pendingHouses().filter((ph) => ph.id !== id);
 
@@ -63,7 +69,7 @@ export const HousesStore = signalStore(
 
       async activateBroker(id: string) {
         const res: any = await firstValueFrom(
-          http.patch(`${environment.apiBaseUrl}/admin-page/${id}/approve`, {})
+          http.patch(`${environment.apiBaseUrl}/admin-page/pendingBrokers/${id}/approve`, {})
         );
 
         const existing = store.pendingBrokers().find((pb) => pb.id === id);
@@ -79,6 +85,7 @@ export const HousesStore = signalStore(
 
         patchState(store, { pendingBrokers: pbs });
       },
+
       async getPendingBrokers() {
         const res: any = await firstValueFrom(
           http.get(`${environment.apiBaseUrl}/admin-page/brokers`)
@@ -151,8 +158,8 @@ export const HousesStore = signalStore(
         patchState(store, {
           brokers: [...store.brokers(), res.savedBroker],
           file: null,
-          brokerUsername: null, // FIXED
-          brokerLocation: null, // FIXED
+          brokerUsername: '', // FIXED
+          brokerLocation: '', // FIXED
           uploading: false,
         });
       },
@@ -227,7 +234,7 @@ export const HousesStore = signalStore(
           })
         );
 
-        const draft = res.updatedHouse;
+        const draft = res.draft;
 
         patchState(store, {
           pendingHouses: [
@@ -269,6 +276,10 @@ export const HousesStore = signalStore(
 
       setSearchBedroom(min: number | null, max: number | null) {
         patchState(store, { searchBedroom: { min, max } });
+      },
+
+      setPropertyType(property_type: PropertyType) {
+        patchState(store, { property_type: property_type });
       },
 
       setSearchBathroom(min: number | null, max: number | null) {
