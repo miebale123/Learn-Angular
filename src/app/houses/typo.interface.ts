@@ -9,6 +9,7 @@ interface BrokerDto {
 }
 
 export interface Typo {
+  authModal: boolean;
   ad: boolean;
   brokerUsername: string | null;
   brokerLocation: string | null;
@@ -23,6 +24,7 @@ export interface Typo {
   area: string;
 
   searchLocation: string | null;
+  searchedLocationDisplay: string | null;
   searchPrice: { min: number | null; max: number | null };
   searchBedroom: { min: number | null; max: number | null };
   searchBathroom: { min: number | null; max: number | null };
@@ -64,6 +66,7 @@ export interface Typo {
 }
 
 export const typoValue: Omit<Typo, 'bookmarks'> = {
+  authModal: false,
   ad: true,
   brokerUsername: null,
   brokerLocation: null,
@@ -87,6 +90,7 @@ export const typoValue: Omit<Typo, 'bookmarks'> = {
   notifications: [],
 
   searchLocation: null,
+  searchedLocationDisplay: null,
   searchPrice: { min: null, max: null },
   searchBedroom: { min: null, max: null },
   searchBathroom: { min: null, max: null },

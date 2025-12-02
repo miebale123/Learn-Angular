@@ -1,45 +1,108 @@
-import { Facebook, Instagram, Linkedin, LucideAngularModule, Youtube } from 'lucide-angular';
+import {
+  Apple,
+  Facebook,
+  Instagram,
+  Linkedin,
+  LucideAngularModule,
+  Play,
+  Youtube,
+} from 'lucide-angular';
 
 import { Component } from '@angular/core';
+import { MatIcon, MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-footer',
-  imports: [LucideAngularModule],
-  template: ` <!-- Footer -->
-    <footer class="bg-black text-white py-8">
-      <div class="max-w-6xl mx-auto px-4">
-        <div class="flex flex-col sm:flex-row sm:justify-between items-center gap-6">
-          <!-- Logo / Name -->
-          <!-- Logo -->
-          <a routerLink="/">
-            <div class="flex items-center gap-2 justify-center">
-              <img src="../../../assets/HomeLogo.png" alt="" class="w-6 h-6" />
-              <div class="md:flex">
-                <span class="text-xl font-bold mt-1">Lumina</span>
-              </div>
-            </div>
-          </a>
+  standalone: true,
+  imports: [LucideAngularModule, MatIconModule, MatIcon],
+  template: `
+    <footer class="bg-black text-white py-12">
+      <div class="max-w-7xl mx-auto px-6">
+        <!-- TOP LINKS -->
+        <div class="flex flex-wrap gap-6 justify-center text-sm mb-10">
+          <a href="#" class="hover:underline">About Us</a>
+          <a href="#" class="hover:underline">Careers</a>
+          <a href="#" class="hover:underline">Privacy</a>
+          <a href="#" class="hover:underline">Terms</a>
+          <a href="#" class="hover:underline">Contact</a>
+          <a href="#" class="hover:underline">Advertise with us</a>
+        </div>
 
-          <!-- Social Icons -->
-          <div class="flex gap-6">
-            <lucide-icon [img]="facebook" class="w-5 h-5 cursor-pointer"></lucide-icon>
-            <lucide-icon [img]="insta" class="w-5 h-5 cursor-pointer"></lucide-icon>
-            <lucide-icon [img]="youtube" class="w-5 h-5 cursor-pointer"></lucide-icon>
-            <lucide-icon [img]="linkedIn" class="w-5 h-5 cursor-pointer"></lucide-icon>
+        <!-- GET THE APP -->
+        <div class="text-center mb-12">
+          <h3 class="font-semibold text-lg mb-4">Get the app</h3>
+          <div class="flex justify-center gap-4">
+            <button
+              class="px-1 border bg-white flex w-40 items-center justify-center rounded-lg text-black"
+            >
+              <mat-icon svgIcon="apple" class="w-8 h-8"></mat-icon>
+
+              <div>
+                <span class="text-sm font-sm">download on the</span>
+                <span class="font-bold"> Apple Store</span>
+              </div>
+            </button>
+
+            <button
+              class="px-1 border bg-white text-black flex w-40 items-center justify-center rounded-lg gap-2"
+            >
+
+              <mat-icon svgIcon="playstore" class="w-8 h-8"></mat-icon>
+
+              <div class="flex flex-col leading-tight">
+                <span class="text-sm">Get it on</span>
+                <span class="font-bold">Google Play</span>
+              </div>
+            </button>
           </div>
         </div>
 
-        <div class="text-center text-sm mt-6 opacity-70">
-          © {{ currentYear }} Lumina. All rights reserved.
+        <div class="flex justify-center items-center p-2">
+          <div>
+            <span class="font-bold">Our Products</span>
+            <div class="flex flex-wrap gap-6 text-sm p-2">
+              <a href="#" class="hover:underline">Wecare ET</a>
+            </div>
+          </div>
         </div>
+
+        <!-- SOCIAL ICONS -->
+        <div class="flex justify-center gap-6 mb-10">
+          <lucide-icon [img]="facebook" class="w-6 h-6 cursor-pointer"></lucide-icon>
+          <lucide-icon [img]="insta" class="w-6 h-6 cursor-pointer"></lucide-icon>
+          <lucide-icon [img]="youtube" class="w-6 h-6 cursor-pointer"></lucide-icon>
+          <lucide-icon [img]="linkedIn" class="w-6 h-6 cursor-pointer"></lucide-icon>
+        </div>
+
+        <!-- COPYRIGHT -->
+        <p class="text-center text-xs opacity-70">
+          © {{ currentYear }} Lumina. All rights reserved.
+        </p>
       </div>
-    </footer>`,
+    </footer>
+  `,
 })
 export class Footer {
   facebook = Facebook;
   insta = Instagram;
   youtube = Youtube;
   linkedIn = Linkedin;
+
+  playstore = Play;
+  apple = Apple;
+
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIcon(
+      'apple',
+      sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/apple.svg')
+    );
+
+     iconRegistry.addSvgIcon(
+      'playstore',
+      sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/playstore.svg')
+    );
+  }
 
   currentYear = new Date().getFullYear();
 }

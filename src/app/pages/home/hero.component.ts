@@ -7,35 +7,65 @@ import { Search } from '../../houses/search.component';
   selector: 'hero',
   imports: [Search],
   template: `
-    <div class=" w-full ">
-      <main
+    <!-- <main
         #heroRef
         class="flex flex-col justify-start items-center text-center gap-6 px-4
                text-white hero-section h-full py-28"
-      >
-        <p class="text-xl sm:text-2xl md:text-3xl font-bold pt-20">Rentals. Homes. Agents.</p>
-        <p class="font-bold text-2xl">የብርሃን ቤት ይሁንልዎ!</p>
+      > -->
 
-        <div
-          class="inset-x-0 mx-auto px-4 flex justify-center transition-all duration-300 z-[20]"
-          [class.fixed]="isFixed"
-          [class.top-0]="isFixed"
-          [class.left-0]="isFixed"
-          [class.right-0]="isFixed"
-          [class.w-full]="isFixed"
-          [class.bg-white]="isFixed"
-          [class.shadow-md]="isFixed"
-          [class.max-w-4xl]="!isFixed"
-        >
-          <search-house (search)="onSearch($event)" [trySuggestion]="false"></search-house>
-        </div>
-      </main>
-    </div>
+    <main
+      #heroRef
+      class="flex flex-col justify-start items-center text-center gap-6 px-4
+         text-white hero-section h-full py-28 z-[10]"
+    >
+      <p class="text-xl sm:text-2xl md:text-3xl font-bold pt-8">Rentals. Homes. Agents.</p>
+
+      <div class="flex gap-6 text-lg font-semibold pt-4">
+        <button class="pb-1 relative" (click)="setSelected('Buy')">
+          Buy @if (selected === 'Buy') {
+          <span class="absolute bottom-0 left-0 w-full h-[2px] bg-white"></span>
+          }
+        </button>
+
+        <button class="pb-1 relative" (click)="setSelected('Rent')">
+          Rent @if (selected === 'Rent') {
+          <span class="absolute bottom-0 left-0 w-full h-[2px] bg-white"></span>
+          }
+        </button>
+
+        <button class="pb-1 relative" (click)="setSelected('Sell')">
+          Sell @if (selected === 'Sell') {
+          <span class="absolute bottom-0 left-0 w-full h-[2px] bg-white"></span>
+          }
+        </button>
+
+        <button class="pb-1 relative" (click)="setSelected('Just sold')">
+          Just sold @if (selected === 'Just sold') {
+          <span class="absolute bottom-0 left-0 w-full h-[2px] bg-white"></span>
+          }
+        </button>
+      </div>
+
+      <p class="font-bold text-lg">የብርሃን ቤት ይሁንልዎ!</p>
+
+      <div
+        class="inset-x-0 mx-auto px-4 flex justify-center transition-all duration-300 "
+        [class.fixed]="isFixed"
+        [class.top-0]="isFixed"
+        [class.left-0]="isFixed"
+        [class.right-0]="isFixed"
+        [class.w-full]="isFixed"
+        [class.bg-white]="isFixed"
+        [class.shadow-md]="isFixed"
+        [class.max-w-4xl]="!isFixed"
+      >
+        <search-house (search)="onSearch($event)" [trySuggestion]="false"></search-house>
+      </div>
+    </main>
 
     <!-- [class.absolute]="!isFixed"
         [class.bottom-8]="!isFixed" -->
   `,
-  styles: [],
 })
 export class Hero {
   private router = inject(Router);
@@ -59,5 +89,11 @@ export class Hero {
   onSearch(value: string) {
     this.store.set('searchLocation', value);
     this.router.navigateByUrl('/houses-search-results');
+  }
+
+  selected = 'Rent'; // default option — change if you want
+
+  setSelected(option: string) {
+    this.selected = option;
   }
 }

@@ -3,7 +3,7 @@ import { Component, ViewChildren, QueryList, ElementRef, inject, signal } from '
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environments';
-import { AuthStateService } from '../auth-sign-in/sign-in.component';
+import { AuthStateService } from '../../auth/auth-state.service';
 
 @Component({
   selector: 'app-verification',
@@ -11,9 +11,11 @@ import { AuthStateService } from '../auth-sign-in/sign-in.component';
     <div
       class="verification-container  flex flex-col items-center justify-center min-h-screen px-4"
     >
-      <p class=" mb-2 text-center">
-        A verification code has been sent to your email. Please enter the 6-digit code below.
-      </p>
+      <div class="w-1/2">
+        <p class=" mb-2 text-center">
+          A verification code has been sent to your email. Please enter the 6-digit code below.
+        </p>
+      </div>
 
       <form class="flex flex-col items-center gap-6 w-full max-w-sm" (submit)="onSubmit($event)">
         <div class="flex gap-2 justify-center">
@@ -29,7 +31,10 @@ import { AuthStateService } from '../auth-sign-in/sign-in.component';
           }
         </div>
 
-        <button type="submit" class="mt-6 bg-blue-600 hover:bg-blue-700  px-6 py-2 rounded-lg">
+        <button
+          type="submit"
+          class="mt-6 bg-blue-600 hover:bg-blue-700  px-6 py-2 rounded-lg text-white"
+        >
           {{ loading() ? 'verifying' : 'verify' }}
         </button>
       </form>

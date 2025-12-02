@@ -1,0 +1,64 @@
+<!-- Centered Card -->
+<div class="relative z-10 flex items-center justify-center px-4 py-4">
+  <div class="w-full max-w-md bg-white rounded-xl">
+    <div class="space-y-8">
+      <h2 class="text-lg font-semibold text-center">Sign in into Lumina</h2>
+
+      @if (message()) {
+      <p [style.color]="isSuccess() ? 'green' : 'red'">
+        {{ message() }}
+      </p>
+      } @if (loading()) {
+      <p>Loading...</p>
+      }
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-8">
+        <div class="flex flex-col">
+          <label>Email</label>
+          <input type="email" formControlName="email" class="border rounded px-3 py-2" />
+
+          @if (form.get('email')?.value && form.get('email')?.invalid) {
+          <span>{{ form.get('email')?.errors?.['zodError'] }}</span>
+          } @if (fieldErrors()['email']) {
+          <span>{{ fieldErrors()['email'] }}</span>
+          }
+        </div>
+
+        <div class="flex flex-col">
+          <div class="flex justify-between items-center">
+            <label>Password</label>
+            <a routerLink="/auth/forgot-password"> Forgot password? </a>
+          </div>
+
+          <input type="password" formControlName="password" class="border rounded px-3 py-2" />
+
+          @if (form.get('password')?.value && form.get('password')?.invalid) {
+          <span>{{ form.get('password')?.errors?.['zodError'] }}</span>
+          } @if (fieldErrors()['password']) {
+          <span>{{ fieldErrors()['password'] }}</span>
+          }
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-black text-white rounded-3xl py-3 font-bold hover:bg-white hover:text-black hover:border"
+          [disabled]="form.invalid || loading()"
+        >
+          continue
+        </button>
+      </form>
+
+      <social-login />
+
+      <div class="text-sm mt-2 flex flex-col items-center justify-center">
+        By creating an account you agree to Lumina's
+
+        <div>
+          <a class="font-semibold">Terms of Use</a>
+          and
+          <a class="font-semibold">Privacy Policy.</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

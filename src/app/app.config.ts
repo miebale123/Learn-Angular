@@ -7,7 +7,7 @@ import {
 
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
-import { AuthInterceptor } from './pages/auth-sign-in/sign-in.component';
+import { AuthInterceptor } from './auth/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

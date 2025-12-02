@@ -17,11 +17,11 @@ import { HousesStore } from './houses.store';
   selector: 'search-house',
   imports: [CommonModule, FormsModule, LucideAngularModule],
   template: `
-    <div class="w-full relative">
+    <div class="w-full ">
       <div
         class="flex items-center w-full sm:w-[500px]
                bg-white rounded-full border border-black
-               pl-4 pr-1 py-1"
+                pr-1 py-1"
       >
         <input
           type="text"
@@ -39,10 +39,9 @@ import { HousesStore } from './houses.store';
           (click)="onSearchClick()"
         >
           @if (!searching()) {
-            <lucide-icon [name]="s" class="w-5 h-5 text-white"></lucide-icon>
-          }
-          @if (searching()) {
-            <lucide-icon [name]="lc" class="w-5 h-5 text-white animate-spin"></lucide-icon>
+          <lucide-icon [name]="s" class="w-5 h-5 text-white"></lucide-icon>
+          } @if (searching()) {
+          <lucide-icon [name]="lc" class="w-5 h-5 text-white animate-spin"></lucide-icon>
           }
         </button>
       </div>
@@ -54,16 +53,10 @@ export class Search implements OnInit {
   s = SearchIcon;
   lc = LoaderCircle;
 
-  // -------------------
-  // INPUT: ENABLE OR DISABLE SUGGESTIONS
-  // -------------------
   @Input() trySuggestion = true;
 
   searching = signal(false);
 
-  // -------------------
-  // TYPEWRITER LOGIC
-  // -------------------
   suggestions = [
     '200 sqft, and 200 sqft lot',
     '3 bedrooms with wood floors',
@@ -81,7 +74,7 @@ export class Search implements OnInit {
 
   isPaused = false;
 
-  PAUSE_AFTER_FINISH = 1200; // ms the full phrase stays
+  PAUSE_AFTER_FINISH = 1500;
 
   startTypewriter() {
     this.typewriterInterval = setInterval(() => {
@@ -92,12 +85,10 @@ export class Search implements OnInit {
       if (this.typingForward) {
         this.charIndex++;
 
-        // Finished typing full phrase
         if (this.charIndex === phrase.length) {
           this.typingForward = false;
           this.isPaused = true;
 
-          // Pause before deleting
           setTimeout(() => {
             this.isPaused = false;
           }, this.PAUSE_AFTER_FINISH);
@@ -114,7 +105,6 @@ export class Search implements OnInit {
 
           this.isPaused = true;
 
-          // Small pause before typing next phrase
           setTimeout(() => {
             this.isPaused = false;
           }, 300);
@@ -128,14 +118,10 @@ export class Search implements OnInit {
     }, 70);
   }
 
-
   stopTypewriter() {
     clearInterval(this.typewriterInterval);
   }
 
-  // -------------------
-  // SEARCH EVENT
-  // -------------------
   @Output() search = new EventEmitter<string>();
 
   async onSearchClick() {
@@ -147,9 +133,6 @@ export class Search implements OnInit {
     this.search.emit(this.store.searchLocation()!);
   }
 
-  // -------------------
-  // RESPONSIVE DETECTION
-  // -------------------
   isMobile = false;
 
   @HostListener('window:resize', [])
@@ -164,7 +147,7 @@ export class Search implements OnInit {
 
     if (this.trySuggestion) {
       this.startTypewriter();
-    } else {
+  } else {
       this.placeholderText.set('Search address, school, city...');
     }
   }

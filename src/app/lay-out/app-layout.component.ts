@@ -47,7 +47,7 @@ import { Footer } from './footer/footer.component';
           <div
             class="absolute inset-0 flex items-center justify-center opacity-0 animate-fade py-4"
           >
-            <img src="/assets/telecom-ad.png" class="h-20 w-[600px]" />
+            <img src="/assets/telecom-ad.png" class="h-20 w-[500px]" />
           </div>
           }
         </div>

@@ -4,10 +4,10 @@ import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../environments/environments';
 import { jwtDecode } from 'jwt-decode';
-import { AuthStateService } from '../pages/auth-sign-in/sign-in.component';
 import { Typo, typoValue } from './typo.interface';
 import { BookmarkStore } from './bookmarks.store';
 import { PropertyType } from './house.dto';
+import { AuthStateService } from '../auth/auth-state.service';
 
 export const HousesStore = signalStore(
   { providedIn: 'root' },
@@ -35,6 +35,10 @@ export const HousesStore = signalStore(
     return {
       myHouses,
       houseBookmarks,
+
+      showAuthModal(value: boolean) {
+        patchState(store, { authModal: value });
+      },
 
       showAd(value: boolean) {
         patchState(store, { ad: value });
@@ -158,8 +162,8 @@ export const HousesStore = signalStore(
         patchState(store, {
           brokers: [...store.brokers(), res.savedBroker],
           file: null,
-          brokerUsername: '', // FIXED
-          brokerLocation: '', // FIXED
+          brokerUsername: '',
+          brokerLocation: '',
           uploading: false,
         });
       },
@@ -189,6 +193,8 @@ export const HousesStore = signalStore(
           : `${environment.apiBaseUrl}/houses`;
 
         const res: any = await firstValueFrom(http.get(url));
+
+        patchState(store, { searchedLocationDisplay: store.searchLocation() });
         patchState(store, { houses: res });
       },
 
@@ -213,34 +219,6 @@ export const HousesStore = signalStore(
         patchState(store, {
           notifications,
           notificationCounter: notifications.length,
-        });
-      },
-
-      async updateHouse(
-        id: string,
-        location: string,
-        price: number,
-        bedroom: number,
-        bathroom: number,
-        area: string
-      ) {
-        const res: any = await firstValueFrom(
-          http.patch(`${environment.apiBaseUrl}/houses/${id}`, {
-            location,
-            price,
-            bedroom,
-            bathroom,
-            area,
-          })
-        );
-
-        const draft = res.draft;
-
-        patchState(store, {
-          pendingHouses: [
-            ...store.pendingHouses().filter((h) => h.id !== id), // FIXED
-            draft,
-          ],
         });
       },
 
@@ -292,35 +270,3 @@ export const HousesStore = signalStore(
     };
   })
 );
-
-// async updateHouse(
-//   id: string,
-//   location: string,
-//   price: number,
-//   bedroom: number,
-//   bathroom: number,
-//   area: string
-// ) {
-//   const res: any = await firstValueFrom(
-//     http.patch(`${environment.apiBaseUrl}/houses/${id}`, {
-//       location,
-//       price,
-//       bedroom,
-//       bathroom,
-//       area,
-//     })
-//   );
-
-//   const updated = res.updatedHouse;
-
-//   patchState(store, {
-//     houses: store.houses().map((h) => (h.id === id ? updated : h)),
-//     notifications: store
-//       .notifications()
-//       .map((n) => (n.house.id === id ? { ...n, house: updated } : n)),
-//   });
-
-//   if (updated.priceReduced) {
-//     patchState(store, { notificationCounter: store.notificationCounter() + 1 });
-//   }
-// },

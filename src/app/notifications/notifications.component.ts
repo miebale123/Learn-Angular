@@ -4,7 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import { io } from 'socket.io-client';
 import { Router } from '@angular/router';
 import { LucideAngularModule, EllipsisVertical, Trash } from 'lucide-angular';
-import { AuthStateService } from '../pages/auth-sign-in/sign-in.component';
+import { AuthStateService } from '../auth/auth-state.service';
 
 @Component({
   selector: 'notifications',

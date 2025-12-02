@@ -47,9 +47,9 @@ import { HousesStore } from './houses.store';
                 </div>
 
                 <!-- Tabs -->
-                <div class="grid grid-cols-2 bg-gray-100 rounded-xl mb-5 p-1">
+                <div class="grid grid-cols-2 bg-gray-100 rounded-xl mb-5 ">
                   <button
-                    class="py-2 rounded-lg text-sm font-medium"
+                    class="p-3  rounded-lg text-sm font-medium"
                     [class.bg-black]="priceTab() === 'list'"
                     [class.shadow]="priceTab() === 'list'"
                     [class.text-white]="priceTab() === 'list'"
@@ -59,7 +59,7 @@ import { HousesStore } from './houses.store';
                   </button>
 
                   <button
-                    class="py-2 rounded-lg text-sm font-medium"
+                    class="p-3 rounded-lg text-sm font-medium"
                     [class.text-white]="priceTab() === 'monthly'"
                     [class.bg-black]="priceTab() === 'monthly'"
                     [class.shadow]="priceTab() === 'monthly'"
@@ -158,7 +158,7 @@ import { HousesStore } from './houses.store';
                 <!-- More Price Options -->
                 <div class="pt-4 border-t border-gray-200">
                   <label class="text-black">More price options</label>
-                  <label class="flex items-center gap-2 cursor-pointer select-none">
+                  <label class="flex items-center gap-2 cursor-pointer select-none p-2">
                     <input type="checkbox" class="w-4 h-4" />
                     <span class="text-sm text-gray-700">Price reduced</span>
                   </label>
@@ -352,62 +352,62 @@ import { HousesStore } from './houses.store';
           </div>
         </div>
 
-          <!-- PROPERTY TYPE -->
-      <div class="relative sm:w-auto w-full">
-        <button
-        class="w-full sm:w-40 px-8 py-2 bg-white border border-gray-300
+        <!-- PROPERTY TYPE -->
+        <div class="relative sm:w-auto w-full">
+          <button
+            class="w-full sm:w-40 px-8 py-2 bg-white border border-gray-300
         rounded-xl flex items-center justify-center gap-2
         shadow-sm font-medium text-gray-700 whitespace-nowrap"
-        (click)="propertyTypeOpen.set(!propertyTypeOpen())"
-        >
-          Property type
-          <lucide-icon [name]="cdown" class="w-4 h-4"></lucide-icon>
-        </button>
+            (click)="propertyTypeOpen.set(!propertyTypeOpen())"
+          >
+            Property type
+            <lucide-icon [name]="cdown" class="w-4 h-4"></lucide-icon>
+          </button>
 
-        @if (propertyTypeOpen()) {
-        <div
-          class="absolute mt-3 bg-white border border-gray-200 rounded-xl shadow-xl
+          @if (propertyTypeOpen()) {
+          <div
+            class="absolute mt-3 bg-white border border-gray-200 rounded-xl shadow-xl
     w-96 p-5  z-50"
-        >
-          <!-- Header -->
-          <div class="flex items-center justify-between mb-4">
-            <div class="text-lg font-semibold text-gray-800">Property type</div>
+          >
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-4">
+              <div class="text-lg font-semibold text-gray-800">Property type</div>
 
-            <button
-              class="text-indigo-500 text-sm font-medium"
-              (click)="propertyTypeOpen.set(false)"
-            >
-              Done
-            </button>
-          </div>
+              <button
+                class="text-indigo-500 text-sm font-medium"
+                (click)="propertyTypeOpen.set(false)"
+              >
+                Done
+              </button>
+            </div>
 
-          <!-- GRID -->
-          <div class="grid grid-cols-3 gap-3">
-            @for (p of propertyTypes; track $index) {
-            <button
-              class="p-4 border rounded-xl flex flex-col items-center gap-2 text-sm
+            <!-- GRID -->
+            <div class="grid grid-cols-3 gap-3">
+              @for (p of propertyTypes; track $index) {
+              <button
+                class="p-4 border rounded-xl flex flex-col items-center gap-2 text-sm
         transition"
-              [class.bg-black]="store.property_type() === p.value"
-              [class.text-white]="store.property_type() === p.value"
-              [class.border-gray-900]="store.property_type() === p.value"
-              (click)="selectPropertyType(p.value)"
-            >
-              <lucide-icon [name]="p.icon" class="w-5 h-5"></lucide-icon>
-              {{ p.label }}
-            </button>
-            }
+                [class.bg-black]="store.property_type() === p.value"
+                [class.text-white]="store.property_type() === p.value"
+                [class.border-gray-900]="store.property_type() === p.value"
+                (click)="selectPropertyType(p.value)"
+              >
+                <lucide-icon [name]="p.icon" class="w-5 h-5"></lucide-icon>
+                {{ p.label }}
+              </button>
+              }
+            </div>
           </div>
+          }
         </div>
-        }
-      </div>
 
-        <div class="flex items-center justify-start gap-3 px-4 py-3">
-          <!-- SAVE SEARCH -->
-
-          <!-- MORE -->
+        <div class="flex items-center justify-center gap-2">
+          <!-- More -->
           <div class="relative">
             <button
-              class="px-4 py-2 bg-white border border-gray-300 rounded-xl shadow-sm flex items-center gap-1 text-sm font-medium"
+              class="w-full sm:w-28 px-4 py-2 bg-white border border-gray-300
+      rounded-xl flex items-center justify-around shadow-sm
+      font-medium text-gray-700"
               (click)="moreOpen.set(!moreOpen())"
             >
               More
@@ -444,17 +444,16 @@ import { HousesStore } from './houses.store';
             </div>
             }
           </div>
+
+          <!-- Save Search -->
           <button
-            class="px-4 py-2 bg-white border border-gray-300 rounded-xl shadow-sm text-sm font-medium"
+            class="w-full sm:w-28 px-4 py-2 bg-white border border-gray-300
+    rounded-xl shadow-sm font-medium text-gray-700 whitespace-nowrap"
           >
             Save search
           </button>
         </div>
-
-        <!-- FILTER BAR -->
       </div>
-
-
     </div>
   `,
 })
