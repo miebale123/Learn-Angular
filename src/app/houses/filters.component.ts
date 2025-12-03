@@ -47,27 +47,15 @@ import { HousesStore } from './houses.store';
                 </div>
 
                 <!-- Tabs -->
-                <div class="grid grid-cols-2 bg-gray-100 rounded-xl mb-5 ">
-                  <button
-                    class="p-3  rounded-lg text-sm font-medium"
-                    [class.bg-black]="priceTab() === 'list'"
-                    [class.shadow]="priceTab() === 'list'"
-                    [class.text-white]="priceTab() === 'list'"
-                    (click)="priceTab.set('list')"
-                  >
-                    List price
-                  </button>
-
-                  <button
-                    class="p-3 rounded-lg text-sm font-medium"
-                    [class.text-white]="priceTab() === 'monthly'"
-                    [class.bg-black]="priceTab() === 'monthly'"
-                    [class.shadow]="priceTab() === 'monthly'"
-                    (click)="priceTab.set('monthly')"
-                  >
-                    Monthly payment
-                  </button>
-                </div>
+                <button
+                  class="p-3  rounded-lg text-sm font-medium"
+                  [class.bg-black]="priceTab() === 'list'"
+                  [class.shadow]="priceTab() === 'list'"
+                  [class.text-white]="priceTab() === 'list'"
+                  (click)="priceTab.set('list')"
+                >
+                  List price
+                </button>
 
                 <!-- LIST PRICE UI (Functional) -->
                 @if(priceTab() === 'list') {
@@ -147,22 +135,6 @@ import { HousesStore } from './houses.store';
                   </div>
                 </div>
                 }
-
-                <!-- MONTHLY PAYMENT UI (NO LOGIC) -->
-                @if(priceTab() === 'monthly') {
-                <div class="text-sm text-gray-500 mb-5">
-                  Monthly payment UI placeholder (no functionality yet)
-                </div>
-                }
-
-                <!-- More Price Options -->
-                <div class="pt-4 border-t border-gray-200">
-                  <label class="text-black">More price options</label>
-                  <label class="flex items-center gap-2 cursor-pointer select-none p-2">
-                    <input type="checkbox" class="w-4 h-4" />
-                    <span class="text-sm text-gray-700">Price reduced</span>
-                  </label>
-                </div>
               </div>
               }
             </div>
@@ -548,15 +520,12 @@ export class Filters {
 
   priceTab = signal<'list' | 'monthly'>('list');
 
-  viewMode: 'list' | 'map' = 'list';
-
   moreOpen = signal(false);
   propertyTypeOpen = signal(false);
 
   home = Home;
   building = Building;
   building2 = Building2;
-  tree = TreePine;
 
   propertyTypes = [
     { label: 'Any', value: null, icon: this.home },
@@ -564,9 +533,6 @@ export class Filters {
     { label: 'Condo', value: 'condo', icon: this.building },
     { label: 'Townhome', value: 'townhome', icon: this.home },
     { label: 'Multi family', value: 'multi', icon: this.building2 },
-    { label: 'Mobile', value: 'mobile', icon: this.home },
-    { label: 'Farm', value: 'farm', icon: this.home },
-    { label: 'Land', value: 'land', icon: this.tree },
   ];
 
   selectPropertyType(type: any) {

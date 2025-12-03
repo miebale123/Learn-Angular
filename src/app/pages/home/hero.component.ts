@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, inject, ViewChild, viewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HousesStore } from '../../houses/houses.store';
 import { Search } from '../../houses/search.component';

@@ -11,32 +11,12 @@
 
     <!-- LEFT NAV LINKS -->
     <nav class="hidden md:flex items-center gap-6 text-sm">
-      <!-- BUY -->
       <div class="relative">
         <a routerLink="/buy" class="hover:underline peer">Buy</a>
-
-        <!-- <div
-          class="absolute left-0 top-full mt-2 w-64 bg-white shadow-lg rounded-lg py-3 px-4 text-gray-700 opacity-0 peer-hover:opacity-100 transition-opacity"
-        ></div> -->
       </div>
 
-      <!-- SELL -->
       <div class="relative">
         <button class="hover:underline peer" (click)="onNewPostClick()">Sell</button>
-
-        <!-- <div
-          class="absolute left-0 top-full mt-2 w-64 bg-white shadow-lg rounded-lg py-3 px-4 text-gray-700 opacity-0 peer-hover:opacity-100 transition-opacity"
-        >
-      </div> -->
-      </div>
-
-      <!-- RENT -->
-      <div class="relative">
-        <a routerLink="/rent" class="hover:underline peer" (click)="onNewPostClick()">Rent</a>
-
-        <!-- <div
-          class="absolute left-0 top-full mt-2 w-64 bg-white shadow-lg rounded-lg py-3 px-4 text-gray-700 opacity-0 peer-hover:opacity-100 transition-opacity"
-        ></div> -->
       </div>
 
       <!-- Other links -->
@@ -46,8 +26,6 @@
       </button>
       }
 
-      <button class="hover:underline">Find an Agent</button>
-      <button class="hover:underline">My Home</button>
       <button class="hover:underline">News & Insights</button>
 
       @if (auth.isExpert()) {
@@ -56,11 +34,7 @@
     </nav>
   </div>
 
-  <!-- RIGHT SIDE -->
   <div class="hidden md:flex items-center gap-4">
-    <!-- Moved to the right -->
-    <button routerLink="/manage-rentals" class="hover:underline">Manage rentals</button>
-    <button routerLink="/advertise" class="hover:underline">Advertise</button>
     @if (!auth.isLoggedIn()) {
     <button (click)="openAuth('sign-in')" class="text-sm hover:underline">Sign in</button>
 
@@ -72,8 +46,6 @@
     </button>
 
     } @if (auth.isLoggedIn()) {
-
-    <!-- Notifications -->
     <a
       routerLink="/notifications"
       (click)="store.resetNCounter()"
