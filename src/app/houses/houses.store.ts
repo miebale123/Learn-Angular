@@ -240,12 +240,13 @@ export const HousesStore = signalStore(
         patchState(store, { brokerLocation });
       },
 
-      incrementNCounter() {
+      incrementNCounter(value?: number) {
         patchState(store, { notificationCounter: store.notificationCounter() + 1 });
       },
 
       resetNCounter() {
-        patchState(store, { notificationCounter: 0 });
+        console.log('resting page');
+        patchState(store, { notificationCounter: store.notificationCounter() * 0 });
       },
 
       setSearchPrice(min: number | null, max: number | null) {

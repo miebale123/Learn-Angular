@@ -4,14 +4,6 @@
     <div class="space-y-8">
       <h2 class="text-lg font-semibold text-center">Sign in into Lumina</h2>
 
-      @if (message()) {
-      <p [style.color]="isSuccess() ? 'green' : 'red'">
-        {{ message() }}
-      </p>
-      } @if (loading()) {
-      <p>Loading...</p>
-      }
-
       <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-8">
         <div class="flex flex-col">
           <label>Email</label>
@@ -50,7 +42,7 @@
 
       <social-login />
 
-      <div class="text-sm mt-2 flex flex-col items-center justify-center">
+      <div class="text-sm mt-8 flex flex-col items-center justify-center">
         By creating an account you agree to Lumina's
 
         <div>

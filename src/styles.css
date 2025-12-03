@@ -6,7 +6,7 @@
 @import 'tailwindcss/utilities.css' layer(utilities);
 
 .hero-section {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.55)),
     url('/assets/house.jpg');
   background-size: cover;
   background-position: center;

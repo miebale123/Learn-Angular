@@ -71,8 +71,8 @@ export const typoValue: Omit<Typo, 'bookmarks'> = {
   brokerUsername: null,
   brokerLocation: null,
 
-  type: 'for rent', // make sure this matches HouseType
-  property_type: 'house', // make sure this matches PropertyType
+  type: 'for rent',
+  property_type: 'house',
 
   location: '',
   price: 0,

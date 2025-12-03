@@ -2,17 +2,12 @@ import { Component, ElementRef, HostListener, inject, ViewChild, viewChild } fro
 import { Router } from '@angular/router';
 import { HousesStore } from '../../houses/houses.store';
 import { Search } from '../../houses/search.component';
+import { LucideAngularModule, SearchIcon } from 'lucide-angular';
 
 @Component({
   selector: 'hero',
-  imports: [Search],
+  imports: [Search, LucideAngularModule],
   template: `
-    <!-- <main
-        #heroRef
-        class="flex flex-col justify-start items-center text-center gap-6 px-4
-               text-white hero-section h-full py-28"
-      > -->
-
     <main
       #heroRef
       class="flex flex-col justify-start items-center text-center gap-6 px-4
@@ -61,6 +56,16 @@ import { Search } from '../../houses/search.component';
       >
         <search-house (search)="onSearch($event)" [trySuggestion]="false"></search-house>
       </div>
+      <div class="font-semibold text-lg flex items-center gap-2 relative">
+        <!-- <div class="relative inline-block">
+          <lucide-icon [name]="s" class="w-5 h-5 text-white"></lucide-icon>
+
+          <img src="/assets/upper.png" alt="" class="absolute -top-1 -right-1 w-3 h-3" />
+        </div> -->
+
+        <!-- <span>Search it how you would say it.</span> -->
+        <!-- <button class="underline">try it</button> -->
+      </div>
     </main>
 
     <!-- [class.absolute]="!isFixed"
@@ -70,6 +75,8 @@ import { Search } from '../../houses/search.component';
 export class Hero {
   private router = inject(Router);
   private store = inject(HousesStore);
+
+  s = SearchIcon;
 
   @ViewChild('heroRef', { static: true }) heroRef!: ElementRef;
 

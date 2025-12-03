@@ -29,8 +29,7 @@ import { DomSanitizer } from '@angular/platform-browser';
           <a href="#" class="hover:underline">Advertise with us</a>
         </div>
 
-        <!-- GET THE APP -->
-        <div class="text-center mb-12">
+        <!-- <div class="text-center mb-12">
           <h3 class="font-semibold text-lg mb-4">Get the app</h3>
           <div class="flex justify-center gap-4">
             <button
@@ -56,7 +55,7 @@ import { DomSanitizer } from '@angular/platform-browser';
               </div>
             </button>
           </div>
-        </div>
+        </div> -->
 
         <div class="flex justify-center items-center p-2">
           <div>

@@ -1,0 +1,88 @@
+<!-- BUY DROPDOWN -->
+<div class="relative group">
+  <a routerLink="/buy" class="hover:underline peer">Buy</a>
+
+  <div
+    class="absolute left-0 top-full mt-2 w-screen max-w-6xl bg-white shadow-lg rounded-lg py-6 px-8 text-gray-700 opacity-0 peer-hover:opacity-100 transition-opacity grid grid-cols-3 gap-8"
+  >
+    <!-- Column 1: Homes for Sale -->
+    <div>
+      <h3 class="font-semibold mb-3">Homes for Sale</h3>
+      <a routerLink="/buy/addis-ababa" class="block py-1 hover:underline">Addis Ababa</a>
+      <a routerLink="/buy/dire-dawa" class="block py-1 hover:underline">Dire Dawa</a>
+      <a routerLink="/buy/oromia" class="block py-1 hover:underline">Oromia Region</a>
+      <a routerLink="/buy/amharic" class="block py-1 hover:underline">Amhara Region</a>
+    </div>
+
+    <!-- Column 2: New Construction -->
+    <div>
+      <h3 class="font-semibold mb-3">New Construction</h3>
+      <a routerLink="/buy/new-housing-projects" class="block py-1 hover:underline">New Housing Projects</a>
+      <a routerLink="/buy/apartments" class="block py-1 hover:underline">Apartments</a>
+      <a routerLink="/buy/condos" class="block py-1 hover:underline">Condos</a>
+    </div>
+
+    <!-- Column 3: Buying Tips -->
+    <div>
+      <h3 class="font-semibold mb-3">Buying Tips</h3>
+      <a routerLink="/buy/finance-tips" class="block py-1 hover:underline">Finance Tips</a>
+      <a routerLink="/buy/legal-guide" class="block py-1 hover:underline">Legal Guide</a>
+      <a routerLink="/buy/market-trends" class="block py-1 hover:underline">Market Trends</a>
+    </div>
+  </div>
+</div>
+
+<!-- SELL DROPDOWN -->
+<div class="relative">
+  <button class="hover:underline peer">Sell/Rent Out</button>
+
+  <div
+    class="absolute left-0 top-full mt-2 w-screen max-w-6xl bg-white shadow-lg rounded-lg py-6 px-8 text-gray-700 opacity-0 peer-hover:opacity-100 transition-opacity grid grid-cols-3 gap-8"
+  >
+    <div>
+      <h3 class="font-semibold mb-3">Post Your Home</h3>
+      <button (click)="onNewPostClick()" class="block text-left py-1 hover:underline">Post a Listing</button>
+    </div>
+
+    <div>
+      <h3 class="font-semibold mb-3">Home Value</h3>
+      <a routerLink="/sell/home-value" class="block py-1 hover:underline">Estimate Your Home</a>
+    </div>
+
+    <div>
+      <h3 class="font-semibold mb-3">Selling Tips</h3>
+      <a routerLink="/sell/tips" class="block py-1 hover:underline">Selling Guide</a>
+      <a routerLink="/sell/marketing" class="block py-1 hover:underline">Marketing Tips</a>
+    </div>
+  </div>
+</div>
+
+<!-- RENT DROPDOWN -->
+<div class="relative">
+  <a routerLink="/rent" class="hover:underline peer">Rent</a>
+
+  <div
+    class="absolute left-0 top-full mt-2 w-screen max-w-6xl bg-white shadow-lg rounded-lg py-6 px-8 text-gray-700 opacity-0 peer-hover:opacity-100 transition-opacity grid grid-cols-3 gap-8"
+  >
+    <div>
+      <h3 class="font-semibold mb-3">Homes for Rent</h3>
+      <a routerLink="/rent/addis-ababa" class="block py-1 hover:underline">Addis Ababa</a>
+      <a routerLink="/rent/dire-dawa" class="block py-1 hover:underline">Dire Dawa</a>
+      <a routerLink="/rent/oromia" class="block py-1 hover:underline">Oromia Region</a>
+    </div>
+
+    <div>
+      <h3 class="font-semibold mb-3">Apartments & Condos</h3>
+      <a routerLink="/rent/apartments" class="block py-1 hover:underline">Apartments</a>
+      <a routerLink="/rent/condos" class="block py-1 hover:underline">Condos</a>
+      <a routerLink="/rent/cheap-rentals" class="block py-1 hover:underline">Budget Rentals</a>
+    </div>
+
+    <div>
+      <h3 class="font-semibold mb-3">Rental Tips</h3>
+      <a routerLink="/rent/lease-guide" class="block py-1 hover:underline">Lease Guide</a>
+      <a routerLink="/rent/legal" class="block py-1 hover:underline">Legal Advice</a>
+      <a routerLink="/rent/market-trends" class="block py-1 hover:underline">Market Trends</a>
+    </div>
+  </div>
+</div>

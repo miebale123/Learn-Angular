@@ -42,13 +42,6 @@ import { Component } from '@angular/core';
     <section class="py-20 text-center text-black">
       <h2 class="text-3xl font-bold mb-4">Start Your Search Today</h2>
       <p class="mb-8 text-lg">Find your perfect home with ease and confidence.</p>
-
-      <button
-        routerLink="/houses"
-        class="text-white px-8 py-3 rounded-xl font-semibold hover:bg-gray-800 transition"
-      >
-        Browse Homes
-      </button>
     </section>
 
     <section class="w-full bg-gray-50 py-16">
@@ -56,7 +49,6 @@ import { Component } from '@angular/core';
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <!-- CARD 1 -->
           <div class="bg-white rounded-3xl shadow-md p-10 text-center">
-
             <h2 class="text-2xl font-bold mb-4">Buy a home</h2>
 
             <p class="text-gray-600 mb-6">
@@ -73,7 +65,6 @@ import { Component } from '@angular/core';
 
           <!-- CARD 2 -->
           <div class="bg-white rounded-3xl shadow-md p-10 text-center">
-
             <h2 class="text-2xl font-bold mb-4">Rent a home</h2>
 
             <p class="text-gray-600 mb-6">
@@ -90,7 +81,6 @@ import { Component } from '@angular/core';
 
           <!-- CARD 3 -->
           <div class="bg-white rounded-3xl shadow-md p-10 text-center">
-
             <h2 class="text-2xl font-bold mb-4">Sell a home</h2>
 
             <p class="text-gray-600 mb-6">

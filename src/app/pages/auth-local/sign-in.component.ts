@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { SigninSchema, SignupSchema, zodFieldValidator } from '../../auth/auth-credentials.dto';
+import { SigninSchema, SignupSchema } from '../../auth/auth-credentials.dto';
 import { MatIconModule } from '@angular/material/icon';
 import { SocialLogIn } from '../social.component';
 import { BaseAuthForm } from './baseAuth';
+import { zodFieldValidator } from '../../auth/auth.validation';
 
 @Component({
   selector: 'sign-up',
@@ -30,7 +31,7 @@ export class Signup extends BaseAuthForm {
 
   protected override afterSuccess() {
     this.store.showAuthModal(false);
-    this.router.navigateByUrl('/app-verification');
+    this.router.navigateByUrl('/auth/app-verification');
   }
 }
 
@@ -69,9 +70,31 @@ export class Signin extends BaseAuthForm {
   }
 
   protected override afterSuccess() {
+    console.log('hello world');
     sessionStorage.setItem('access-token', this.accessToken());
     this.authState.setLoggedIn(true);
     this.store.showAuthModal(false);
-    this.router.navigateByUrl('/');
+
+    if (this.authState.isAdmin()) {
+      this.router.navigateByUrl('/admin-page');
+    } else {
+      this.router.navigateByUrl('/');
+    }
+  }
+
+  get email() {
+    return this.form.get('email')!;
+  }
+
+  get password() {
+    return this.form.get('password');
+  }
+
+  get emailError() {
+    return this.fieldErrors()['email'];
+  }
+
+  get passwordError() {
+    return this.fieldErrors()['password'];
   }
 }

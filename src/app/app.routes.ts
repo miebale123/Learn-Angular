@@ -17,12 +17,13 @@ import { HousesSearchResults } from './houses/houses-search-results.component';
 import { VerificationComponent } from './pages/auth-local/verification.component';
 
 export const routes: Routes = [
-  { path: 'search-house', component: Search, pathMatch: 'full' },
+  { path: 'admin-page', component: Admin },
   // { path: 'oauth-login', component: LoginSuccessComponent },
   {
     path: 'auth',
     children: [
       { path: 'sign-up', component: Signup },
+      // app-verification
       { path: 'app-verification', component: VerificationComponent },
       { path: 'sign-in', component: Signin },
       { path: 'google', redirectTo: 'google/callback' },
@@ -45,7 +46,6 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     component: AppLayout,
     children: [
-      { path: 'admin', component: Admin },
       { path: 'broker', component: Broker },
       { path: 'notifications', component: Notifications },
       // { path: 'my-houses', component: MyHouses },
