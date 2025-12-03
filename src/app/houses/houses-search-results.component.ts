@@ -15,7 +15,7 @@ import { SortBy } from './sort-by.component';
     <!-- Container -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6  p-4">
       <div class="flex gap-2 items-center ">
-        <search-house (search)="onSearch($event)" [trySuggestion]="true"></search-house>
+        <search-house />
 
         <filters></filters>
       </div>

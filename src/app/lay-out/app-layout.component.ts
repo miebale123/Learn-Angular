@@ -13,11 +13,8 @@ import { Footer } from './footer/footer.component';
     <div class="min-h-screen flex flex-col">
       @if(store.ad()) {
 
-      <!-- AD ROTATION WRAPPER -->
       <div class="w-full flex flex-col items-center">
-        <!-- FIXED HEIGHT CONTAINER -->
         <div class="relative w-full flex justify-center overflow-hidden" style="height: 125px">
-          <!-- TEXT AD -->
           @if (currentAd() === 'text') {
           <div class="absolute inset-0 flex justify-center opacity-0 animate-fade py-4">
             <div
