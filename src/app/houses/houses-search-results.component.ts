@@ -4,13 +4,11 @@ import { BookmarkStore } from './bookmarks.store';
 import { Router } from '@angular/router';
 import { Search } from './search.component';
 import { Filters } from './filters.component';
-import { ListMap } from './list-map.component';
 import { Houses } from './houses.component';
-import { SortBy } from './sort-by.component';
 
 @Component({
   selector: 'houses-search-results',
-  imports: [Search, Filters, ListMap, Houses, SortBy],
+  imports: [Search, Filters, Houses],
   template: `
     <!-- Container -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6  p-4">
@@ -19,8 +17,6 @@ import { SortBy } from './sort-by.component';
 
         <filters></filters>
       </div>
-
-      <list-map></list-map>
     </div>
 
     <div class="flex items-center  justify-between ">
@@ -41,8 +37,6 @@ import { SortBy } from './sort-by.component';
       </h3>
 
       <span class="text-gray-700 text-sm">Sort by</span>
-
-      <sort-by />
 
       <span>popular filters</span>
 
