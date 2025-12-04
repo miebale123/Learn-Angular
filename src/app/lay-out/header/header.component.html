@@ -11,30 +11,30 @@
 
     <!-- LEFT NAV LINKS -->
     <nav class="hidden md:flex items-center gap-6 text-sm">
-      <div class="relative">
-        <a routerLink="/buy" class="hover:underline peer">Buy</a>
-      </div>
+      <a routerLink="/buy" class="hover:underline" (click)="onNewPostClick()">Buy</a>
 
-      <div class="relative">
-        <button class="hover:underline peer" (click)="onNewPostClick()">Sell</button>
-      </div>
+      <button class="hover:underline" (click)="onNewPostClick()">Sell</button>
 
-      <!-- Other links -->
       @if(!auth.isExpert()){
-      <button (click)="do()">
-        <a routerLink="/upload-broker-info"> Become a Broker </a>
-      </button>
+      <a routerLink="/upload-broker-info" class="flex items-center gap-1">
+        <span>Become a Broker</span>
+      </a>
       }
-
+      <button class="hover:underline">Find an Agent</button>
+      <button class="hover:underline">My Home</button>
       <button class="hover:underline">News & Insights</button>
 
-      @if (auth.isExpert()) {
+      @if (auth.isAdmin()) {
+      <a routerLink="/admin" class="flex items-center gap-1"> Admin </a>
+      } @if (auth.isExpert()) {
       <a routerLink="/broker" class="flex items-center gap-1">Broker</a>
       }
     </nav>
   </div>
 
+  <!-- RIGHT SIDE -->
   <div class="hidden md:flex items-center gap-4">
+    <button routerLink="/advertise" class="hover:underline">Advertise</button>
     @if (!auth.isLoggedIn()) {
     <button (click)="openAuth('sign-in')" class="text-sm hover:underline">Sign in</button>
 
@@ -133,7 +133,10 @@
   <button (click)="onNewPostClick(); closeMobile()" class="flex items-center gap-2">Sell</button>
 
   @if (auth.isAdmin()) {
-  <a routerLink="/admin" (click)="closeMobile()" class="flex items-center gap-2"> Admin </a>
+  <a routerLink="/admin" (click)="closeMobile()" class="flex items-center gap-2">
+    <lucide-icon [name]="shield" class="w-5 h-5"></lucide-icon>
+    Admin
+  </a>
   } @if (auth.isExpert()) {
   <a routerLink="/my-houses" (click)="closeMobile()" class="flex items-center gap-2"> My Home </a>
   } @if (!auth.isLoggedIn()) {
@@ -143,7 +146,7 @@
 
   <a
     routerLink="/notifications"
-    (click)="store.resetNCounter(); closeMobile()"
+    (click)=" closeMobile()"
     class="flex items-center gap-2"
   >
     Notifications

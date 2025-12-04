@@ -10,22 +10,19 @@ import { HousesStore } from './houses/houses.store';
   template: `
     @if (uploadedMessage()) {
     <div class="mt-4 p-3 bg-green-100 text-green-700 text-center rounded-xl font-semibold">
-      Successfully uploaded broker info ✔
+      Successfully uploaded broker info
     </div>
     }
 
     <div class="max-w-2xl w-full p-8 rounded-2xl shadow-lg bg-white">
       <h2 class="text-3xl font-bold mb-8">Upload Broker Info</h2>
 
-      <!-- Image Upload -->
       <div class="mb-8">
         @if (!imageLocked()) {
         <label class="block cursor-pointer">
           <input type="file" accept="image/*" (change)="onFileSelected($event)" class="hidden" />
 
-          <p class="font-medium mb-3">
-            Upload your official broker certification as shown on the left.
-          </p>
+          <p class="font-medium mb-3">Upload your official broker certification.</p>
 
           <div
             class="
@@ -78,7 +75,7 @@ import { HousesStore } from './houses/houses.store';
       <!-- Inputs -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div>
-          <label class="font-medium block mb-1">enter LLC/Inc/</label>
+          <label class="font-medium block mb-1">enter broker company name</label>
           <input
             type="text"
             [(ngModel)]="store.brokerUsername"

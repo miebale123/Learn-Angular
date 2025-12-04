@@ -9,11 +9,13 @@ import {
 } from 'lucide-angular';
 
 import { Component } from '@angular/core';
+import { MatIcon, MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [LucideAngularModule],
+  imports: [LucideAngularModule, MatIconModule,],
   template: `
     <footer class="bg-black text-white py-12">
       <div class="max-w-7xl mx-auto px-6">
@@ -50,6 +52,18 @@ export class Footer {
 
   playstore = Play;
   apple = Apple;
+
+  constructor(iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIcon(
+      'apple',
+      sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/apple.svg')
+    );
+
+    iconRegistry.addSvgIcon(
+      'playstore',
+      sanitizer.bypassSecurityTrustResourceUrl('/assets/icons/playstore.svg')
+    );
+  }
 
   currentYear = new Date().getFullYear();
 }

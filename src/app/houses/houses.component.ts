@@ -78,7 +78,7 @@ import { BookmarkStore } from './bookmarks.store';
             </div>
           </div>
         </div>
-        }
+        }g
       </div>
   `,
 })

@@ -13,8 +13,11 @@ import { Footer } from './footer/footer.component';
     <div class="min-h-screen flex flex-col">
       @if(store.ad()) {
 
+      <!-- AD ROTATION WRAPPER -->
       <div class="w-full flex flex-col items-center">
+        <!-- FIXED HEIGHT CONTAINER -->
         <div class="relative w-full flex justify-center overflow-hidden" style="height: 125px">
+          <!-- TEXT AD -->
           @if (currentAd() === 'text') {
           <div class="absolute inset-0 flex justify-center opacity-0 animate-fade py-4">
             <div
@@ -39,14 +42,7 @@ import { Footer } from './footer/footer.component';
           </div>
           }
 
-          <!-- IMAGE AD -->
-          <!-- @if (currentAd() === 'image') {
-          <div
-            class="absolute inset-0 flex items-center justify-center opacity-0 animate-fade py-4"
-          >
-            <img src="/assets/telecom-ad.png" class="h-20 w-[500px]" />
-          </div>
-          } -->
+
         </div>
       </div>
 

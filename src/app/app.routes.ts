@@ -3,21 +3,18 @@ import { AuthGuard } from './auth/auth.guard';
 import { Home } from './pages/home/home.component';
 import { Signin, Signup } from './pages/auth-local/sign-in.component';
 import { AppLayout } from './lay-out/app-layout.component';
-import { Admin } from './admin/admin.component';
 import { Houses } from './houses/houses.component';
 import { Upload } from './houses/upload-house.component';
 import { Bookmarks } from './pages/bookmarks/bookmarks.component';
-import { House } from './houses/house.component';
-import { Search } from './houses/search.component';
 import { Notifications } from './notifications/notifications.component';
 import { Settings } from './pages/settings.component';
 import { UploadBrokerInfo } from './upload_broker-info.component';
 import { Broker } from './houses/broker.component';
 import { HousesSearchResults } from './houses/houses-search-results.component';
 import { VerificationComponent } from './pages/auth-local/verification.component';
+import { MyHouses } from './houses/my-houses.component';
 
 export const routes: Routes = [
-  { path: 'admin-page', component: Admin },
   // { path: 'oauth-login', component: LoginSuccessComponent },
   {
     path: 'auth',
@@ -38,7 +35,6 @@ export const routes: Routes = [
       { path: '', component: Home, pathMatch: 'full' },
       { path: 'houses', component: Houses },
       { path: 'houses-search-results', component: HousesSearchResults },
-      { path: 'house', component: House },
     ],
   },
   {
@@ -46,9 +42,8 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     component: AppLayout,
     children: [
-      { path: 'broker', component: Broker },
       { path: 'notifications', component: Notifications },
-      // { path: 'my-houses', component: MyHouses },
+      { path: 'my-houses', component: MyHouses },
       { path: 'bookmarks', component: Bookmarks },
       { path: 'upload-house', component: Upload },
       { path: 'upload-broker-info', component: UploadBrokerInfo },

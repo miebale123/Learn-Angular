@@ -8,10 +8,10 @@ import { Typo, typoValue } from './typo.interface';
 import { BookmarkStore } from './bookmarks.store';
 import { PropertyType } from './house.dto';
 import { AuthStateService } from '../auth/auth-state.service';
+import { string } from 'zod';
 
 export const HousesStore = signalStore(
   { providedIn: 'root' },
-
   withState<Omit<Typo, 'bookmarks'>>(typoValue),
 
   withMethods((store) => {
@@ -168,6 +168,34 @@ export const HousesStore = signalStore(
         });
       },
 
+      async updateHouse(
+        id: string,
+        location: string,
+        price: number,
+        bedroom: number,
+        bathroom: number,
+        area: string
+      ) {
+        const res: any = await firstValueFrom(
+          http.patch(`${environment.apiBaseUrl}/houses/${id}`, {
+            location,
+            price,
+            bedroom,
+            bathroom,
+            area,
+          })
+        );
+
+        const draft = res.draft;
+
+        patchState(store, {
+          pendingHouses: [
+            ...store.pendingHouses().filter((h) => h.id !== id), // FIXED
+            draft,
+          ],
+        });
+      },
+
       async getHouses() {
         const query = new URLSearchParams();
 
@@ -271,3 +299,8 @@ export const HousesStore = signalStore(
     };
   })
 );
+
+// export type HousesStoreType = typeof inject(HousesStore);
+
+// use this when HousesStore is a class/constructor (the usual runtime)
+export type HousesStoreType = InstanceType<typeof HousesStore>;
