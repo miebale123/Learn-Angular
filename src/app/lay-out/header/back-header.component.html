@@ -1,8 +1,6 @@
 <header
-  class="left-0 right-0 z-[10001] flex items-center justify-between
-         px-4 md:px-8 py-2 bg-white backdrop-blur-md font-medium shadow-lg overflow-visible"
+  class="left-0 right-0 z-[10001] flex items-center justify-between px-4 md:px-8 py-2 bg-white backdrop-blur-md font-medium shadow-lg overflow-visible"
 >
-
   <!-- LEFT SIDE -->
   <div class="flex items-center gap-6 ml-20">
     <button class="md:hidden" (click)="do()">
@@ -18,8 +16,8 @@
         <a routerLink="/buy" class="hover:underline">Buy</a>
 
         <div
-  class="absolute left-0 top-full mt-2 w-64 bg-white shadow-lg rounded-lg py-3 px-4 text-gray-700 invisible group-hover:visible opacity-100 transition-opacity pointer-events-auto"
->
+          class="absolute left-0 top-full mt-2 w-64 bg-white shadow-lg rounded-lg py-3 px-4 text-gray-700 invisible group-hover:visible opacity-100 transition-opacity pointer-events-auto"
+        >
           <a routerLink="/buy" class="block py-2 hover:underline">Homes for Sale</a>
           <a routerLink="/buy/new-construction" class="block py-2 hover:underline"
             >New Construction</a
@@ -33,9 +31,9 @@
       <div class="relative group">
         <button class="hover:underline">Sell/Rent out</button>
 
-      <div
-  class="absolute left-0 top-full mt-2 w-64 bg-white shadow-lg rounded-lg py-3 px-4 text-gray-700 invisible group-hover:visible opacity-100 transition-opacity pointer-events-auto"
->
+        <div
+          class="absolute left-0 top-full mt-2 w-64 bg-white shadow-lg rounded-lg py-3 px-4 text-gray-700 invisible group-hover:visible opacity-100 transition-opacity pointer-events-auto"
+        >
           <button (click)="onNewPostClick()" class="block text-left py-2 hover:underline">
             Post Your Home
           </button>
@@ -48,9 +46,9 @@
       <div class="relative group">
         <a routerLink="/rent" class="hover:underline">Rent</a>
 
-      <div
-  class="absolute left-0 top-full mt-2 w-64 bg-white shadow-lg rounded-lg py-3 px-4 text-gray-700 invisible group-hover:visible opacity-100 transition-opacity pointer-events-auto"
->
+        <div
+          class="absolute left-0 top-full mt-2 w-64 bg-white shadow-lg rounded-lg py-3 px-4 text-gray-700 invisible group-hover:visible opacity-100 transition-opacity pointer-events-auto"
+        >
           <a routerLink="/rent" class="block py-2 hover:underline">Homes for Rent</a>
           <a routerLink="/rent/apartments" class="block py-2 hover:underline">Apartments</a>
           <a routerLink="/rent/condos" class="block py-2 hover:underline">Condos</a>
@@ -159,7 +157,6 @@
   <!-- CLOSE BUTTON -->
   <button class="self-end" (click)="closeMobile()">
     <lucide-icon [name]="x" class="w-6 h-6 rotate-90"></lucide-icon>
-    <!-- lucide has no X by default in your imports, so we rotate menu to mimic X -->
   </button>
 
   <!-- MENU ITEMS -->

@@ -25,15 +25,12 @@ import { BookmarkStore } from './bookmarks.store';
         >
           <lucide-icon [name]="heart" class="w-5 h-5"></lucide-icon>
         </button>
+
+        <p>brokered by {{ store.house()?.assignedBrokerCompanyName }}</p>
       </div>
 
       <!-- Content -->
       <div class="p-4 space-y-2">
-        <!-- Type & Price -->
-        <p class="font-semibold text-sm capitalize ">
-          {{ store.house()?.property_type }} {{ store.house()?.type }}
-        </p>
-
         <p class="text-2xl font-bold flex items-center gap-2">
           $ {{ store.house()?.price }}
 

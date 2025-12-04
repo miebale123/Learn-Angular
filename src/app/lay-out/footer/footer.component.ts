@@ -15,7 +15,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [LucideAngularModule, MatIconModule,],
+  imports: [LucideAngularModule, MatIconModule],
   template: `
     <footer class="bg-black text-white py-12">
       <div class="max-w-7xl mx-auto px-6">
@@ -26,6 +26,43 @@ import { DomSanitizer } from '@angular/platform-browser';
           <a href="#" class="hover:underline">Privacy</a>
           <a href="#" class="hover:underline">Terms</a>
           <a href="#" class="hover:underline">Contact</a>
+          <a href="#" class="hover:underline">Advertise with us</a>
+        </div>
+
+        <!-- GET THE APP -->
+        <div class="text-center mb-12">
+          <h3 class="font-semibold text-lg mb-4">Get the app</h3>
+          <div class="flex justify-center gap-4">
+            <button
+              class="px-1 border border-white flex w-40 items-center justify-center rounded-lg text-black bg-white"
+            >
+              <mat-icon svgIcon="apple" class="w-5 h-5"></mat-icon>
+
+              <div>
+                <span class="text-sm font-sm">download on the</span>
+                <span class="font-bold"> Apple Store</span>
+              </div>
+            </button>
+            <button
+              class="px-1 border border-white flex w-40 items-center justify-center rounded-lg gap-2 bg-white text-black "
+            >
+              <mat-icon svgIcon="playstore" class="w-5 h-5"></mat-icon>
+
+              <div class="flex flex-col leading-tight">
+                <span class="text-sm">Get it on</span>
+                <span class="font-bold">Google Play</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex justify-center items-center p-2">
+          <div>
+            <span class="font-bold">Our Products</span>
+            <div class="flex flex-wrap gap-6 text-sm p-2">
+              <a href="#" class="hover:underline">Wecare ET</a>
+            </div>
+          </div>
         </div>
 
         <!-- SOCIAL ICONS -->

@@ -11,11 +11,5 @@ import { HousesStore } from '../../houses/houses.store';
   templateUrl: 'home.component.html',
 })
 export class Home {
-
-  store=inject(HousesStore)
-  done() {}
-
-  ngOnInit(){
-      this.store.showAd(false)
-  }
+  store = inject(HousesStore);
 }

@@ -46,8 +46,6 @@ import { HousesStore } from './houses.store';
                   </button>
                 </div>
 
-                <!-- LIST PRICE UI (Functional) -->
-                @if(priceTab() === 'list') {
                 <div>
                   <div class="flex items-center gap-3 mb-5">
                     <!-- Min Price -->
@@ -123,7 +121,6 @@ import { HousesStore } from './houses.store';
                     </div>
                   </div>
                 </div>
-                }
               </div>
               }
             </div>
@@ -403,32 +400,5 @@ export class Filters {
     this.store.setSearchBathroom(this.store.minBathroom(), this.store.maxBathroom());
     this.store.getHouses();
     this.roomsOpen.set(false);
-  }
-
-  priceTab = signal<'list' | 'monthly'>('list');
-
-  viewMode: 'list' | 'map' = 'list';
-
-  moreOpen = signal(false);
-  propertyTypeOpen = signal(false);
-
-  home = Home;
-  building = Building;
-  building2 = Building2;
-  tree = TreePine;
-
-  propertyTypes = [
-    { label: 'Any', value: null, icon: this.home },
-    { label: 'House', value: 'house', icon: this.home },
-    { label: 'Condo', value: 'condo', icon: this.building },
-    { label: 'Townhome', value: 'townhome', icon: this.home },
-    { label: 'Multi family', value: 'multi', icon: this.building2 },
-    { label: 'Mobile', value: 'mobile', icon: this.home },
-    { label: 'Farm', value: 'farm', icon: this.home },
-    { label: 'Land', value: 'land', icon: this.tree },
-  ];
-
-  selectPropertyType(type: any) {
-    this.store.setPropertyType(type);
   }
 }

@@ -1,4 +1,4 @@
-import { HouseDto, HouseType, PropertyType } from './house.dto';
+import { HouseDto } from './house.dto';
 
 interface BrokerDto {
   id: string;
@@ -10,12 +10,8 @@ interface BrokerDto {
 
 export interface Typo {
   authModal: boolean;
-  ad: boolean;
   brokerUsername: string | null;
   brokerLocation: string | null;
-
-  type: HouseType;
-  property_type: PropertyType;
 
   location: string;
   price: number;
@@ -24,7 +20,6 @@ export interface Typo {
   area: string;
 
   searchLocation: string | null;
-  searchedLocationDisplay: string | null;
   searchPrice: { min: number | null; max: number | null };
   searchBedroom: { min: number | null; max: number | null };
   searchBathroom: { min: number | null; max: number | null };
@@ -45,7 +40,6 @@ export interface Typo {
 
   notifications: {
     id: string;
-    type: HouseType;
     house: HouseDto;
     user: { id: number };
   }[];
@@ -67,12 +61,8 @@ export interface Typo {
 
 export const typoValue: Omit<Typo, 'bookmarks'> = {
   authModal: false,
-  ad: true,
   brokerUsername: null,
   brokerLocation: null,
-
-  type: 'for rent',
-  property_type: 'house',
 
   location: '',
   price: 0,
@@ -90,7 +80,6 @@ export const typoValue: Omit<Typo, 'bookmarks'> = {
   notifications: [],
 
   searchLocation: null,
-  searchedLocationDisplay: null,
   searchPrice: { min: null, max: null },
   searchBedroom: { min: null, max: null },
   searchBathroom: { min: null, max: null },

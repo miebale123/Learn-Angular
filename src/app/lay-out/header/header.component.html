@@ -11,9 +11,11 @@
 
     <!-- LEFT NAV LINKS -->
     <nav class="hidden md:flex items-center gap-6 text-sm">
-      <a routerLink="/buy" class="hover:underline" (click)="onNewPostClick()">Buy</a>
+      <a routerLink="/" class="hover:underline">Buy</a>
 
       <button class="hover:underline" (click)="onNewPostClick()">Sell</button>
+
+      <button class="hover:underline">Get Help</button>
 
       @if(!auth.isExpert()){
       <a routerLink="/upload-broker-info" class="flex items-center gap-1">
@@ -23,6 +25,7 @@
       <button class="hover:underline">Find an Agent</button>
       <button class="hover:underline">My Home</button>
       <button class="hover:underline">News & Insights</button>
+      <button class="hover:underline">Nearby Shops & Markets</button>
 
       @if (auth.isAdmin()) {
       <a routerLink="/admin" class="flex items-center gap-1"> Admin </a>
@@ -34,7 +37,6 @@
 
   <!-- RIGHT SIDE -->
   <div class="hidden md:flex items-center gap-4">
-    <button routerLink="/advertise" class="hover:underline">Advertise</button>
     @if (!auth.isLoggedIn()) {
     <button (click)="openAuth('sign-in')" class="text-sm hover:underline">Sign in</button>
 
@@ -128,9 +130,7 @@
 
   <a routerLink="/bookmarks" (click)="closeMobile()" class="flex items-center gap-2"> Saved </a>
 
-  <button (click)="closeMobile()" class="flex items-center gap-2">Rent</button>
-
-  <button (click)="onNewPostClick(); closeMobile()" class="flex items-center gap-2">Sell</button>
+  <button (click)="closeMobile()" class="flex items-center gap-2">Sell</button>
 
   @if (auth.isAdmin()) {
   <a routerLink="/admin" (click)="closeMobile()" class="flex items-center gap-2">
@@ -146,7 +146,7 @@
 
   <a
     routerLink="/notifications"
-    (click)=" closeMobile()"
+    (click)="store.resetNCounter(); closeMobile()"
     class="flex items-center gap-2"
   >
     Notifications

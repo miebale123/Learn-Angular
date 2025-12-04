@@ -34,17 +34,12 @@ import { BookmarkStore } from '../../houses/bookmarks.store';
 
           <!-- Content -->
           <div class="p-4 space-y-2">
-            <!-- Type & Price -->
-            <p class="font-semibold text-sm capitalize">
-              {{ b.house.property_type }} {{ b.house.type }}
-            </p>
-
             <p class="text-2xl font-bold flex items-center gap-2">
               $ {{ b.house.price }}
 
               @if (b.house.priceReduced) {
               <span class="flex items-center gap-1 text-green-500 text-sm">
-              <lucide-icon [name]="down" class="w-5 h-5"></lucide-icon>
+                <lucide-icon [name]="down" class="w-5 h-5"></lucide-icon>
 
                 $ {{ b.house.previousPrice! - b.house.price }}
               </span>
@@ -53,9 +48,15 @@ import { BookmarkStore } from '../../houses/bookmarks.store';
 
             <!-- Beds/Baths/Sqft -->
             <div class="flex items-center gap-4 text-sm">
-              <span><strong>{{ b.house.bedroom }}</strong> bed</span>
-              <span><strong>{{ b.house.bathroom }}</strong> bath</span>
-              <span><strong>{{ b.house.area }}</strong> sqft</span>
+              <span
+                ><strong>{{ b.house.bedroom }}</strong> bed</span
+              >
+              <span
+                ><strong>{{ b.house.bathroom }}</strong> bath</span
+              >
+              <span
+                ><strong>{{ b.house.area }}</strong> sqft</span
+              >
             </div>
 
             <!-- Location -->
@@ -74,7 +75,7 @@ import { BookmarkStore } from '../../houses/bookmarks.store';
 export class Bookmarks {
   bookmarks = inject(BookmarkStore);
   x = X;
-  down=ArrowDown
+  down = ArrowDown;
 
   async ngOnInit() {
     await this.bookmarks.getBookmarks();

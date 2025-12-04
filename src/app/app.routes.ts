@@ -12,7 +12,7 @@ import { UploadBrokerInfo } from './upload_broker-info.component';
 import { Broker } from './houses/broker.component';
 import { HousesSearchResults } from './houses/houses-search-results.component';
 import { VerificationComponent } from './pages/auth-local/verification.component';
-import { MyHouses } from './houses/my-houses.component';
+import { House } from './houses/house.component';
 
 export const routes: Routes = [
   // { path: 'oauth-login', component: LoginSuccessComponent },
@@ -20,7 +20,6 @@ export const routes: Routes = [
     path: 'auth',
     children: [
       { path: 'sign-up', component: Signup },
-      // app-verification
       { path: 'app-verification', component: VerificationComponent },
       { path: 'sign-in', component: Signin },
       { path: 'google', redirectTo: 'google/callback' },
@@ -34,6 +33,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: Home, pathMatch: 'full' },
       { path: 'houses', component: Houses },
+      { path: 'house', component: House },
       { path: 'houses-search-results', component: HousesSearchResults },
     ],
   },
@@ -42,8 +42,8 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     component: AppLayout,
     children: [
+      { path: 'broker', component: Broker },
       { path: 'notifications', component: Notifications },
-      { path: 'my-houses', component: MyHouses },
       { path: 'bookmarks', component: Bookmarks },
       { path: 'upload-house', component: Upload },
       { path: 'upload-broker-info', component: UploadBrokerInfo },

@@ -15,27 +15,6 @@ import { HousesStore } from './houses.store';
     <div class="max-w-2xl mx-auto p-6 rounded-2xl shadow-lg">
       <h2 class="text-2xl font-bold mb-6">Upload Property</h2>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <select
-          [(ngModel)]="store.type"
-          class="px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition"
-        >
-          <option value="" disabled>Select type</option>
-          <option value="for rent">For Rent</option>
-          <option value="for sale">For Sale</option>
-        </select>
-
-        <select
-          [(ngModel)]="store.property_type"
-          class="px-4 py-3 rounded-xl border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition"
-        >
-          <option value="" disabled>Property type</option>
-          <option value="condo">Condo</option>
-          <option value="house">House</option>
-          <option value="land">Land</option>
-        </select>
-      </div>
-
       <!-- Image Upload -->
       <div class="mb-6">
         @if(!imageLocked()){

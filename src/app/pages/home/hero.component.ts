@@ -2,18 +2,20 @@ import { Component, ElementRef, HostListener, inject, ViewChild, viewChild } fro
 import { Router } from '@angular/router';
 import { HousesStore } from '../../houses/houses.store';
 import { Search } from '../../houses/search.component';
+import { LucideAngularModule, SearchIcon } from 'lucide-angular';
 
 @Component({
   selector: 'hero',
-  imports: [Search],
+  imports: [Search, LucideAngularModule],
   template: `
     <main
       #heroRef
       class="flex flex-col justify-start items-center text-center gap-6 px-4
-         text-white hero-section h-full py-40 z-[10]"
+         text-white hero-section h-full py-28 z-[10]"
     >
-      <p class="text-xl sm:text-2xl md:text-3xl font-bold pt-8">Rentals. Homes. Agents.</p>
+      <h2 class="text-4xl font-bold ">Discover Homes That Match Your Lifestyle!</h2>
 
+      <h2 class="text-lg font-bold">browse curated properties designed for elevated living.</h2>
       <p class="font-bold text-lg">የብርሃን ቤት ይሁንልዎ!</p>
 
       <div
@@ -27,7 +29,7 @@ import { Search } from '../../houses/search.component';
         [class.shadow-md]="isFixed"
         [class.max-w-4xl]="!isFixed"
       >
-        <search-house (search)="onSearch($event!)" [trySuggestion]="false"></search-house>
+        <search-house (search)="onSearch($event)"></search-house>
       </div>
     </main>
 
@@ -38,6 +40,8 @@ import { Search } from '../../houses/search.component';
 export class Hero {
   private router = inject(Router);
   private store = inject(HousesStore);
+
+  s = SearchIcon;
 
   @ViewChild('heroRef', { static: true }) heroRef!: ElementRef;
 
@@ -57,5 +61,11 @@ export class Hero {
   onSearch(value: string) {
     this.store.set('searchLocation', value);
     this.router.navigateByUrl('/houses-search-results');
+  }
+
+  selected = 'Rent'; // default option — change if you want
+
+  setSelected(option: string) {
+    this.selected = option;
   }
 }

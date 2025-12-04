@@ -6,7 +6,6 @@ import { environment } from '../../environments/environments';
 import { jwtDecode } from 'jwt-decode';
 import { Typo, typoValue } from './typo.interface';
 import { BookmarkStore } from './bookmarks.store';
-import { PropertyType } from './house.dto';
 import { AuthStateService } from '../auth/auth-state.service';
 import { string } from 'zod';
 
@@ -38,10 +37,6 @@ export const HousesStore = signalStore(
 
       showAuthModal(value: boolean) {
         patchState(store, { authModal: value });
-      },
-
-      showAd(value: boolean) {
-        patchState(store, { ad: value });
       },
 
       async getPendingHouses() {
@@ -115,8 +110,6 @@ export const HousesStore = signalStore(
         patchState(store, { uploading: true });
 
         const formData = new FormData();
-        formData.append('type', store.type());
-        formData.append('property_type', store.property_type());
         formData.append('file', store.file()!);
         formData.append('location', store.location());
         formData.append('bedroom', String(store.bedroom()));
@@ -168,34 +161,6 @@ export const HousesStore = signalStore(
         });
       },
 
-      async updateHouse(
-        id: string,
-        location: string,
-        price: number,
-        bedroom: number,
-        bathroom: number,
-        area: string
-      ) {
-        const res: any = await firstValueFrom(
-          http.patch(`${environment.apiBaseUrl}/houses/${id}`, {
-            location,
-            price,
-            bedroom,
-            bathroom,
-            area,
-          })
-        );
-
-        const draft = res.draft;
-
-        patchState(store, {
-          pendingHouses: [
-            ...store.pendingHouses().filter((h) => h.id !== id), // FIXED
-            draft,
-          ],
-        });
-      },
-
       async getHouses() {
         const query = new URLSearchParams();
 
@@ -204,8 +169,6 @@ export const HousesStore = signalStore(
         if (priceMax !== null) query.set('max', String(priceMax));
 
         if (store.searchLocation()) query.set('location', store.searchLocation()!);
-        if (store.property_type()) query.set('property_type', store.property_type());
-        if (store.type()) query.set('type', store.type());
 
         const { min: bedroomMin, max: bedroomMax } = store.searchBedroom();
         if (bedroomMin !== null) query.set('bedroomMin', String(bedroomMin));
@@ -222,7 +185,6 @@ export const HousesStore = signalStore(
 
         const res: any = await firstValueFrom(http.get(url));
 
-        patchState(store, { searchedLocationDisplay: store.searchLocation() });
         patchState(store, { houses: res });
       },
 
@@ -283,10 +245,6 @@ export const HousesStore = signalStore(
 
       setSearchBedroom(min: number | null, max: number | null) {
         patchState(store, { searchBedroom: { min, max } });
-      },
-
-      setPropertyType(property_type: PropertyType) {
-        patchState(store, { property_type: property_type });
       },
 
       setSearchBathroom(min: number | null, max: number | null) {
